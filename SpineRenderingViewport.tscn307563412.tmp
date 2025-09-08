@@ -1,9 +1,0 @@
-[gd_scene load_steps=2 format=3 uid="uid://djepphbdvs2mq"]
-
-[ext_resource type="Script" uid="uid://bfyu17q374e7p" path="res://spine_rendering_viewport.gd" id="1_mkbsa"]
-
-[node name="SpineRenderingViewport" type="SubViewport"]
-script = ExtResource("1_mkbsa")
-
-[node name="SpineRenderingNode" type="Node2D" parent="."]
-unique_name_in_owner = true
