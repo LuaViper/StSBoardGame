@@ -1,0 +1,16 @@
+[gd_scene load_steps=2 format=3 uid="uid://bm6cx8xk854qj"]
+
+[ext_resource type="Script" uid="uid://dskbjcjvalta8" path="res://skeletontestbutton.gd" id="1_gkfmx"]
+
+[node name="Node2D" type="Node2D"]
+
+[node name="Button" type="Button" parent="."]
+offset_left = 20.0
+offset_top = 32.0
+offset_right = 125.0
+offset_bottom = 74.0
+text = "Load
+"
+script = ExtResource("1_gkfmx")
+
+[connection signal="pressed" from="Button" to="Button" method="_on_pressed"]

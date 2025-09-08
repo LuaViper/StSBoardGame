@@ -1,0 +1,117 @@
+[gd_scene load_steps=12 format=3 uid="uid://d3twgtt2jyacu"]
+
+[ext_resource type="Script" uid="uid://bf8l6lubtgrvw" path="res://main.gd" id="1_1bvp3"]
+[ext_resource type="Script" uid="uid://cdeis5qtli4a0" path="res://button.gd" id="2_0xm2m"]
+[ext_resource type="PackedScene" uid="uid://bm6cx8xk854qj" path="res://SkeletonReaderTest.tscn" id="3_lquwl"]
+[ext_resource type="PackedScene" uid="uid://b0j00juowingy" path="res://card_3d.tscn" id="4_lquwl"]
+[ext_resource type="PackedScene" uid="uid://ddcwbygo3g823" path="res://cards/Card2DRenderingViewport.tscn" id="5_lquwl"]
+[ext_resource type="Script" uid="uid://cao7e1u4vc6k8" path="res://card_3d_test.gd" id="6_7mycd"]
+[ext_resource type="PackedScene" uid="uid://wt5lmffkrw7o" path="res://card_holder_rack.tscn" id="7_272bh"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_7dm0k"]
+size = Vector3(60, 2, 60)
+
+[sub_resource type="BoxMesh" id="BoxMesh_ig7tw"]
+size = Vector3(10, 2, 10)
+
+[sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_1bvp3"]
+size = Vector2(100, 100)
+
+[sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_lquwl"]
+size = Vector2(100, 100)
+
+[node name="Main" type="Node3D"]
+script = ExtResource("1_1bvp3")
+
+[node name="Ground" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Ground"]
+shape = SubResource("BoxShape3D_7dm0k")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Ground"]
+mesh = SubResource("BoxMesh_ig7tw")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.654305, 0.756231, 0, -0.756231, 0.654305, 0, 14.5312, 0.331656)
+shadow_enabled = true
+
+[node name="CameraPivot" type="Marker3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.141471, 0.989942, 0, -0.989942, 0.141471, 0.236632, -0.481532, 0.966516)
+
+[node name="Camera3D" type="Camera3D" parent="CameraPivot"]
+transform = Transform3D(0.290936, 0.214667, -0.93235, -0.94712, 0.202485, -0.248925, 0.135351, 0.955468, 0.262226, 1.57799, -6.08954, 3.86956)
+
+[node name="CardHolderRack_Node3D" parent="CameraPivot/Camera3D" instance=ExtResource("7_272bh")]
+transform = Transform3D(1, 7.45058e-09, -2.98023e-08, 0, 1, 0, -1.49012e-08, -1.49012e-08, 1, 0, 0, -5)
+
+[node name="Button" type="Button" parent="."]
+unique_name_in_owner = true
+offset_left = -226.0
+offset_top = 54.0
+offset_right = -58.0
+offset_bottom = 126.0
+text = "Load"
+script = ExtResource("2_0xm2m")
+
+[node name="SkeletonReaderTest" parent="." instance=ExtResource("3_lquwl")]
+position = Vector2(20, 23)
+
+[node name="Card1" parent="." instance=ExtResource("4_lquwl")]
+unique_name_in_owner = true
+transform = Transform3D(0.998233, 0.0594285, 0, -0.0568701, 0.95526, -0.290251, -0.0172492, 0.289738, 0.95695, -0.342861, 1.06397, 28.8242)
+
+[node name="Card3D" parent="." instance=ExtResource("4_lquwl")]
+unique_name_in_owner = true
+transform = Transform3D(0.5, 0, -3.72529e-09, 0, 0.193951, -0.46085, -7.45058e-09, 0.46085, 0.193951, 2.87913, 2.21042, 4.64734)
+script = ExtResource("6_7mycd")
+
+[node name="SPR3D" type="Sprite3D" parent="."]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.37528, 2.14439, 3.29793)
+shaded = true
+alpha_cut = 2
+texture = SubResource("PlaceholderTexture2D_1bvp3")
+
+[node name="SubViewport" type="SubViewport" parent="SPR3D"]
+own_world_3d = true
+
+[node name="SPR3D2" type="Sprite3D" parent="."]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.49098, 2.18409, 3.29793)
+shaded = true
+alpha_cut = 2
+texture = SubResource("PlaceholderTexture2D_lquwl")
+region_rect = Rect2(-75.5, -63, 162, 138)
+
+[node name="HashButton" type="Button" parent="."]
+visible = false
+offset_left = 29.0
+offset_top = 87.0
+offset_right = 133.0
+offset_bottom = 128.0
+text = "Hash
+"
+
+[node name="Card3DTestButton" type="Button" parent="."]
+unique_name_in_owner = true
+offset_left = 31.0
+offset_top = 90.0
+offset_right = 133.0
+offset_bottom = 131.0
+text = "Card3D Test"
+
+[node name="SubViewportContainer" type="SubViewportContainer" parent="."]
+offset_left = 192.0
+offset_top = 116.0
+offset_right = 653.0
+offset_bottom = 520.0
+
+[node name="Card2DRenderingViewport" parent="SubViewportContainer" instance=ExtResource("5_lquwl")]
+unique_name_in_owner = true
+handle_input_locally = false
+render_target_update_mode = 4
+
+[connection signal="pressed" from="Button" to="Button" method="_on_pressed"]
+[connection signal="pressed" from="HashButton" to="." method="_on_hash_test_button_pressed"]
+[connection signal="pressed" from="Card3DTestButton" to="." method="_on_card_3d_test_button_pressed"]

@@ -1,0 +1,1 @@
+class_name CardTagCustom extends CardTag
