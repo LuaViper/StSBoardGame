@@ -208,12 +208,16 @@ func read_skeleton_data(filename: String) -> SkeletonData:
 
 	linked_meshes.clear()
 
-	for event_map in json.get("events", []):
-		var data = EventData.new(event_map.get("name"))
-		data.int_value = event_map.get("int", 0)
-		data.float_value = event_map.get("float", 0.0)
-		data.string_value = event_map.get("string", null)
-		skeleton_data.events.append(data)
+	var event_maps = json.get("events", [])
+	for key in event_maps:		
+		var event_name=key
+		var event_map = event_maps[key]
+		if event_name:
+			var data = EventData.new(event_name)
+			data.int_value = event_map.get("int", 0)
+			data.float_value = event_map.get("float", 0.0)
+			data.string_value = event_map.get("string", "")
+			skeleton_data.events.append(data)
 
 	var animation_maps = json.get("animations", [])
 	for key in animation_maps:
@@ -415,7 +419,9 @@ func read_animation(map: Dictionary, name: String, skeleton_data: SkeletonData):
 				var frame_index = 0
 
 				for value_map in child:
-					timeline.set_frame(frame_index, value_map.get("time"), value_map.get("name"))
+					var notnullname=value_map.get("name")
+					notnullname="" if(notnullname==null) else notnullname
+					timeline.set_frame(frame_index, value_map.get("time"), notnullname)
 					frame_index += 1
 
 				timelines.append(timeline)
@@ -512,10 +518,11 @@ func read_animation(map: Dictionary, name: String, skeleton_data: SkeletonData):
 		duration = max(duration, timeline.get_frames()[(timeline.get_frame_count() - 1) * 5])
 
 	# Path Constraints
-	for constraint_map in map.get("paths", []):
-		var index = skeleton_data.find_path_constraint_index(constraint_map.get("name"))
+	var constraint_map = map.get("paths",[])
+	for keyname in constraint_map:
+		var index = skeleton_data.find_path_constraint_index(keyname)
 		if index == -1:
-			push_error("Path constraint not found: " + constraint_map.get("name"))
+			push_error("Path constraint not found: " + keyname)
 			continue
 
 		var data = skeleton_data.path_constraints[index]
@@ -686,10 +693,12 @@ func read_animation(map: Dictionary, name: String, skeleton_data: SkeletonData):
 
 	var events_map = map.get("events", null)
 	if events_map:
-		var timeline = Animation_.EventTimeline.new(len(events_map.get("child", [])))
+		#TODO: we had to homebrew this a bit to get it to work with the "events" table, make sure it didn't break anything
+		var timeline
+		timeline = Animation_.EventTimeline.new(len(events_map))
 		var frame_index = 0
 
-		for event_map in events_map.get("child", []):
+		for event_map in events_map:
 			var event_data = skeleton_data.find_event(event_map.get("name"))
 			if event_data == null:
 				push_error("Event not found: " + event_map.get("name"))

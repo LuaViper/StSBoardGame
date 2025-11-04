@@ -5,9 +5,11 @@ var skeleton_data
 
 func _init(skeleton_data, initial_capacity = null, max_val = null):
 	if initial_capacity != null and max_val != null:
-		super._init(initial_capacity, max_val)
+		#####super._init(initial_capacity, max_val)
+		pass#####
 	elif initial_capacity != null:
-		super._init(initial_capacity)
+		#####super._init(initial_capacity)
+		pass#####
 	else:
 		super._init()
 	self.skeleton_data = skeleton_data

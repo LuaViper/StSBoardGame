@@ -145,7 +145,7 @@ func update_world_transform(px, py, protation, pscale_x, pscale_y, pshear_x, psh
 					temp = pc * cos_value + pd * sin_value
 					pd = pd * cos_value - pc * sin_value
 					pc = temp
-					if(!parent.data.inheritScale):
+					if(!parent.data.inherit_scale):
 						break
 					parent=parent.parent
 					if(parent==null):

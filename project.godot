@@ -20,10 +20,7 @@ config/icon="res://icon.svg"
 FontHelper="*res://font_helper.gd"
 Globals="*res://globals.gd"
 AtlasHelper="*res://atlas_helper.gd"
-JarManager="*res://fileio/jar_manager.gd"
-CardAutotextHelper="*res://cards/card_autotext_helper.gd"
 LocalizationHelper="*res://localization/LocalizationHelper.gd"
-CardTagHelper="*res://cards/cardscript/CardTagHelper.gd"
 
 [dotnet]
 

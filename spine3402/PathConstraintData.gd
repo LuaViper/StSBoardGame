@@ -4,9 +4,9 @@ class_name PathConstraintData
 var name: String
 var bones: Array = []
 var target: SlotData
-var position_mode: PositionMode
-var spacing_mode: SpacingMode
-var rotate_mode: RotateMode
+var position_mode
+var spacing_mode
+var rotate_mode
 var offset_rotation: float = 0.0
 var position: float = 0.0
 var spacing: float = 0.0
@@ -30,22 +30,22 @@ func get_target() -> SlotData:
 func set_target(_target: SlotData) -> void:
 	target = _target
 
-func get_position_mode() -> PositionMode:
+func get_position_mode():
 	return position_mode
 
-func set_position_mode(_position_mode: PositionMode) -> void:
+func set_position_mode(_position_mode) -> void:
 	position_mode = _position_mode
 
-func get_spacing_mode() -> SpacingMode:
+func get_spacing_mode():
 	return spacing_mode
 
-func set_spacing_mode(_spacing_mode: SpacingMode) -> void:
+func set_spacing_mode(_spacing_mode) -> void:
 	spacing_mode = _spacing_mode
 
-func get_rotate_mode() -> RotateMode:
+func get_rotate_mode():
 	return rotate_mode
 
-func set_rotate_mode(_rotate_mode: RotateMode) -> void:
+func set_rotate_mode(_rotate_mode) -> void:
 	rotate_mode = _rotate_mode
 
 func get_offset_rotation() -> float:
@@ -85,6 +85,6 @@ func _to_string() :
 	return name
 
 # Enums
-enum PositionMode { fixed, percent }
-enum SpacingMode { length, fixed, percent }
-enum RotateMode { tangent, chain, chain_scale }
+static var PositionMode = { "fixed":"fixed", "percent":"percent" }
+static var SpacingMode = { "length":"length", "fixed":"fixed", "percent":"percent" }
+static var RotateMode = { "tangent":"tangent", "chain":"chain", "chainScale":"chainScale" }

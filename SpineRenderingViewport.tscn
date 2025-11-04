@@ -5,6 +5,7 @@
 
 [node name="SpineRenderingViewport" type="SubViewport"]
 transparent_bg = true
+render_target_update_mode = 4
 script = ExtResource("1_mkbsa")
 
 [node name="SpineRenderingNode" type="Node2D" parent="."]

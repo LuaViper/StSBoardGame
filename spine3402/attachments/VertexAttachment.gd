@@ -20,12 +20,13 @@ func compute_world_vertices_extended(slot:Slot, start: int, count: int, world_ve
 	#TODO: FloatArray
 	var deform_array = slot.get_attachment_vertices()
 	
-	var local_vertices:Array[float] = vertices
-	var local_bones:Array[int] = bones
+	var local_vertices = vertices
+	var local_bones = bones
 	
 	if local_bones == null:
 		if deform_array.size() > 0:
-			local_vertices = deform_array.items
+			#local_vertices = deform_array.items
+			local_vertices = deform_array
 		var bone = slot.get_bone()
 		x += bone.get_world_x()
 		y += bone.get_world_y()
@@ -74,7 +75,8 @@ func compute_world_vertices_extended(slot:Slot, start: int, count: int, world_ve
 				w += 2
 		# Case with deformation.
 		else:
-			var deform:Array[float] = deform_array.items
+			#var deform:Array[float] = deform_array.items
+			var deform:Array = deform_array
 			var w:int = offset
 			var b_index:int = skip * 3
 			var f:int = skip << 1

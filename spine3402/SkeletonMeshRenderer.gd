@@ -51,7 +51,11 @@ func draw_skeleton(batch:CanvasItem, skeleton):
 			#TODO: PolygonSpriteBatch.class
 			#batch.set_blend_mode(blend_mode.get_source(premultiplied_alpha), blend_mode.get_dest())			
 			#batch.draw(texture, vertices, 0, len(vertices), triangles, 0, len(triangles))
-			batch.draw_implementation(texture, vertices, triangles)
+			
+			#HOMEBREW: do not draw nodes named "shadow"
+			#TODO: consider drawing shadow nodes exactly once in a second rendering pass
+			if(slot.data.name!="shadow"):
+				batch.draw_implementation(texture, vertices, triangles)
 
 func set_premultiplied_alpha(premultiplied_alpha:bool):
 	self.premultiplied_alpha = premultiplied_alpha

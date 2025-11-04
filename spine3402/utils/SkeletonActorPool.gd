@@ -12,7 +12,7 @@ var obtained: Array
 
 #TODO: make sure 2147483647 really is equivalent to Integer.MAX_VALUE
 func _init(renderer: SkeletonRenderer, skeleton_data: SkeletonData, state_data: AnimationStateData, initial_capacity: int = 16, max: int = 2147483647) -> void:
-	super._init(initial_capacity,max)
+	#####super._init(initial_capacity,max)
 	self.renderer = renderer
 	self.skeleton_data = skeleton_data
 	self.state_data = state_data
@@ -27,14 +27,14 @@ func _init(renderer: SkeletonRenderer, skeleton_data: SkeletonData, state_data: 
 			skeleton.set_skin(null)
 			skeleton.set_skin(skeleton_data.get_default_skin())
 			skeleton.set_to_setup_pose()
-		self.skeletonPool=Pool.new(initial_capacity,max,[lambda1, lambda2])
+		#####self.skeletonPool=Pool.new(initial_capacity,max,[lambda1, lambda2])
 	if(true):
 		var lambda1=func ne2w_object()->AnimationState:
 			return AnimationState.new(state_data)
 		var lambda2=func r2eset(state:AnimationState):
 			state.clear_tracks()
 			state.clear_listeners()
-		self.state_pool = Pool.new(initial_capacity,max,[lambda1,lambda2])
+		#####self.state_pool = Pool.new(initial_capacity,max,[lambda1,lambda2])
 	
 		
 # -----------------------------------------------
@@ -60,12 +60,12 @@ func new_object() -> SkeletonActor:
 	return actor
 
 
-func obtain() -> SkeletonActor:
-	var actor: SkeletonActor = super.obtain()
-	actor.set_skeleton(skeleton_pool.obtain())
-	actor.set_animation_state(state_pool.obtain())
-	obtained.append(actor)
-	return actor
+#####func obtain() -> SkeletonActor:
+	#####var actor: SkeletonActor = super.obtain()
+	#####actor.set_skeleton(skeleton_pool.obtain())
+	#####actor.set_animation_state(state_pool.obtain())
+	#####obtained.append(actor)
+	#####return actor
 
 
 func reset(actor: SkeletonActor) -> void:

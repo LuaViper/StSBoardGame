@@ -22,9 +22,13 @@ func _draw():
 		#%Card2D.draw_circle(Vector2(0,0),50,Color.ORANGE_RED)
 		#%Card2D.draw_circle(Vector2(200,200),50,Color.ORANGE_RED)
 		#draw_circle(Vector2(100,100),50,Color.ORANGE_RED)
-		#var path:String = "C:\\Program Files (x86)\\Steam\\steamapps\\common\\SlayTheSpire\\desktop-1.0.jar"
+		#var path:String = "C:\\Program Files (x86)\\Steam\\steamapps\\common\\SlayTheSpire\\desktop-1.0.jar"	
 		AtlasHelper.CARDUI.draw_to_canvas(bg_path,self,Vector2i(-304/2,-419/2))
-		AtlasHelper.CARDS.draw_to_canvas(img_path,self,Vector2i(-304/2+26,-419/2+45))				
+		if(img_path!="SPECIAL"):		
+			AtlasHelper.CARDS.draw_to_canvas(img_path,self,Vector2i(-304/2+26,-419/2+45))				
+		else:
+			#TODO: handle SPECIAL (golden ticket)
+			pass
 		AtlasHelper.CARDUI.draw_to_canvas(frame_path,self,Vector2i(-304/2+frame_offset_x,-419/2+frame_offset_y))
 		AtlasHelper.CARDUI.draw_to_canvas(banner_path,self,Vector2i(-304/2-13,-419/2+16))
 		if(orb_path):
@@ -35,13 +39,13 @@ func _draw():
 	%NameLabel.push_font(FontHelper.KREON_REGULAR_CARDNAME,23)	
 	%NameLabel.add_text(card_title)
 	%NameLabel.pop_all()
-	%CostLabel.clear()
+	%CostLabel.clear()	
 	%CostLabel.push_font(FontHelper.KREON_BOLD,36)	
 	%CostLabel.add_text(card_cost_text)
 	%CostLabel.pop_all()		
 	%DescriptionLabel.clear()
 	%DescriptionLabel.push_font(FontHelper.KREON_REGULAR_CARDDESCRIPTION,24)	
-	card_description = CardAutotextHelper.parse(card_description)
+	#card_description = CardAutotextHelper.parse(card_description)
 	%DescriptionLabel.append_text(card_description)
 	%DescriptionLabel.pop_all()
 	%TypeLabel.clear()

@@ -14,13 +14,13 @@ func act(delta: float) -> void:
 	state.update(delta)
 	state.apply(skeleton)
 	skeleton.update_world_transform()
-	super.act(delta)
+	#####super.act(delta)
 
 func draw(batch: Batch, parent_alpha: float) -> void:
 	var color: Color = skeleton.get_color()
 	var old_alpha: float = color.a
 	skeleton.get_color().a *= parent_alpha
-	skeleton.set_position(get_x(), get_y())
+	#####skeleton.set_position(get_x(), get_y())
 	renderer.draw(batch, skeleton)
 	color.a = old_alpha
 

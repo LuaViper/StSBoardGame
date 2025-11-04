@@ -11,7 +11,8 @@ var position: float = 0.0
 var spacing: float = 0.0
 var rotate_mix: float = 0.0
 var translate_mix: float = 0.0
-var spaces: Array = []
+#it is necessary to define spaces as array[float] so that uninitialized values will be 0 instead of null
+var spaces: Array[float] = []
 var positions: Array = []
 var world: Array = []
 var curves: Array = []
@@ -74,12 +75,12 @@ func update() -> void:
 			var length_spacing = spacing_mode == PathConstraintData.SpacingMode.length
 			var rotate_mode = data_ref.rotate_mode
 			var tangents = rotate_mode == PathConstraintData.RotateMode.tangent
-			var scale_val = rotate_mode == PathConstraintData.RotateMode.chain_scale
+			var scale_val = rotate_mode == PathConstraintData.RotateMode.chainScale
 			var bone_count = bones.size()
 			var spaces_count = bone_count if(tangents) else bone_count + 1
 			var bones_val:Array = bones
+			spaces.resize(spaces_count)
 			var spaces_val:Array = spaces
-			spaces_val.resize(spaces_count)
 			var lengths_val = []
 			var spacing_val = spacing
 			if(!scale_val && !length_spacing):
@@ -87,10 +88,12 @@ func update() -> void:
 					spaces_val[i]=spacing
 			else:
 				if(scale_val):
-					lengths_val = self.lengths.resize(bone_count)
+					self.lengths.resize(bone_count)
+					lengths_val = self.lengths
 				var i:int = 0
 				var length_val:float
 				var n:int = spaces_count - 1
+				#decomp jank ahead, proceed with caution
 				while(i < n):
 					var bone_val:Bone = bones_val[i]
 					length_val = bone_val.data.length
@@ -99,10 +102,11 @@ func update() -> void:
 					length_val = sqrt(x*x+y*y)
 					if(scale_val):
 						lengths_val[i] = length_val;
-					#TODO: probable decomp jank --
-					# in original, it appears i is incremented before spaces is set
-					spaces_val[i] = max(0.0,length_val+spacing_val) if(length_spacing) else spacing_val
+					#increment i, then update spaces_val
 					i+=1;
+					spaces_val[i] = max(0.0,length_val+spacing_val) if(length_spacing) else spacing_val				
+				#the original code does some odd things, but the intention is to update spaces one more time after loop ends without querying bones (which is now OOB)
+				spaces_val[i] = max(0.0,length_val+spacing_val) if(length_spacing) else spacing_val
 					
 
 			var positions:Array = compute_world_positions(attachment, spaces_count, tangents, data_ref.position_mode == PathConstraintData.PositionMode.percent, spacing_mode == PathConstraintData.SpacingMode.percent)
@@ -170,13 +174,16 @@ func update() -> void:
 					bone.c = sin_r * a + cos_r * c
 					bone.d = sin_r * b + cos_r * d
 				i += 1
+	var breakpt
+	breakpt=true
+	return
 				
 func compute_world_positions(path: PathAttachment, spaces_count: int, tangents: bool, percent_position: bool, percent_spacing: bool) -> Array:
 	var target = self.target
 	var position = self.position
 	var spaces = self.spaces
-	var out_positions = []
-	out_positions.resize(spaces_count * 3 + 2)
+	self.positions.resize(spaces_count * 3 + 2)
+	var out_positions = self.positions
 	var closed = path.get_closed()
 	var vertices_length = path.get_world_vertices_length()
 	var curve_count = vertices_length / 6
@@ -269,8 +276,8 @@ func compute_world_positions(path: PathAttachment, spaces_count: int, tangents: 
 			world.resize(vertices_length)
 			path.compute_world_vertices_5args(target, 2, vertices_length, world, 0)
 
-			var curves = []
-			curves.resize(curve_count)
+			self.curves.resize(curve_count)
+			var curves = self.curves			
 			var path_length = 0.0
 			var x1 = world[0]
 			var y1 = world[1]
@@ -322,15 +329,15 @@ func compute_world_positions(path: PathAttachment, spaces_count: int, tangents: 
 					spaces[i2] *= path_length
 
 			var curve_length = 0.0
-			var i2 = 0
+			var j = 0
 			var o = 0
 			var curve = 0
 			var segment = 0
 
-	#TODO: may be decompiler jank, but original java declares i a second time here			
-			while(i < spaces_count):				
-				#label228
-				var space = spaces[i2]
+	#TODO: extreme decompiler jank, use caution
+			while(j < spaces_count):
+				#label228 (continue)
+				var space = spaces[j]
 				position += space
 				var p = position
 				if closed:
@@ -341,82 +348,82 @@ func compute_world_positions(path: PathAttachment, spaces_count: int, tangents: 
 				else:
 					if position < 0.0:
 						add_before_position(position, world, 0, out_positions, o)
-						continue
+						j += 1;o += 3;continue
 					if position > path_length:
 						add_after_position(position - path_length, world, vertices_length - 4, out_positions, o)
-						continue
+						j += 1;o += 3;continue
 
 				#label189
 				while true:
 					var length = curves[curve]
-					if p <= length:
-						if curve == 0:
-							p /= length
-						else:
-							var prev = curves[curve - 1]
-							p = (p - prev) / (length - prev)
+					if p > length:
+						curve+=1
+						continue
+					if curve == 0:
+						p /= length
+						break
+					var prev = curves[curve - 1]
+					p = (p - prev) / (length - prev)
+					break
 
-						if curve != prev_curve:
-							prev_curve = curve
-							var ii = curve * 6
-							x1 = world[ii]
-							y1 = world[ii + 1]
-							cx1 = world[ii + 2]
-							cy1 = world[ii + 3]
-							cx2 = world[ii + 4]
-							cy2 = world[ii + 5]
-							x2 = world[ii + 6]
-							y2 = world[ii + 7]
+				if curve != prev_curve:
+					prev_curve = curve
+					var ii = curve * 6
+					x1 = world[ii]
+					y1 = world[ii + 1]
+					cx1 = world[ii + 2]
+					cy1 = world[ii + 3]
+					cx2 = world[ii + 4]
+					cy2 = world[ii + 5]
+					x2 = world[ii + 6]
+					y2 = world[ii + 7]
 
-							var tmpx = (x1 - cx1 * 2.0 + cx2) * 0.03
-							var tmpy = (y1 - cy1 * 2.0 + cy2) * 0.03
-							var dddfx = ((cx1 - cx2) * 3.0 - x1 + x2) * 0.006
-							var dddfy = ((cy1 - cy2) * 3.0 - y1 + y2) * 0.006
-							var ddfx = tmpx * 2.0 + dddfx
-							var ddfy = tmpy * 2.0 + dddfy
-							var dfx = (cx1 - x1) * 0.3 + tmpx + dddfx * 0.16666667
-							var dfy = (cy1 - y1) * 0.3 + tmpy + dddfy * 0.16666667
-							curve_length = sqrt(dfx * dfx + dfy * dfy)
-							segments[0] = curve_length
+					var tmpx = (x1 - cx1 * 2.0 + cx2) * 0.03
+					var tmpy = (y1 - cy1 * 2.0 + cy2) * 0.03
+					var dddfx = ((cx1 - cx2) * 3.0 - x1 + x2) * 0.006
+					var dddfy = ((cy1 - cy2) * 3.0 - y1 + y2) * 0.006
+					var ddfx = tmpx * 2.0 + dddfx
+					var ddfy = tmpy * 2.0 + dddfy
+					var dfx = (cx1 - x1) * 0.3 + tmpx + dddfx * 0.16666667
+					var dfy = (cy1 - y1) * 0.3 + tmpy + dddfy * 0.16666667
+					curve_length = sqrt(dfx * dfx + dfy * dfy)
+					segments[0] = curve_length
 
-							for var89 in range(1, 8):
-								dfx += ddfx
-								dfy += ddfy
-								ddfx += dddfx
-								ddfy += dddfy
-								curve_length += sqrt(dfx * dfx + dfy * dfy)
-								segments[var89] = curve_length
+					for var89 in range(1, 8):
+						dfx += ddfx
+						dfy += ddfy
+						ddfx += dddfx
+						ddfy += dddfy
+						curve_length += sqrt(dfx * dfx + dfy * dfy)
+						segments[var89] = curve_length
 
-							dfx += ddfx
-							dfy += ddfy
-							var var84 = curve_length + sqrt(dfx * dfx + dfy * dfy)
-							segments[8] = var84
-							dfx += ddfx + dddfx
-							dfy += ddfy + dddfy
-							curve_length = var84 + sqrt(dfx * dfx + dfy * dfy)
-							segments[9] = curve_length
+					dfx += ddfx
+					dfy += ddfy
+					curve_length = curve_length + sqrt(dfx * dfx + dfy * dfy)
+					segments[8] = curve_length
+					dfx += ddfx + dddfx
+					dfy += ddfy + dddfy
+					curve_length = curve_length + sqrt(dfx * dfx + dfy * dfy)
+					segments[9] = curve_length
+					segment = 0
 
-						p *= curve_length
+				p *= curve_length
 
-						var break189:bool = false
-						while true:
-							length = segments[segment]
-							if p <= length:
-								if segment == 0:
-									p /= length
-								else:
-									var prev = segments[segment - 1]
-									p = float(segment) + (p - prev) / (length - prev)
+				var break189:bool = false
+				while true:
+					var length = segments[segment]
+					if p > length:
+						segment+=1
+						continue					
+					if segment == 0:
+						p /= length
+						break
+					var prev = segments[segment - 1]
+					p = segment + (p - prev) / (length - prev)
+					break
+				add_curve_position(p * 0.1, x1, y1, cx1, cy1, cx2, cy2, x2, y2, out_positions, o, tangents or (i > 0 and space == 0.0))
+				j += 1;o += 3;continue
 
-								add_curve_position(p * 0.1, x1, y1, cx1, cy1, cx2, cy2, x2, y2, out_positions, o, tangents or (i > 0 and space == 0.0))
-								break189 = true
-								break #break label189
-							segment += 1
-							if(break189):
-								break
-					curve += 1
-				o += 3
-				i += 1
 
 		return out_positions
 

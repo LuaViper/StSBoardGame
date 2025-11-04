@@ -1,6 +1,10 @@
-extends Node
+class_name JarManager
 
 var thread: Thread
+
+func _init():
+	var install_location = "C:/Program Files (x86)/Steam/steamapps/common/SlayTheSpire/desktop-1.0.jar"
+	self.load(install_location)
 
 #TODO: apparently GOG has a different patch/checksum than Steam!
 var file
@@ -46,3 +50,15 @@ func _thread_function(path):
 func _exit_tree():
 	if(thread):
 		thread.wait_to_finish()
+
+func cleanup():
+	if(file):
+		file.close()
+
+func get_jar_file(path):
+	#in the distant future, consider making this threadsafe somehow
+	var base_dir = path.get_base_dir()
+	var reader = ZIPReader.new()
+	var file_contents = reader.read_file(path)
+	return file_contents
+	

@@ -14,11 +14,11 @@ func _process(delta):
 	src.state.update(delta)
 	src.state.apply(src.skeleton)
 	src.skeleton.update_world_transform()
-	src.skeleton.set_position(512/2,512-50)
+	src.skeleton.set_position(512/2,512-100)
 	#skeleton.set_color(Color.WHITE) #TODO:		
 	queue_redraw()
 	
-func _draw():	
+func _draw():		
 	if(!src.state || !src.skeleton):
 		return
 	src.sr.draw_skeleton(self,src.skeleton)
@@ -37,7 +37,7 @@ func _draw():
 		var tex = ImageTexture.create_from_image(img)
 		# Set sprite texture.
 		src.target_sprite.texture = tex
-		
+	
 		
 		
 		#src.target_sprite.set_texture(Texture2D.new())

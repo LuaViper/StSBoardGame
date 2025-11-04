@@ -39,7 +39,8 @@ func get_scale() -> float:
 func set_scale(_scale: float) -> void:
 	scale = _scale
 
-func read_skeleton_data(file) -> SkeletonData:
+#####func read_skeleton_data(file) -> SkeletonData:
+func read_skeleton_data(file):
 	if file == null:
 		push_error("file cannot be null.")
 		return null
@@ -131,8 +132,8 @@ func read_skeleton_data(file) -> SkeletonData:
 			bone_data.inherit_rotation = input.read_bool() > 0
 			bone_data.inherit_scale = input.read_bool() > 0
 
-			if nonessential:
-				bone_data.color = rgba_8888_to_color(bone_data.color, input.read_int())
+			#####if nonessential:
+			#####	bone_data.color = rgba_8888_to_color(bone_data.color, input.read_int())
 
 			skeleton_data.bones.append(bone_data)
 
@@ -142,7 +143,7 @@ func read_skeleton_data(file) -> SkeletonData:
 			var slot_name = input.read_string()
 			var bone_data = skeleton_data.bones[input.read_int()]
 			var slot_data:SlotData = SlotData.new(i, slot_name, bone_data)
-			slot_data.color = rgba_8888_to_color(slot_data.color, input.read_int())
+			#####slot_data.color = rgba_8888_to_color(slot_data.color, input.read_int())
 			slot_data.attachment_name = input.read_string()
 			slot_data.blend_mode = BlendMode[input.read_int()]
 			skeleton_data.slots.append(slot_data)
@@ -188,16 +189,16 @@ func read_skeleton_data(file) -> SkeletonData:
 			for ii in range(nn):
 				path_data.bones.append(skeleton_data.bones[input.read_int()])
 			path_data.target = skeleton_data.slots[input.read_int()]
-			path_data.position_mode = PositionMode[input.read_int()]
-			path_data.spacing_mode = SpacingMode[input.read_int()]
-			path_data.rotate_mode = RotateMode[input.read_int()]
+			#####path_data.position_mode = PositionMode[input.read_int()]
+			#####path_data.spacing_mode = SpacingMode[input.read_int()]
+			#####path_data.rotate_mode = RotateMode[input.read_int()]
 			path_data.offset_rotation = input.read_int()
 			path_data.position = input.read_float()
-			if path_data.position_mode == PositionMode.fixed:
-				path_data.position *= scale
+			#####if path_data.position_mode == PositionMode.fixed:
+			#####	path_data.position *= scale
 			path_data.spacing = input.read_float()
-			if path_data.spacing_mode in [SpacingMode.length, SpacingMode.fixed]:
-				path_data.spacing *= scale
+			#####if path_data.spacing_mode in [SpacingMode.length, SpacingMode.fixed]:
+			#####	path_data.spacing *= scale
 			path_data.rotate_mix = input.read_float()
 			path_data.translate_mix = input.read_float()
 			skeleton_data.path_constraints.append(path_data)
@@ -250,22 +251,24 @@ func read_skeleton_data(file) -> SkeletonData:
 		#skeleton_data.events = skeleton_data.events.deduplicated()
 		#skeleton_data.animations = skeleton_data.animations.deduplic
 
-func read_skin(input, skin_name: String, nonessential: bool) -> Skin:
+#####func read_skin(input, skin_name: String, nonessential: bool) -> Skin:
+func read_skin(input, skin_name: String, nonessential: bool):	
 	var slot_count = input.read_int()
 	if slot_count == 0:
 		return null
 	else:
-		var skin = Skin.new(skin_name)
+		#####var skin = Skin.new(skin_name)
 		for i in range(slot_count):
 			var slot_index = input.read_int()
 			var attachment_count = input.read_int()
 			for ii in range(attachment_count):
 				var name = input.read_string()
-				var attachment = read_attachment(input, skin, slot_index, name, nonessential)
-				skin.add_attachment(slot_index, name, attachment)
-		return skin
+		#####		var attachment = read_attachment(input, skin, slot_index, name, nonessential)
+		#####		skin.add_attachment(slot_index, name, attachment)
+		#####return skin
 
-func read_attachment(input, skin: Skin, slot_index: int, attachment_name: String, nonessential: bool) -> Attachment:
+#####func read_attachment(input, skin: Skin, slot_index: int, attachment_name: String, nonessential: bool) -> Attachment:
+func read_attachment(input, skin: Skin, slot_index: int, attachment_name: String, nonessential: bool):
 	var scale = self.scale
 	var name = input.read_string()
 	if name.empty():
@@ -286,34 +289,34 @@ func read_attachment(input, skin: Skin, slot_index: int, attachment_name: String
 			if path.empty():
 				path = name
 
-			var region = attachment_loader.new_region_attachment(skin, name, path)
-			if region == null:
-				return null
-			region.set_path(path)
-			region.set_x(x * scale)
-			region.set_y(y * scale)
-			region.set_scale_x(scale_x)
-			region.set_scale_y(scale_y)
-			region.set_rotation(rotation)
-			region.set_width(width * scale)
-			region.set_height(height * scale)
-			rgba8888_to_color(region.get_color(),color)
-			region.update_offset()
-			return region
+			#####var region = attachment_loader.new_region_attachment(skin, name, path)
+			#####if region == null:
+			#####	return null
+			#####region.set_path(path)
+			#####region.set_x(x * scale)
+			#####region.set_y(y * scale)
+			#####region.set_scale_x(scale_x)
+			#####region.set_scale_y(scale_y)
+			#####region.set_rotation(rotation)
+			#####region.set_width(width * scale)
+			#####region.set_height(height * scale)
+			#####rgba8888_to_color(region.get_color(),color)
+			#####region.update_offset()
+			#####return region
 
 		AttachmentType.boundingbox:
 			var vertex_count = input.read_int()
 			var vertices = read_vertices(input, vertex_count)
 			var color = input.read_int() if nonessential else 0
-			var box = attachment_loader.new_bounding_box_attachment(skin, name)
-			if box == null:
-				return null
-			box.set_world_vertices_length(vertex_count * 2)
-			box.set_vertices(vertices.vertices)
-			box.set_bones(vertices.bones)
-			if nonessential:
-				rgba8888_to_color(box.get_color(),color)
-			return box
+			#####var box = attachment_loader.new_bounding_box_attachment(skin, name)
+			#####if box == null:
+			#####	return null
+			#####box.set_world_vertices_length(vertex_count * 2)
+			#####box.set_vertices(vertices.vertices)
+			#####box.set_bones(vertices.bones)
+			#####if nonessential:
+			#####	rgba8888_to_color(box.get_color(),color)
+			#####return box
 
 		AttachmentType.mesh:
 			var path = input.read_string()
@@ -334,23 +337,23 @@ func read_attachment(input, skin: Skin, slot_index: int, attachment_name: String
 			if path.empty():
 				path = name
 
-			var mesh = attachment_loader.new_mesh_attachment(skin, name, path)
-			if mesh == null:
-				return null
-			mesh.set_path(path)
-			rgba8888_to_color(mesh.get_color(),color)
-			mesh.set_bones(vertices.bones)
-			mesh.set_vertices(vertices.vertices)
-			mesh.set_world_vertices_length(vertex_count * 2)
-			mesh.set_triangles(triangles)
-			mesh.set_region_uvs(uvs)
-			mesh.update_uvs()
-			mesh.set_hull_length(hull_length * 2)
-			if nonessential:
-				mesh.set_edges(edges)
-				mesh.set_width(width * scale)
-				mesh.set_height(height * scale)
-			return mesh
+			#####var mesh = attachment_loader.new_mesh_attachment(skin, name, path)
+			#####if mesh == null:
+			#####	return null
+			#####mesh.set_path(path)
+			#####rgba8888_to_color(mesh.get_color(),color)
+			#####mesh.set_bones(vertices.bones)
+			#####mesh.set_vertices(vertices.vertices)
+			#####mesh.set_world_vertices_length(vertex_count * 2)
+			#####mesh.set_triangles(triangles)
+			#####mesh.set_region_uvs(uvs)
+			#####mesh.update_uvs()
+			#####mesh.set_hull_length(hull_length * 2)
+			#####if nonessential:
+			#####	mesh.set_edges(edges)
+			#####	mesh.set_width(width * scale)
+			#####	mesh.set_height(height * scale)
+			#####return mesh
 
 		AttachmentType.linkedmesh:
 			var path = input.read_string()
@@ -367,18 +370,18 @@ func read_attachment(input, skin: Skin, slot_index: int, attachment_name: String
 			if path.empty():
 				path = name
 
-			var mesh = attachment_loader.new_mesh_attachment(skin, name, path)
-			if mesh == null:
-				return null
-			mesh.set_path(path)
-			rgba8888_to_color(mesh.get_color(),color)
-			mesh.set_inherit_deform(inherit_deform)
-			if nonessential:
-				mesh.set_width(width * scale)
-				mesh.set_height(height * scale)
+			#####var mesh = attachment_loader.new_mesh_attachment(skin, name, path)
+			#####if mesh == null:
+			#####	return null
+			#####mesh.set_path(path)
+			#####rgba8888_to_color(mesh.get_color(),color)
+			#####mesh.set_inherit_deform(inherit_deform)
+			#####if nonessential:
+			#####	mesh.set_width(width * scale)
+			#####	mesh.set_height(height * scale)
 
-			linked_meshes.append(SkeletonJson.LinkedMesh.new(mesh, skin_name, slot_index, parent))
-			return mesh
+			#####linked_meshes.append(SkeletonJson.LinkedMesh.new(mesh, skin_name, slot_index, parent))
+			#####return mesh
 
 		AttachmentType.path:
 			var closed = input.get_8() > 0
@@ -390,18 +393,18 @@ func read_attachment(input, skin: Skin, slot_index: int, attachment_name: String
 				lengths.append(input.get_float() * scale)
 
 			var color = input.get_32() if nonessential else 0
-			var path = attachment_loader.new_path_attachment(skin, name)
-			if path == null:
-				return null
-			path.set_closed(closed)
-			path.set_constant_speed(constant_speed)
-			path.set_world_vertices_length(vertex_count * 2)
-			path.set_vertices(vertices.vertices)
-			path.set_bones(vertices.bones)
-			path.set_lengths(lengths)
-			if nonessential:
-				rgba8888_to_color(path.get_color(), color)
-			return path
+			#####var path = attachment_loader.new_path_attachment(skin, name)
+			#####if path == null:
+			#####	return null
+			#####path.set_closed(closed)
+			#####path.set_constant_speed(constant_speed)
+			#####path.set_world_vertices_length(vertex_count * 2)
+			#####path.set_vertices(vertices.vertices)
+			#####path.set_bones(vertices.bones)
+			#####path.set_lengths(lengths)
+			#####if nonessential:
+			#####	rgba8888_to_color(path.get_color(), color)
+			#####return path
 
 		_:
 			return null
@@ -564,12 +567,12 @@ func read_animation(name: String, input, skeleton_data: SkeletonData) -> void:
 
 					if timeline_type == 1:  # PathConstraintSpacingTimeline
 						timeline = Animation_.PathConstraintSpacingTimeline.new(frame_count)
-						if data.spacing_mode in [SpacingMode.length, SpacingMode.fixed]:
-							timeline_scale = scale
+						#####if data.spacing_mode in [SpacingMode.length, SpacingMode.fixed]:
+						#####	timeline_scale = scale
 					else:  # PathConstraintPositionTimeline
 						timeline = Animation_.PathConstraintPositionTimeline.new(frame_count)
-						if data.position_mode == PositionMode.fixed:
-							timeline_scale = scale
+						#####if data.position_mode == PositionMode.fixed:
+						#####	timeline_scale = scale
 
 					timeline.path_constraint_index = index
 
@@ -581,17 +584,17 @@ func read_animation(name: String, input, skeleton_data: SkeletonData) -> void:
 					timelines.append(timeline)
 					duration = max(duration, timeline.get_frames()[(frame_count - 1) * 2])
 
-				2:  # PathConstraintMixTimeline
-					var timeline = Animation.PathConstraintMixTimeline.new(frame_count)
-					timeline.path_constraint_index = index
+				#####2:  # PathConstraintMixTimeline
+					#####var timeline = Animation.PathConstraintMixTimeline.new(frame_count)
+					#####timeline.path_constraint_index = index
 
-					for frame_index in range(frame_count):
-						timeline.set_frame(frame_index, input.read_float(), input.get_float(), input.read_float())
-						if frame_index < frame_count - 1:
-							read_curve(input, frame_index, timeline)
+					#####for frame_index in range(frame_count):
+					#####	timeline.set_frame(frame_index, input.read_float(), input.get_float(), input.read_float())
+					#####	if frame_index < frame_count - 1:
+					#####		read_curve(input, frame_index, timeline)
 
-					timelines.append(timeline)
-					duration = max(duration, timeline.get_frames()[(frame_count - 1) * 3])
+					#####timelines.append(timeline)
+					#####duration = max(duration, timeline.get_frames()[(frame_count - 1) * 3])
 
 	# Deform Timelines
 	for i in range(input.read_int()):

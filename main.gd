@@ -1,9 +1,8 @@
 extends Node3D
 
 func _on_hash_test_button_pressed() -> void:
-	#var jar_manager = JarManager.new()	
 	var path:String = "C:\\Program Files (x86)\\Steam\\steamapps\\common\\SlayTheSpire\\desktop-1.0.jar"
-	JarManager.load(path)
+	Globals.JarManager.load(path)
 	
 	var card_library = CardLibrary.new()
 	
@@ -53,13 +52,22 @@ var card = preload("res://card_3d.tscn")
 var viewport = preload("res://cards/card_2d_rendering_viewport.tscn")
 
 func _on_card_3d_test_button_pressed() -> void:
-	var library=CardLibrary.new()
-	var ids=["BGAllForOne","BGAmplify","BGBallLightning","BGBarrage","BGBeamCell",
-	"BGBlizzard","BGBuffer","BGCapacitor","BGChaos","BGChargeBattery",
-	"BGClaw","BGClaw2","BGColdSnap","BGCompileDriver","BGConsume",
-	"BGCoolheaded","BGCoreSurge","BGDarkness","BGDefend_Blue","BGDefragment"]
+	var library=Globals.card_library
+	#var ids=["BGChaos","BGAllForOne","BGAmplify","BGBallLightning","BGBarrage","BGBeamCell",
+	#"BGBlizzard","BGBuffer","BGCapacitor","BGChaos","BGChargeBattery",
+	#"BGClaw","BGClaw2","BGColdSnap","BGCompileDriver","BGConsume",
+	#"BGCoolheaded","BGCoreSurge","BGDarkness","BGDefend_Blue","BGDefragment"]
+	#var ids=["BGCoreSurge","BGCoreSurge","BGCoreSurge","BGCoreSurge","BGCoreSurge","BGCoreSurge","BGCoreSurge","BGCoreSurge","BGCoreSurge","BGCoreSurge","BGCoreSurge"]
+	var ids=[]
+	var i=1;
+	for key in library.card_list:
+		if(i>=0 && i<=300):
+			ids.append(key)
+		i+=1;
+		
 	
-	var i=0
+	i=0
+	var j=0
 	for id:String in ids:		
 		var c2rvp:Card2DRenderingViewport=viewport.instantiate()
 		c2rvp.set_card(library.card_list.get(id));
@@ -67,13 +75,16 @@ func _on_card_3d_test_button_pressed() -> void:
 		
 		
 		var c3:Card3D=card.instantiate()
-		c3.position=Vector3((i-10)*3,2,1)
+		c3.position=Vector3((i-10)*3,2+(j*4),1)
 		c3.rotation=Vector3(PI/2,0,0)
 		c3.scale=Vector3(0.75,0.75,0.75)
 		#c3.transform.rotated()
 		main.add_child(c3)
 		c3.test(c2rvp)
 		i+=1
+		if(i>=25):
+			i=0
+			j+=1
 		
 	
 	#%Card3D.test()
