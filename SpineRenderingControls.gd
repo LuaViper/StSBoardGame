@@ -1,13 +1,17 @@
 class_name SpineRenderingControls
 
-var state:AnimationState
-var state_data:AnimationStateData
-var skeleton:Skeleton
-var sr:SkeletonMeshRenderer
+var state
+var state_data
+var skeleton
+var sr
 var viewport:SpineRenderingViewport
 var render_target:Node2D
 var target_sprite:Sprite3D
 
-func init():
+var SkeletonMeshRenderer = load("res://spine-3402-csharp/src/SkeletonMeshRenderer.cs")
+
+func _init():
+	print("SpineRenderingControls.init")
 	sr = SkeletonMeshRenderer.new();
-	sr.set_premultiplied_alpha(true);
+	print("Skeleton Mesh Renderer: ",sr)
+	sr.PremultipliedAlpha = true;

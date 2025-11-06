@@ -1,9 +1,10 @@
 extends Node2D
-
+#
 var src:SpineRenderingControls
 #var target:Node2D
 
-func _init():
+func _ready():
+	print("SpineRenderingNode.ready")
 	src = SpineRenderingControls.new()
 
 func _process(delta):	
@@ -11,17 +12,18 @@ func _process(delta):
 		#target=%target
 	if(!src.state || !src.skeleton): 
 		return
-	src.state.update(delta)
-	src.state.apply(src.skeleton)
-	src.skeleton.update_world_transform()
-	src.skeleton.set_position(512/2,512-100)
-	#skeleton.set_color(Color.WHITE) #TODO:		
+	src.state.Update(delta)
+	src.state.Apply(src.skeleton)
+	src.skeleton.UpdateWorldTransform()
+	#src.skeleton.SetPosition(512/2,512-100)
+	src.skeleton.SetPosition(512/2,512-90)
+	src.skeleton.SetColor(Color.WHITE) #TODO:		
 	queue_redraw()
 	
 func _draw():		
 	if(!src.state || !src.skeleton):
 		return
-	src.sr.draw_skeleton(self,src.skeleton)
+	src.sr.DrawSkeletonToCanvas(self,src.skeleton)
 	if(src.target_sprite):
 		#var src_texture = src.viewport.get_texture()		
 		#
@@ -52,31 +54,37 @@ func _draw():
 		#mesh_instance_node.set_surface_override_material(1,material)
 		
 	
-func draw_implementation(texture,vertices,polygons):
-	#if(!target):
-		#return;
-	#TODO: learn to use canvas_item_add_triangle_array instead
+
+
+func draw_mesh_item(mesh_item, name):
+	if(name.to_lower().ends_with("shadow")):
+		return
 	var vert2s:PackedVector2Array = []
 	var colors:PackedColorArray = []
 	var uvs:PackedVector2Array = []
-	for v in range(0,len(vertices),5):
-		var v2:Vector2 = Vector2(vertices[v],vertices[v+1])
-		var color:Color = NumberUtils.float_to_color(vertices[v+2])
+	var vertices = mesh_item.vertices
+	var triangles = mesh_item.triangles
+	var texture = mesh_item.texture
+	for v in range(0,len(vertices)):
+		var vertex=vertices[v]
+		var v2:Vector2 = Vector2(vertex.position.x,vertex.position.y)
+		#var color:Color = NumberUtils.float_to_color(vertices.color)
+		var color:Color = vertex.color
 		#var color:Color = Color.CYAN
 		#var color:Color = Color(.4,.4,.4,.4)
-		var uv:Vector2 = Vector2(vertices[v+3],vertices[v+4])
+		var uv:Vector2 = vertex.textureCoordinate
 		#TODO: use resize instead of appendloop
 		vert2s.append(v2)
 		colors.append(color)
 		uvs.append(uv)
-	for p in range(0,len(polygons),3):
-		var i0:int = polygons[p]
-		var i1:int = polygons[p+1]
-		var i2:int = polygons[p+2]
+	for t in range(0,len(triangles),3):
+		var i0:int = triangles[t]
+		var i1:int = triangles[t+1]
+		var i2:int = triangles[t+2]
 		
 		var polygon_vert2s:PackedVector2Array = [vert2s[i0],vert2s[i1],vert2s[i2]]
 		var polygon_colors:PackedColorArray = [colors[i0],colors[i1],colors[i2]]
 		var polygon_uvs:PackedVector2Array = [uvs[i0],uvs[i1],uvs[i2]]
 	
 		draw_polygon(polygon_vert2s,polygon_colors,polygon_uvs,texture)
-	
+	pass

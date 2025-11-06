@@ -1,0 +1,20 @@
+[gd_scene load_steps=4 format=3 uid="uid://esl0lura0cve"]
+
+[ext_resource type="Script" uid="uid://bluchf2rs2x33" path="res://characters/character_3d.gd" id="1_qwfv1"]
+[ext_resource type="PackedScene" uid="uid://djepphbdvs2mq" path="res://SpineRenderingViewport.tscn" id="2_yub4u"]
+
+[sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_sqwo0"]
+size = Vector2(512, 512)
+
+[node name="Character3D" type="Node3D"]
+script = ExtResource("1_qwfv1")
+
+[node name="Sprite3D" type="Sprite3D" parent="."]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.7, 0)
+shaded = true
+alpha_cut = 2
+texture = SubResource("PlaceholderTexture2D_sqwo0")
+
+[node name="SpineRenderingViewport" parent="." instance=ExtResource("2_yub4u")]
+unique_name_in_owner = true
