@@ -1,0 +1,249 @@
+/******************************************************************************
+ * Spine Runtimes Software License v2.5
+ * 
+ * Copyright (c) 2013-2016, Esoteric Software
+ * All rights reserved.
+ * 
+ * You are granted a perpetual, non-exclusive, non-sublicensable, and
+ * non-transferable license to use, install, execute, and perform the Spine
+ * Runtimes software and derivative works solely for personal or internal
+ * use. Without the written permission of Esoteric Software (see Section 2 of
+ * the Spine Software License Agreement), you may not (a) modify, translate,
+ * adapt, or develop new applications using the Spine Runtimes or otherwise
+ * create derivative works or improvements of the Spine Runtimes or (b) remove,
+ * delete, alter, or obscure any trademarks or any copyright, trademark, patent,
+ * or other intellectual property or proprietary rights notices on or in the
+ * Software, including any copy thereof. Redistributions in binary or source
+ * form must include this license and terms.
+ * 
+ * THIS SOFTWARE IS PROVIDED BY ESOTERIC SOFTWARE "AS IS" AND ANY EXPRESS OR
+ * IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ * MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO
+ * EVENT SHALL ESOTERIC SOFTWARE BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+ * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+ * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES, BUSINESS INTERRUPTION, OR LOSS OF
+ * USE, DATA, OR PROFITS) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER
+ * IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
+ *****************************************************************************/
+
+using Godot;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+
+namespace Spine
+{
+    //these should be structs, but Godot objects
+    public partial class VertexPositionColorTexture : GodotObject
+    {
+        public VertexPositionColorTexture() { }
+        public Vector3 position;
+        public Godot.Color color;
+        public Vector2 textureCoordinate;
+    }
+    public partial class MeshItem : GodotObject
+    {
+        public MeshItem()
+        {
+            Resize(4);
+        }
+        public void Resize(int length)
+        {
+            Array.Resize(ref vertices, length);
+            for (int i = 0; i < length; i += 1)
+            {
+                vertices[i] = new();
+            }
+        }
+        public int[] triangles = new int[6];
+        public VertexPositionColorTexture[] vertices;
+        public Godot.Texture texture;
+    }
+
+    /// <summary>Draws region and mesh attachments.</summary>
+    public partial class SkeletonMeshRenderer : GodotObject
+    {       
+        private const int TL = 0;
+        private const int TR = 1;
+        private const int BL = 2;
+        private const int BR = 3;
+
+        //GraphicsDevice device;
+        //MeshBatcher batcher;
+        //RasterizerState rasterizerState;
+        float[] vertices = new float[4];
+        int[] quadTriangles = { 0, 1, 2, 1, 3, 2 };
+        //BlendState defaultBlendState;
+
+        //BasicEffect effect;
+        //public BasicEffect Effect { get { return effect; } set { effect = value; } }
+
+        private bool premultipliedAlpha;
+        public bool PremultipliedAlpha { get { return premultipliedAlpha; } set { premultipliedAlpha = value; } }
+
+        //public SkeletonMeshRenderer(GraphicsDevice device)
+        //{
+        //    this.device = device;
+
+        //    batcher = new MeshBatcher();
+
+        //    effect = new BasicEffect(device);
+        //    effect.World = Matrix.Identity;
+        //    effect.View = Matrix.CreateLookAt(new Vector3(0.0f, 0.0f, 1.0f), Vector3.Zero, Vector3.Up);
+        //    effect.TextureEnabled = true;
+        //    effect.VertexColorEnabled = true;
+
+        //    rasterizerState = new RasterizerState();
+        //    rasterizerState.CullMode = CullMode.None;
+
+        //    Bone.yDown = true;
+        //}
+
+        //public void Begin()
+        //{
+        //    defaultBlendState = premultipliedAlpha ? BlendState.AlphaBlend : BlendState.NonPremultiplied;
+
+        //    device.RasterizerState = rasterizerState;
+        //    device.BlendState = defaultBlendState;
+
+        //    effect.Projection = Matrix.CreateOrthographicOffCenter(0, device.Viewport.Width, device.Viewport.Height, 0, 1, 0);
+        //}
+
+        //public void End()
+        //{
+        //    foreach (EffectPass pass in effect.CurrentTechnique.Passes)
+        //    {
+        //        pass.Apply();
+        //        batcher.Draw(device);
+        //    }
+        //}
+
+        public void DrawSkeletonToCanvas(CanvasItem canvasItem, Skeleton skeleton)
+        {
+            float[] vertices = this.vertices;
+            var drawOrder = skeleton.DrawOrder;
+            var drawOrderItems = skeleton.DrawOrder.Items;
+            float skeletonR = skeleton.R, skeletonG = skeleton.G, skeletonB = skeleton.B, skeletonA = skeleton.A;
+            for (int i = 0, n = drawOrder.Count; i < n; i++)
+            {
+                Slot slot = drawOrderItems[i];
+                Attachment attachment = slot.Attachment;
+                if (attachment is RegionAttachment)
+                {
+                    RegionAttachment regionAttachment = (RegionAttachment)attachment;
+                    //BlendState blend = slot.Data.BlendMode == BlendMode.additive ? BlendState.Additive : defaultBlendState;
+                    //if (device.BlendState != blend)
+                    //{
+                    //    End();
+                    //    device.BlendState = blend;
+                    //}
+
+                    //MeshItem item = batcher.NextItem(4, 6);
+                    MeshItem item = new();
+                    item.triangles = quadTriangles;
+                    VertexPositionColorTexture[] itemVertices = item.vertices;
+
+                    AtlasRegion region = (AtlasRegion)regionAttachment.RendererObject;
+                    item.texture = (Godot.Texture)region.page.rendererObject;
+
+                    Godot.Color color;
+                    float a = skeletonA * slot.A * regionAttachment.A;
+                    if (premultipliedAlpha)
+                    {
+                        color = new Color(
+                                skeletonR * slot.R * regionAttachment.R * a,
+                                skeletonG * slot.G * regionAttachment.G * a,
+                                skeletonB * slot.B * regionAttachment.B * a, a);
+                    }
+                    else
+                    {
+                        color = new Color(
+                                skeletonR * slot.R * regionAttachment.R,
+                                skeletonG * slot.G * regionAttachment.G,
+                                skeletonB * slot.B * regionAttachment.B, a);
+                    }
+                    itemVertices[TL].color = color;
+                    itemVertices[BL].color = color;
+                    itemVertices[BR].color = color;
+                    itemVertices[TR].color = color;
+
+                    regionAttachment.ComputeWorldVertices(slot.Bone, vertices);
+                    itemVertices[TL].position.X = vertices[RegionAttachment.X1];
+                    itemVertices[TL].position.Y = vertices[RegionAttachment.Y1];
+                    itemVertices[TL].position.Z = 0;
+                    itemVertices[BL].position.X = vertices[RegionAttachment.X2];
+                    itemVertices[BL].position.Y = vertices[RegionAttachment.Y2];
+                    itemVertices[BL].position.Z = 0;
+                    itemVertices[BR].position.X = vertices[RegionAttachment.X3];
+                    itemVertices[BR].position.Y = vertices[RegionAttachment.Y3];
+                    itemVertices[BR].position.Z = 0;
+                    itemVertices[TR].position.X = vertices[RegionAttachment.X4];
+                    itemVertices[TR].position.Y = vertices[RegionAttachment.Y4];
+                    itemVertices[TR].position.Z = 0;
+
+                    float[] uvs = regionAttachment.UVs;
+                    itemVertices[TL].textureCoordinate.X = uvs[RegionAttachment.X1];
+                    itemVertices[TL].textureCoordinate.Y = uvs[RegionAttachment.Y1];
+                    itemVertices[BL].textureCoordinate.X = uvs[RegionAttachment.X2];
+                    itemVertices[BL].textureCoordinate.Y = uvs[RegionAttachment.Y2];
+                    itemVertices[BR].textureCoordinate.X = uvs[RegionAttachment.X3];
+                    itemVertices[BR].textureCoordinate.Y = uvs[RegionAttachment.Y3];
+                    itemVertices[TR].textureCoordinate.X = uvs[RegionAttachment.X4];
+                    itemVertices[TR].textureCoordinate.Y = uvs[RegionAttachment.Y4];
+
+                    canvasItem.Call("draw_mesh_item", item, slot.Data.name);
+                }
+                else if (attachment is MeshAttachment)
+                {
+                    MeshAttachment mesh = (MeshAttachment)attachment;
+                    int vertexCount = mesh.WorldVerticesLength;
+                    if (vertices.Length < vertexCount) vertices = new float[vertexCount];
+                    mesh.ComputeWorldVertices(slot, vertices);
+
+                    int[] triangles = mesh.Triangles;
+                    MeshItem item = new();
+                    item.triangles = triangles;
+
+                    AtlasRegion region = (AtlasRegion)mesh.RendererObject;
+                    item.texture = (Texture2D)region.page.rendererObject;
+
+                    Godot.Color color;
+                    float a = skeletonA * slot.A * mesh.A;
+                    if (premultipliedAlpha)
+                    {
+                        color = new Color(
+                                skeletonR * slot.R * mesh.R * a,
+                                skeletonG * slot.G * mesh.G * a,
+                                skeletonB * slot.B * mesh.B * a, a);
+                    }
+                    else
+                    {
+                        color = new Color(
+                                skeletonR * slot.R * mesh.R,
+                                skeletonG * slot.G * mesh.G,
+                                skeletonB * slot.B * mesh.B, a);
+                    }
+
+                    float[] uvs = mesh.UVs;
+                    item.Resize(vertexCount);
+                    VertexPositionColorTexture[] itemVertices = item.vertices;
+                    for (int ii = 0, v = 0; v < vertexCount; ii++, v += 2)
+                    {
+                        itemVertices[ii].color = color;
+                        itemVertices[ii].position.X = vertices[v];
+                        itemVertices[ii].position.Y = vertices[v + 1];
+                        itemVertices[ii].position.Z = 0;
+                        itemVertices[ii].textureCoordinate.X = uvs[v];
+                        itemVertices[ii].textureCoordinate.Y = uvs[v + 1];
+                    }
+                    canvasItem.Call("draw_mesh_item", item, slot.Data.name);
+                }
+            }
+
+        }
+
+
+    }
+}

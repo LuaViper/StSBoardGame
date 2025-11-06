@@ -12,7 +12,7 @@ config_version=5
 
 config/name="StSBoardGame"
 run/main_scene="uid://d3twgtt2jyacu"
-config/features=PackedStringArray("4.4", "Forward Plus")
+config/features=PackedStringArray("4.4", "C#", "Forward Plus")
 config/icon="res://icon.svg"
 
 [autoload]
@@ -24,7 +24,7 @@ LocalizationHelper="*res://localization/LocalizationHelper.gd"
 
 [dotnet]
 
-project/assembly_name="Prototype1"
+project/assembly_name="StSBoardGame"
 
 [physics]
 
