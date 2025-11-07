@@ -464,13 +464,22 @@ namespace Spine {
 			this.B = color.B;
 			this.A = color.A;
 		}
-		public void SetGodotFlip(bool flipX, bool flipY)
+        public Godot.Color GetColor()
+        {
+            return new Godot.Color(this.R, this.G, this.B, this.A);
+        }
+        public void SetGodotFlip(bool flipX, bool flipY)
 		{			
 			this.flipX = flipX;
             //note that for Godot we have to render upside down because ... coord system probably??
             this.flipY = !flipY;
 		}
-		public void SetPosition(float X, float Y)
+        public void MatchFlip(Skeleton skeleton)
+        {
+            this.flipX = skeleton.flipX;
+            this.flipY = skeleton.flipY;
+        }
+        public void SetPosition(float X, float Y)
 		{
 			this.X = X;
 			this.Y = Y;

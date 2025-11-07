@@ -10,6 +10,7 @@ var AnimationStateData = load("res://spine-3402-csharp/src/AnimationStateData.cs
 var AnimationState = load("res://spine-3402-csharp/src/AnimationState.cs")
 
 var renderer
+var render_target
 var atlas
 var skeleton
 var animation_state_data
@@ -17,6 +18,8 @@ var animation_state
 
 func _ready():
 	renderer=SkeletonMeshRenderer.new()
+	# change render_target if you have two or more skeletons drawing to the same character (e.g. Watcher)
+	render_target = self
 
 func load_character(atlas_filepath:String,skeleton_filepath:String,anim:String,timescale:float=1.0):
 	ZipManager.SetZipPath(Globals.install_location)
@@ -33,21 +36,21 @@ func load_character(atlas_filepath:String,skeleton_filepath:String,anim:String,t
 	var e = animation_state.SetAnimation(0, anim, true)
 	e.TimeScale = timescale
 	skeleton.SetGodotFlip(false,false)
-
-
-func _process(delta):	
-	if(!animation_state_data || !skeleton): 
-		return
-	animation_state.Update(delta)
-	animation_state.Apply(skeleton)
-	skeleton.UpdateWorldTransform()	
 	@warning_ignore("integer_division")
 	skeleton.SetPosition(512/2,512-105)
 	#skeleton.SetPosition(512/2,512-90)
 	skeleton.SetColor(Color.WHITE) #TODO:		
+
+
+func _process(delta):
+	if(!animation_state_data || !skeleton): 
+		return
+	animation_state.Update(delta)
+	animation_state.Apply(skeleton)
+	skeleton.UpdateWorldTransform()
 	queue_redraw()
 
 func _draw():
 	if(!animation_state_data || !skeleton):
 		return
-	renderer.DrawSkeletonToCanvas(skeleton,self)
+	renderer.DrawSkeletonToCanvas(skeleton,render_target)

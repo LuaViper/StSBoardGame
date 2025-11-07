@@ -29,9 +29,10 @@
  *****************************************************************************/
 
 using System;
+using Godot;
 
 namespace Spine {
-	public class Bone : IUpdatable {
+	public partial class Bone : GodotObject, IUpdatable {
 		static public bool yDown;
 
 		internal BoneData data;
@@ -75,6 +76,7 @@ namespace Spine {
 		public float WorldScaleY { get { return (float)Math.Sqrt(b * b + d * d) * worldSignY; } }
 
 		/// <param name="parent">May be null.</param>
+		public Bone() { }
 		public Bone (BoneData data, Skeleton skeleton, Bone parent) {
 			if (data == null) throw new ArgumentNullException("data", "data cannot be null.");
 			if (skeleton == null) throw new ArgumentNullException("skeleton", "skeleton cannot be null.");
