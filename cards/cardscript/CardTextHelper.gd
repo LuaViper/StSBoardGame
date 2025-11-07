@@ -140,6 +140,6 @@ static func integer_to_color(rgba_int: int) -> String:
 	return "#"+color_r+color_g+color_b+color_a
 
 
-func resize(text:String,card:AbstractCard)->String:
+func resize(text:String,card_:AbstractCard)->String:
 	#TODO:
 	return text

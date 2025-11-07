@@ -1,10 +1,12 @@
-[gd_scene load_steps=2 format=3 uid="uid://djepphbdvs2mq"]
+[gd_scene load_steps=3 format=3 uid="uid://djepphbdvs2mq"]
 
+[ext_resource type="Script" uid="uid://bfyu17q374e7p" path="res://spine_rendering_viewport.gd" id="1_mkbsa"]
 [ext_resource type="PackedScene" uid="uid://duobd8kvhkf6n" path="res://characters/Character2D.tscn" id="3_2tav1"]
 
 [node name="SpineRenderingViewport" type="SubViewport"]
 transparent_bg = true
 render_target_update_mode = 4
+script = ExtResource("1_mkbsa")
 
 [node name="Character2D" parent="." instance=ExtResource("3_2tav1")]
 unique_name_in_owner = true

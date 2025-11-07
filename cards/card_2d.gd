@@ -23,15 +23,20 @@ func _draw():
 		#%Card2D.draw_circle(Vector2(200,200),50,Color.ORANGE_RED)
 		#draw_circle(Vector2(100,100),50,Color.ORANGE_RED)
 		#var path:String = "C:\\Program Files (x86)\\Steam\\steamapps\\common\\SlayTheSpire\\desktop-1.0.jar"	
+		@warning_ignore("integer_division")
 		AtlasHelper.CARDUI.draw_to_canvas(bg_path,self,Vector2i(-304/2,-419/2))
 		if(img_path!="SPECIAL"):		
+			@warning_ignore("integer_division")
 			AtlasHelper.CARDS.draw_to_canvas(img_path,self,Vector2i(-304/2+26,-419/2+45))				
 		else:
 			#TODO: handle SPECIAL (golden ticket)
 			pass
+		@warning_ignore("integer_division")
 		AtlasHelper.CARDUI.draw_to_canvas(frame_path,self,Vector2i(-304/2+frame_offset_x,-419/2+frame_offset_y))
+		@warning_ignore("integer_division")
 		AtlasHelper.CARDUI.draw_to_canvas(banner_path,self,Vector2i(-304/2-13,-419/2+16))
 		if(orb_path):
+			@warning_ignore("integer_division")
 			AtlasHelper.CARDUI.draw_to_canvas(orb_path,self,Vector2i(-304/2+orb_offset_x,-419/2+orb_offset_y))
 		##%Card2D.queue_redraw()
 		#draw_texture_rect_region(src,Rect2(dest_xy.x,dest_xy.y,wid,hgt),Rect2(x,y,wid,hgt))		

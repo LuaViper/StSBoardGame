@@ -5,8 +5,11 @@ extends Node
 	#return FontHelper.get_tree().root.get_node("Main")
 
 var jar_manager:JarManager
+var install_location = "C:/Program Files (x86)/Steam/steamapps/common/SlayTheSpire/desktop-1.0.jar"
+
 var card_text_helper:CardTextHelper
 var card_library:CardLibrary
+
 
 func _ready():
 	jar_manager=JarManager.new()
@@ -21,7 +24,8 @@ func _notification(what):
 		jar_manager.cleanup()
 
 
-static func get_all_files_in_directory(path: String) -> Array[String]:
+#Would be static, but godot global scripts are weird with that.
+func get_all_files_in_directory(path: String) -> Array[String]:
 	var files: Array[String] = []
 	var dir = DirAccess.open(path)
 

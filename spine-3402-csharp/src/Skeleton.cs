@@ -457,7 +457,6 @@ namespace Spine {
 		}
 
 
-		//why does java have these but C# doesn't?
 		public void SetColor(Godot.Color color)
 		{
 			this.R = color.R;
@@ -465,10 +464,11 @@ namespace Spine {
 			this.B = color.B;
 			this.A = color.A;
 		}
-		public void SetFlip(bool flipX, bool flipY)
-		{
+		public void SetGodotFlip(bool flipX, bool flipY)
+		{			
 			this.flipX = flipX;
-			this.flipY = flipY;
+            //note that for Godot we have to render upside down because ... coord system probably??
+            this.flipY = !flipY;
 		}
 		public void SetPosition(float X, float Y)
 		{

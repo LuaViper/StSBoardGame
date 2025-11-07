@@ -12,12 +12,12 @@ var pos
 var framecount=0
 
 
-static func create(text,card,font,pos):
+static func create(text_,card_,font_,pos_):
 	var o = SELF_SCENE.instantiate()
-	o.text=text
-	o.card=card
-	o.font=font
-	o.pos=pos
+	o.text=text_
+	o.card=card_
+	o.font=font_
+	o.pos=pos_
 	return o
 	
 func _ready():
@@ -43,9 +43,9 @@ func _process(_delta):
 		#destimage.save_png("user://test2.png")
 		var texture = ImageTexture.new()
 		texture.set_image(destimage)		
-		var material = StandardMaterial3D.new()
-		material.set_transparency(2) #TRANSPARENCY_ALPHA_SCISSOR
-		material.albedo_texture = texture		
+		var material_ = StandardMaterial3D.new()
+		material_.set_transparency(BaseMaterial3D.TRANSPARENCY_ALPHA_SCISSOR)
+		material_.albedo_texture = texture		
 		mesh_instance_node.set_surface_override_material(1,material)
 		self.queue_free()
 		

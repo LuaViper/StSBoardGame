@@ -15,14 +15,14 @@ var misc=false
 # TODO: replace misc with format, maybe rename to flags?
 var format={}
 	
-func setup(name,card,value,format):
-	self.name=name
-	self.card=card
-	self.minted_value=value
-	self.base_value=value
-	self.displayed_value=value
-	self.auto=true if(name[0].to_upper()==name[0]) else false
-	self.format=format
+func setup(name_,card_,value_,format_):
+	self.name=name_
+	self.card=card_
+	self.minted_value=value_
+	self.base_value=value_
+	self.displayed_value=value_
+	self.auto=true if(name_[0].to_upper()==name_[0]) else false
+	self.format=format_
 	return self
 
 func get_text()->String:

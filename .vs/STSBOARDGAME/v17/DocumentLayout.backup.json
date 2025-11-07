@@ -3,6 +3,14 @@
   "WorkspaceRootPath": "C:\\Users\\Account-1\\Documents\\Godot projects\\StSBoardGame\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{79858D36-5D50-44E4-A037-9C262FCBA0CA}|StSBoardGame.csproj|c:\\users\\account-1\\documents\\godot projects\\stsboardgame\\spine-3402-csharp\\homebrew_utils\\godotspinetextureloader.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{79858D36-5D50-44E4-A037-9C262FCBA0CA}|StSBoardGame.csproj|solutionrelative:spine-3402-csharp\\homebrew_utils\\godotspinetextureloader.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{79858D36-5D50-44E4-A037-9C262FCBA0CA}|StSBoardGame.csproj|c:\\users\\account-1\\documents\\godot projects\\stsboardgame\\spine-3402-csharp\\src\\attachments\\atlasattachmentloader.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{79858D36-5D50-44E4-A037-9C262FCBA0CA}|StSBoardGame.csproj|solutionrelative:spine-3402-csharp\\src\\attachments\\atlasattachmentloader.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{79858D36-5D50-44E4-A037-9C262FCBA0CA}|StSBoardGame.csproj|c:\\users\\account-1\\documents\\godot projects\\stsboardgame\\spine-3402-csharp\\src\\skeletonmeshrenderer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{79858D36-5D50-44E4-A037-9C262FCBA0CA}|StSBoardGame.csproj|solutionrelative:spine-3402-csharp\\src\\skeletonmeshrenderer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
@@ -14,20 +22,45 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 0,
+          "SelectedChildIndex": 1,
           "Children": [
             {
               "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "AtlasAttachmentLoader.cs",
+              "DocumentMoniker": "C:\\Users\\Account-1\\Documents\\Godot projects\\StSBoardGame\\spine-3402-csharp\\src\\Attachments\\AtlasAttachmentLoader.cs",
+              "RelativeDocumentMoniker": "spine-3402-csharp\\src\\Attachments\\AtlasAttachmentLoader.cs",
+              "ToolTip": "C:\\Users\\Account-1\\Documents\\Godot projects\\StSBoardGame\\spine-3402-csharp\\src\\Attachments\\AtlasAttachmentLoader.cs",
+              "RelativeToolTip": "spine-3402-csharp\\src\\Attachments\\AtlasAttachmentLoader.cs",
+              "ViewState": "AgIAACsAAAAAAAAAAOBywDsAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-07T02:39:13.216Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
               "DocumentIndex": 0,
+              "Title": "GodotSpineTextureLoader.cs",
+              "DocumentMoniker": "C:\\Users\\Account-1\\Documents\\Godot projects\\StSBoardGame\\spine-3402-csharp\\homebrew_utils\\GodotSpineTextureLoader.cs",
+              "RelativeDocumentMoniker": "spine-3402-csharp\\homebrew_utils\\GodotSpineTextureLoader.cs",
+              "ToolTip": "C:\\Users\\Account-1\\Documents\\Godot projects\\StSBoardGame\\spine-3402-csharp\\homebrew_utils\\GodotSpineTextureLoader.cs",
+              "RelativeToolTip": "spine-3402-csharp\\homebrew_utils\\GodotSpineTextureLoader.cs",
+              "ViewState": "AgIAACIAAAAAAAAAAAAgwCIAAABHAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-07T01:49:48.828Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
               "Title": "SkeletonMeshRenderer.cs",
               "DocumentMoniker": "C:\\Users\\Account-1\\Documents\\Godot projects\\StSBoardGame\\spine-3402-csharp\\src\\SkeletonMeshRenderer.cs",
               "RelativeDocumentMoniker": "spine-3402-csharp\\src\\SkeletonMeshRenderer.cs",
               "ToolTip": "C:\\Users\\Account-1\\Documents\\Godot projects\\StSBoardGame\\spine-3402-csharp\\src\\SkeletonMeshRenderer.cs",
               "RelativeToolTip": "spine-3402-csharp\\src\\SkeletonMeshRenderer.cs",
-              "ViewState": "AgIAAN8AAAAAAAAAAAAcwOAAAAAaAAAAAAAAAA==",
+              "ViewState": "AgIAAIAAAAAAAAAAAAAAAGwAAAAtAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-06T04:47:24.134Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-06T04:47:24.134Z"
             }
           ]
         }

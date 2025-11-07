@@ -57,7 +57,7 @@ func cleanup():
 
 func get_jar_file(path):
 	#in the distant future, consider making this threadsafe somehow
-	var base_dir = path.get_base_dir()
+	var _base_dir = path.get_base_dir()
 	var reader = ZIPReader.new()
 	var file_contents = reader.read_file(path)
 	return file_contents
