@@ -48,6 +48,9 @@ namespace Spine {
 		internal float time;
 		internal bool flipX, flipY;
 		internal float x, y;
+		//Slay the Spire's 2D characters come with manually-drawn shadow nodes.
+		//Turn them off when drawing the character in 3D (where shadows will be cast automatically).
+		internal bool ignoreShadows = false;
 
 		public SkeletonData Data { get { return data; } }
 		public ExposedList<Bone> Bones { get { return bones; } }
@@ -67,8 +70,9 @@ namespace Spine {
 		public float Y { get { return y; } set { y = value; } }
 		public bool FlipX { get { return flipX; } set { flipX = value; } }
 		public bool FlipY { get { return flipY; } set { flipY = value; } }
+		public bool IgnoreShadows { get { return ignoreShadows; } set { ignoreShadows = value; } }
 
-		public Bone RootBone {
+        public Bone RootBone {
 			get { return bones.Count == 0 ? null : bones.Items[0]; }
 		}
 

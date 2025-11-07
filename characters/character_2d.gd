@@ -21,7 +21,7 @@ func _ready():
 	# change render_target if you have two or more skeletons drawing to the same character (e.g. Watcher)
 	render_target = self
 
-func load_character(atlas_filepath:String,skeleton_filepath:String,anim:String,timescale:float=1.0):
+func load_character(atlas_filepath:String,skeleton_filepath:String,y_offset:float):
 	ZipManager.SetZipPath(Globals.install_location)
 
 	atlas = [Atlas.new(atlas_filepath)]
@@ -33,13 +33,19 @@ func load_character(atlas_filepath:String,skeleton_filepath:String,anim:String,t
 	skeleton.SetColor(Color.WHITE)
 	animation_state_data = AnimationStateData.new(skeleton_data)
 	animation_state = AnimationState.new(animation_state_data)
+	@warning_ignore("integer_division")
+	skeleton.SetPosition(512/2,512-y_offset)
+	#skeleton.SetPosition(512/2,512-90)
+	#TODO: color should probably go somewhere else
+	skeleton.SetGodotFlip(false,false)
+	skeleton.SetColor(Color.WHITE)
+
+
+func load_animation(anim:String,timescale:float,random_time:bool=false):
 	var e = animation_state.SetAnimation(0, anim, true)
 	e.TimeScale = timescale
-	skeleton.SetGodotFlip(false,false)
-	@warning_ignore("integer_division")
-	skeleton.SetPosition(512/2,512-105)
-	#skeleton.SetPosition(512/2,512-90)
-	skeleton.SetColor(Color.WHITE) #TODO:		
+	if(random_time):
+		e.Time = e.EndTime * randf()
 
 
 func _process(delta):

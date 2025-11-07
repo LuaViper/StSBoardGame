@@ -7,20 +7,8 @@
       "RelativeMoniker": "D:0:0:{79858D36-5D50-44E4-A037-9C262FCBA0CA}|StSBoardGame.csproj|solutionrelative:spine-3402-csharp\\src\\skeleton.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{79858D36-5D50-44E4-A037-9C262FCBA0CA}|StSBoardGame.csproj|c:\\users\\account-1\\documents\\godot projects\\stsboardgame\\spine-3402-csharp\\src\\atlas.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{79858D36-5D50-44E4-A037-9C262FCBA0CA}|StSBoardGame.csproj|solutionrelative:spine-3402-csharp\\src\\atlas.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{79858D36-5D50-44E4-A037-9C262FCBA0CA}|StSBoardGame.csproj|c:\\users\\account-1\\documents\\godot projects\\stsboardgame\\spine-3402-csharp\\src\\bone.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{79858D36-5D50-44E4-A037-9C262FCBA0CA}|StSBoardGame.csproj|solutionrelative:spine-3402-csharp\\src\\bone.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{79858D36-5D50-44E4-A037-9C262FCBA0CA}|StSBoardGame.csproj|c:\\users\\account-1\\documents\\godot projects\\stsboardgame\\spine-3402-csharp\\src\\attachments\\atlasattachmentloader.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{79858D36-5D50-44E4-A037-9C262FCBA0CA}|StSBoardGame.csproj|solutionrelative:spine-3402-csharp\\src\\attachments\\atlasattachmentloader.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{79858D36-5D50-44E4-A037-9C262FCBA0CA}|StSBoardGame.csproj|c:\\users\\account-1\\documents\\godot projects\\stsboardgame\\spine-3402-csharp\\src\\skeletonjson.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{79858D36-5D50-44E4-A037-9C262FCBA0CA}|StSBoardGame.csproj|solutionrelative:spine-3402-csharp\\src\\skeletonjson.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{79858D36-5D50-44E4-A037-9C262FCBA0CA}|StSBoardGame.csproj|c:\\users\\account-1\\documents\\godot projects\\stsboardgame\\spine-3402-csharp\\src\\skeletonmeshrenderer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{79858D36-5D50-44E4-A037-9C262FCBA0CA}|StSBoardGame.csproj|solutionrelative:spine-3402-csharp\\src\\skeletonmeshrenderer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -34,16 +22,15 @@
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "Bone.cs",
-              "DocumentMoniker": "C:\\Users\\Account-1\\Documents\\Godot projects\\StSBoardGame\\spine-3402-csharp\\src\\Bone.cs",
-              "RelativeDocumentMoniker": "spine-3402-csharp\\src\\Bone.cs",
-              "ToolTip": "C:\\Users\\Account-1\\Documents\\Godot projects\\StSBoardGame\\spine-3402-csharp\\src\\Bone.cs",
-              "RelativeToolTip": "spine-3402-csharp\\src\\Bone.cs",
-              "ViewState": "AgIAAEAAAAAAAAAAAAAywE4AAAATAAAAAAAAAA==",
+              "DocumentIndex": 1,
+              "Title": "SkeletonMeshRenderer.cs",
+              "DocumentMoniker": "C:\\Users\\Account-1\\Documents\\Godot projects\\StSBoardGame\\spine-3402-csharp\\src\\SkeletonMeshRenderer.cs",
+              "RelativeDocumentMoniker": "spine-3402-csharp\\src\\SkeletonMeshRenderer.cs",
+              "ToolTip": "C:\\Users\\Account-1\\Documents\\Godot projects\\StSBoardGame\\spine-3402-csharp\\src\\SkeletonMeshRenderer.cs",
+              "RelativeToolTip": "spine-3402-csharp\\src\\SkeletonMeshRenderer.cs",
+              "ViewState": "AgIAAHoAAAAAAAAAAAAIwIoAAAAaAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-07T03:40:57.02Z",
-              "IsPinned": true,
+              "WhenOpened": "2025-11-07T04:55:19.523Z",
               "EditorCaption": ""
             },
             {
@@ -54,47 +41,10 @@
               "RelativeDocumentMoniker": "spine-3402-csharp\\src\\Skeleton.cs",
               "ToolTip": "C:\\Users\\Account-1\\Documents\\Godot projects\\StSBoardGame\\spine-3402-csharp\\src\\Skeleton.cs",
               "RelativeToolTip": "spine-3402-csharp\\src\\Skeleton.cs",
-              "ViewState": "AgIAAMYBAAAAAAAAAAA0wNIBAAAkAAAAAAAAAA==",
+              "ViewState": "AgIAAC0AAAAAAAAAAAAYwDMAAABeAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-11-07T03:12:57.412Z",
               "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "SkeletonJson.cs",
-              "DocumentMoniker": "C:\\Users\\Account-1\\Documents\\Godot projects\\StSBoardGame\\spine-3402-csharp\\src\\SkeletonJson.cs",
-              "RelativeDocumentMoniker": "spine-3402-csharp\\src\\SkeletonJson.cs",
-              "ToolTip": "C:\\Users\\Account-1\\Documents\\Godot projects\\StSBoardGame\\spine-3402-csharp\\src\\SkeletonJson.cs",
-              "RelativeToolTip": "spine-3402-csharp\\src\\SkeletonJson.cs",
-              "ViewState": "AgIAACsAAAAAAAAAAAAcwDUAAAAuAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-07T02:44:32.03Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "Atlas.cs",
-              "DocumentMoniker": "C:\\Users\\Account-1\\Documents\\Godot projects\\StSBoardGame\\spine-3402-csharp\\src\\Atlas.cs",
-              "RelativeDocumentMoniker": "spine-3402-csharp\\src\\Atlas.cs",
-              "ToolTip": "C:\\Users\\Account-1\\Documents\\Godot projects\\StSBoardGame\\spine-3402-csharp\\src\\Atlas.cs",
-              "RelativeToolTip": "spine-3402-csharp\\src\\Atlas.cs",
-              "ViewState": "AgIAABMBAAAAAAAAAAAswDcBAAAyAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-07T02:41:58.563Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "AtlasAttachmentLoader.cs",
-              "DocumentMoniker": "C:\\Users\\Account-1\\Documents\\Godot projects\\StSBoardGame\\spine-3402-csharp\\src\\Attachments\\AtlasAttachmentLoader.cs",
-              "RelativeDocumentMoniker": "spine-3402-csharp\\src\\Attachments\\AtlasAttachmentLoader.cs",
-              "ToolTip": "C:\\Users\\Account-1\\Documents\\Godot projects\\StSBoardGame\\spine-3402-csharp\\src\\Attachments\\AtlasAttachmentLoader.cs",
-              "RelativeToolTip": "spine-3402-csharp\\src\\Attachments\\AtlasAttachmentLoader.cs",
-              "ViewState": "AgIAAEoAAAAAAAAAAAAewE8AAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-07T02:39:13.931Z"
             }
           ]
         }

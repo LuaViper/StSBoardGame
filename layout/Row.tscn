@@ -9,7 +9,7 @@ height = 0.1
 radius = 1.0
 
 [sub_resource type="CylinderMesh" id="CylinderMesh_ho6ov"]
-top_radius = 3.0
+top_radius = 1.0
 bottom_radius = 1.0
 height = 0.1
 
