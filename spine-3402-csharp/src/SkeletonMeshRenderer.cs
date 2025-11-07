@@ -32,39 +32,22 @@ using Godot;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 
 namespace Spine
 {
-    //these should be structs, but Godot objects
-    public partial class VertexPositionColorTexture : GodotObject
+    public struct VertexPositionColorTexture
     {
         public VertexPositionColorTexture() { }
         public Vector3 position;
         public Godot.Color color;
         public Vector2 textureCoordinate;
     }
-    public partial class MeshItem : GodotObject
-    {
-        public MeshItem()
-        {
-            Resize(4);
-        }
-        public void Resize(int length)
-        {
-            Array.Resize(ref vertices, length);
-            for (int i = 0; i < length; i += 1)
-            {
-                vertices[i] = new();
-            }
-        }
-        public int[] triangles = new int[6];
-        public VertexPositionColorTexture[] vertices;
-        public Godot.Texture texture;
-    }
+
 
     /// <summary>Draws region and mesh attachments.</summary>
     public partial class SkeletonMeshRenderer : GodotObject
-    {       
+    {
         private const int TL = 0;
         private const int TR = 1;
         private const int BL = 2;
@@ -73,7 +56,7 @@ namespace Spine
         //GraphicsDevice device;
         //MeshBatcher batcher;
         //RasterizerState rasterizerState;
-        float[] vertices = new float[4];
+        float[] vertices = new float[8];
         int[] quadTriangles = { 0, 1, 2, 1, 3, 2 };
         //BlendState defaultBlendState;
 
@@ -120,127 +103,186 @@ namespace Spine
         //    }
         //}
 
-        public void DrawSkeletonToCanvas(CanvasItem canvasItem, Skeleton skeleton)
+        //Godot renderer requires these to be persistent non-static vars.
+        //TODO: do we need to free these manually after use?
+        private Godot.ArrayMesh arrayMesh;
+        private Godot.Texture primaryTexture;
+        public void DrawSkeletonToCanvas(Skeleton skeleton, CanvasItem canvasItem)
         {
-            float[] vertices = this.vertices;
-            var drawOrder = skeleton.DrawOrder;
-            var drawOrderItems = skeleton.DrawOrder.Items;
-            float skeletonR = skeleton.R, skeletonG = skeleton.G, skeletonB = skeleton.B, skeletonA = skeleton.A;
-            for (int i = 0, n = drawOrder.Count; i < n; i++)
+            //GD.Print("---------------");
+            arrayMesh = new Godot.ArrayMesh();
+            primaryTexture = null;
+            if (arrayMesh != null)
             {
-                Slot slot = drawOrderItems[i];
-                Attachment attachment = slot.Attachment;
-                if (attachment is RegionAttachment)
+
+                Godot.Collections.Array surfaceArray = [];
+                surfaceArray.Resize((int)Mesh.ArrayType.Max);
+                List<Vector3> verts = [];
+                List<Vector2> uvs = [];
+                List<Godot.Color> colors = [];
+                List<int> indices = [];
+
+                surfaceArray.Resize((int)Mesh.ArrayType.Max);
+
+
+
+                float[] vertices = this.vertices;
+                var drawOrder = skeleton.DrawOrder;
+                var drawOrderItems = skeleton.DrawOrder.Items;
+                float skeletonR = skeleton.R, skeletonG = skeleton.G, skeletonB = skeleton.B, skeletonA = skeleton.A;
+                for (int i = 0, n = drawOrder.Count; i < n; i++)
                 {
-                    RegionAttachment regionAttachment = (RegionAttachment)attachment;
-                    //BlendState blend = slot.Data.BlendMode == BlendMode.additive ? BlendState.Additive : defaultBlendState;
-                    //if (device.BlendState != blend)
-                    //{
-                    //    End();
-                    //    device.BlendState = blend;
-                    //}
-
-                    //MeshItem item = batcher.NextItem(4, 6);
-                    MeshItem item = new();
-                    item.triangles = quadTriangles;
-                    VertexPositionColorTexture[] itemVertices = item.vertices;
-
-                    AtlasRegion region = (AtlasRegion)regionAttachment.RendererObject;
-                    item.texture = (Godot.Texture)region.page.rendererObject;
-
-                    Godot.Color color;
-                    float a = skeletonA * slot.A * regionAttachment.A;
-                    if (premultipliedAlpha)
+                    int firstNewVert = verts.Count;
+                    Slot slot = drawOrderItems[i];
+                    Attachment attachment = slot.Attachment;
+                    if (attachment is RegionAttachment)
                     {
-                        color = new Color(
-                                skeletonR * slot.R * regionAttachment.R * a,
-                                skeletonG * slot.G * regionAttachment.G * a,
-                                skeletonB * slot.B * regionAttachment.B * a, a);
+                        RegionAttachment regionAttachment = (RegionAttachment)attachment;
+
+                        VertexPositionColorTexture[] itemVertices = new VertexPositionColorTexture[4];
+
+                        AtlasRegion region = (AtlasRegion)regionAttachment.RendererObject;
+                        Godot.Texture texture = (Godot.Texture)region.page.rendererObject;
+                        if (primaryTexture==null) primaryTexture = texture;
+
+                        Godot.Color color;
+                        float a = skeletonA * slot.A * regionAttachment.A;
+                        if (premultipliedAlpha)
+                        {
+                            color = new Color(
+                                    skeletonR * slot.R * regionAttachment.R * a,
+                                    skeletonG * slot.G * regionAttachment.G * a,
+                                    skeletonB * slot.B * regionAttachment.B * a, a);
+                        }
+                        else
+                        {
+                            color = new Color(
+                                    skeletonR * slot.R * regionAttachment.R,
+                                    skeletonG * slot.G * regionAttachment.G,
+                                    skeletonB * slot.B * regionAttachment.B, a);
+                        }
+                        itemVertices[TL].color = color;
+                        itemVertices[BL].color = color;
+                        itemVertices[BR].color = color;
+                        itemVertices[TR].color = color;
+
+                        regionAttachment.ComputeWorldVertices(slot.Bone, vertices);
+                        itemVertices[TL].position.X = vertices[RegionAttachment.X1];
+                        itemVertices[TL].position.Y = vertices[RegionAttachment.Y1];
+                        itemVertices[TL].position.Z = 0;
+                        itemVertices[BL].position.X = vertices[RegionAttachment.X2];
+                        itemVertices[BL].position.Y = vertices[RegionAttachment.Y2];
+                        itemVertices[BL].position.Z = 0;
+                        itemVertices[BR].position.X = vertices[RegionAttachment.X3];
+                        itemVertices[BR].position.Y = vertices[RegionAttachment.Y3];
+                        itemVertices[BR].position.Z = 0;
+                        itemVertices[TR].position.X = vertices[RegionAttachment.X4];
+                        itemVertices[TR].position.Y = vertices[RegionAttachment.Y4];
+                        itemVertices[TR].position.Z = 0;
+
+                        float[] regionuvs = regionAttachment.UVs;
+                        itemVertices[TL].textureCoordinate.X = regionuvs[RegionAttachment.X1];
+                        itemVertices[TL].textureCoordinate.Y = regionuvs[RegionAttachment.Y1];
+                        itemVertices[BL].textureCoordinate.X = regionuvs[RegionAttachment.X2];
+                        itemVertices[BL].textureCoordinate.Y = regionuvs[RegionAttachment.Y2];
+                        itemVertices[BR].textureCoordinate.X = regionuvs[RegionAttachment.X3];
+                        itemVertices[BR].textureCoordinate.Y = regionuvs[RegionAttachment.Y3];
+                        itemVertices[TR].textureCoordinate.X = regionuvs[RegionAttachment.X4];
+                        itemVertices[TR].textureCoordinate.Y = regionuvs[RegionAttachment.Y4];
+                        
+                        //reminder: correct order is TL-TR-BL-BR, despite the previous code blocks
+                        colors.Add(itemVertices[TL].color);
+                        colors.Add(itemVertices[TR].color);
+                        colors.Add(itemVertices[BL].color);
+                        colors.Add(itemVertices[BR].color);
+                        verts.Add(itemVertices[TL].position);
+                        verts.Add(itemVertices[TR].position);
+                        verts.Add(itemVertices[BL].position);
+                        verts.Add(itemVertices[BR].position);
+                        uvs.Add(itemVertices[TL].textureCoordinate);
+                        uvs.Add(itemVertices[TR].textureCoordinate);
+                        uvs.Add(itemVertices[BL].textureCoordinate);
+                        uvs.Add(itemVertices[BR].textureCoordinate);
+                        //GD.Print("Vert count: "+itemVertices.Length.ToString());
+                        indices.Add(firstNewVert + quadTriangles[0]);
+                        indices.Add(firstNewVert + quadTriangles[1]);
+                        indices.Add(firstNewVert + quadTriangles[2]);
+                        indices.Add(firstNewVert + quadTriangles[3]);
+                        indices.Add(firstNewVert + quadTriangles[4]);
+                        indices.Add(firstNewVert + quadTriangles[5]);
+                        //GD.Print("New triangles: " + (firstNewVert + quadTriangles[0]).ToString()+"," + (firstNewVert + quadTriangles[1]).ToString() +"," + (firstNewVert + quadTriangles[2]).ToString() +"," + (firstNewVert + quadTriangles[3]).ToString() +"," + (firstNewVert + quadTriangles[4]).ToString() +"," + (firstNewVert + quadTriangles[5]).ToString() );
+
+                        //canvasItem.Call("draw_mesh_item", item, slot.Data.name);                    
                     }
-                    else
+                    else if (attachment is MeshAttachment)
                     {
-                        color = new Color(
-                                skeletonR * slot.R * regionAttachment.R,
-                                skeletonG * slot.G * regionAttachment.G,
-                                skeletonB * slot.B * regionAttachment.B, a);
+                        MeshAttachment mesh = (MeshAttachment)attachment;
+                        int vertexCount = mesh.WorldVerticesLength;
+                        if (vertices.Length < vertexCount) vertices = new float[vertexCount];
+                        mesh.ComputeWorldVertices(slot, vertices);
+
+                        int[] triangles = mesh.Triangles;
+
+                        AtlasRegion region = (AtlasRegion)mesh.RendererObject;
+                        Godot.Texture texture = (Texture2D)region.page.rendererObject;
+                        if (primaryTexture == null) primaryTexture = texture;
+
+                        Godot.Color color;
+                        float a = skeletonA * slot.A * mesh.A;
+                        if (premultipliedAlpha)
+                        {
+                            color = new Color(
+                                    skeletonR * slot.R * mesh.R * a,
+                                    skeletonG * slot.G * mesh.G * a,
+                                    skeletonB * slot.B * mesh.B * a, a);
+                        }
+                        else
+                        {
+                            color = new Color(
+                                    skeletonR * slot.R * mesh.R,
+                                    skeletonG * slot.G * mesh.G,
+                                    skeletonB * slot.B * mesh.B, a);
+                        }
+
+                        float[] meshuvs = mesh.UVs;
+                        VertexPositionColorTexture[] itemVertices = new VertexPositionColorTexture[vertexCount];
+                        for (int ii = 0, v = 0; v < vertexCount; ii++, v += 2)
+                        {
+                            itemVertices[ii].color = color;
+                            itemVertices[ii].position.X = vertices[v];
+                            itemVertices[ii].position.Y = vertices[v + 1];
+                            itemVertices[ii].position.Z = 0;
+                            itemVertices[ii].textureCoordinate.X = meshuvs[v];
+                            itemVertices[ii].textureCoordinate.Y = meshuvs[v + 1];
+
+                            colors.Add(itemVertices[ii].color);
+                            verts.Add(itemVertices[ii].position);
+                            uvs.Add(itemVertices[ii].textureCoordinate);
+                        }
+                        //GD.Print("Vert count: " + verts.Count.ToString());
+                        for (int iii = 0; iii < triangles.Length; iii += 1)
+                        {
+                            indices.Add(firstNewVert + triangles[iii]);
+                            //GD.Print("New triangles: " + (firstNewVert + triangles[iii]).ToString() + "...");
+                        }
+                        
+                        //canvasItem.Call("draw_mesh_item", item, slot.Data.name);
                     }
-                    itemVertices[TL].color = color;
-                    itemVertices[BL].color = color;
-                    itemVertices[BR].color = color;
-                    itemVertices[TR].color = color;
-
-                    regionAttachment.ComputeWorldVertices(slot.Bone, vertices);
-                    itemVertices[TL].position.X = vertices[RegionAttachment.X1];
-                    itemVertices[TL].position.Y = vertices[RegionAttachment.Y1];
-                    itemVertices[TL].position.Z = 0;
-                    itemVertices[BL].position.X = vertices[RegionAttachment.X2];
-                    itemVertices[BL].position.Y = vertices[RegionAttachment.Y2];
-                    itemVertices[BL].position.Z = 0;
-                    itemVertices[BR].position.X = vertices[RegionAttachment.X3];
-                    itemVertices[BR].position.Y = vertices[RegionAttachment.Y3];
-                    itemVertices[BR].position.Z = 0;
-                    itemVertices[TR].position.X = vertices[RegionAttachment.X4];
-                    itemVertices[TR].position.Y = vertices[RegionAttachment.Y4];
-                    itemVertices[TR].position.Z = 0;
-
-                    float[] uvs = regionAttachment.UVs;
-                    itemVertices[TL].textureCoordinate.X = uvs[RegionAttachment.X1];
-                    itemVertices[TL].textureCoordinate.Y = uvs[RegionAttachment.Y1];
-                    itemVertices[BL].textureCoordinate.X = uvs[RegionAttachment.X2];
-                    itemVertices[BL].textureCoordinate.Y = uvs[RegionAttachment.Y2];
-                    itemVertices[BR].textureCoordinate.X = uvs[RegionAttachment.X3];
-                    itemVertices[BR].textureCoordinate.Y = uvs[RegionAttachment.Y3];
-                    itemVertices[TR].textureCoordinate.X = uvs[RegionAttachment.X4];
-                    itemVertices[TR].textureCoordinate.Y = uvs[RegionAttachment.Y4];
-
-                    canvasItem.Call("draw_mesh_item", item, slot.Data.name);
                 }
-                else if (attachment is MeshAttachment)
-                {
-                    MeshAttachment mesh = (MeshAttachment)attachment;
-                    int vertexCount = mesh.WorldVerticesLength;
-                    if (vertices.Length < vertexCount) vertices = new float[vertexCount];
-                    mesh.ComputeWorldVertices(slot, vertices);
+                surfaceArray[(int)Mesh.ArrayType.Vertex] = verts.ToArray();
+                surfaceArray[(int)Mesh.ArrayType.TexUV] = uvs.ToArray();
+                surfaceArray[(int)Mesh.ArrayType.Color] = colors.ToArray();
+                surfaceArray[(int)Mesh.ArrayType.Index] = indices.ToArray();
 
-                    int[] triangles = mesh.Triangles;
-                    MeshItem item = new();
-                    item.triangles = triangles;
-
-                    AtlasRegion region = (AtlasRegion)mesh.RendererObject;
-                    item.texture = (Texture2D)region.page.rendererObject;
-
-                    Godot.Color color;
-                    float a = skeletonA * slot.A * mesh.A;
-                    if (premultipliedAlpha)
-                    {
-                        color = new Color(
-                                skeletonR * slot.R * mesh.R * a,
-                                skeletonG * slot.G * mesh.G * a,
-                                skeletonB * slot.B * mesh.B * a, a);
-                    }
-                    else
-                    {
-                        color = new Color(
-                                skeletonR * slot.R * mesh.R,
-                                skeletonG * slot.G * mesh.G,
-                                skeletonB * slot.B * mesh.B, a);
-                    }
-
-                    float[] uvs = mesh.UVs;
-                    item.Resize(vertexCount);
-                    VertexPositionColorTexture[] itemVertices = item.vertices;
-                    for (int ii = 0, v = 0; v < vertexCount; ii++, v += 2)
-                    {
-                        itemVertices[ii].color = color;
-                        itemVertices[ii].position.X = vertices[v];
-                        itemVertices[ii].position.Y = vertices[v + 1];
-                        itemVertices[ii].position.Z = 0;
-                        itemVertices[ii].textureCoordinate.X = uvs[v];
-                        itemVertices[ii].textureCoordinate.Y = uvs[v + 1];
-                    }
-                    canvasItem.Call("draw_mesh_item", item, slot.Data.name);
-                }
+                arrayMesh.AddSurfaceFromArrays(Mesh.PrimitiveType.Triangles, surfaceArray);
+                canvasItem.DrawMesh(arrayMesh, (Godot.Texture2D)primaryTexture);
             }
+            else
+            {
+                GD.PrintErr("Failed to initialize a new Godot.ArrayMesh");
+
+            }
+            
 
         }
 

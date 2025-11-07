@@ -23,7 +23,7 @@ func _process(delta):
 func _draw():		
 	if(!src.state || !src.skeleton):
 		return
-	src.sr.DrawSkeletonToCanvas(self,src.skeleton)
+	src.sr.DrawSkeletonToCanvas(src.skeleton,self)
 	if(src.target_sprite):
 		#var src_texture = src.viewport.get_texture()		
 		#
@@ -56,7 +56,10 @@ func _draw():
 	
 
 
+
+# do not use -- enormous framerate drop
 func draw_mesh_item(mesh_item, name):
+	return #!!!
 	if(name.to_lower().ends_with("shadow")):
 		return
 	var vert2s:PackedVector2Array = []

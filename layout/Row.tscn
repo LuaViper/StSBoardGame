@@ -24,6 +24,7 @@ shape = SubResource("CylinderShape3D_xtwng")
 
 [node name="Temp" type="MeshInstance3D" parent="PlayerPosition/CollisionShape3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1.37197)
+visible = false
 mesh = SubResource("CylinderMesh_ho6ov")
 skeleton = NodePath("../..")
 
