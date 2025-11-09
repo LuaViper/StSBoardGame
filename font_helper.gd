@@ -9,7 +9,7 @@ var KREON_BOLD
 func _init():
 	var install_location = "C:/Program Files (x86)/Steam/steamapps/common/SlayTheSpire/desktop-1.0.jar"
 	var reader = ZIPReader.new()
-	var err = reader.open(install_location)
+	var _err = reader.open(install_location)
 	var pba 
 	pba = reader.read_file("font/Kreon-Regular.ttf")
 	KREON_REGULAR = FontFile.new()	
@@ -27,7 +27,7 @@ func _init():
 	
 	reader.close()
 
-static func render_to_card_front(text,card,font,pos):
+static func render_to_card_front(text,card,_font,pos):
 	var trc = TextRenderingViewport.create(text,card,FontHelper.KREON_REGULAR,Vector2i(pos.x,pos.y))
 	Globals.MAIN().add_child(trc)
 	trc.global_position=Vector2(trc.get_viewport_rect().size)
@@ -35,7 +35,9 @@ static func render_to_card_front(text,card,font,pos):
 static func render_card_description(text,card,font):
 		#var subview = SubViewport.new()	
 	text=fit_description_to_card(text)
+	@warning_ignore("integer_division")
 	render_to_card_front("[color=#00000088]"+text+"[/color]",card,font,Vector2i(808/2+3,700+3))
+	@warning_ignore("integer_division")
 	render_to_card_front(text,card,font,Vector2i(808/2,700))
 
 static func fit_description_to_card(text)->String:

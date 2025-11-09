@@ -1,0 +1,12 @@
+[gd_scene load_steps=3 format=3 uid="uid://cbhggo4347htg"]
+
+[ext_resource type="Script" uid="uid://n5k4kw43dvye" path="res://characters/character_card_2d.gd" id="1_o5145"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_iqp7w"]
+size = Vector2(304, 419)
+
+[node name="CharacterCard2D" type="Area2D"]
+script = ExtResource("1_o5145")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_iqp7w")

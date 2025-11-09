@@ -1,0 +1,22 @@
+[gd_scene load_steps=3 format=3 uid="uid://vn4mn4kba585"]
+
+[ext_resource type="PackedScene" uid="uid://pbdg4frl5eya" path="res://layout/Row.tscn" id="1_wml4w"]
+[ext_resource type="Script" uid="uid://wpxbia0rg5ym" path="res://layout/encounter_grid.gd" id="1_xy23e"]
+
+[node name="EncounterGrid" type="Node3D"]
+script = ExtResource("1_xy23e")
+
+[node name="Row1" parent="." instance=ExtResource("1_wml4w")]
+unique_name_in_owner = true
+
+[node name="Row2" parent="." instance=ExtResource("1_wml4w")]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -5.37)
+
+[node name="Row3" parent="." instance=ExtResource("1_wml4w")]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -10.74)
+
+[node name="Row4" parent="." instance=ExtResource("1_wml4w")]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -16.11)

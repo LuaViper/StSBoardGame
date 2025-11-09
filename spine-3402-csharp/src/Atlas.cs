@@ -306,7 +306,8 @@ namespace Spine {
 			return null;
 		}
 
-		public void Dispose () {
+		//Dispose has been renamed to avoid conflicts with GodotObject.Dispose
+		public void Dispose_ () {
 			if (textureLoader == null) return;
 			for (int i = 0, n = pages.Count; i < n; i++)
 				textureLoader.Unload(pages[i].rendererObject);

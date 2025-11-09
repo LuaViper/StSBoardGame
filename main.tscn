@@ -4,7 +4,7 @@
 [ext_resource type="Script" uid="uid://cdeis5qtli4a0" path="res://button.gd" id="2_0xm2m"]
 [ext_resource type="PackedScene" uid="uid://bm6cx8xk854qj" path="res://SkeletonReaderTest.tscn" id="3_lquwl"]
 [ext_resource type="PackedScene" uid="uid://b0j00juowingy" path="res://card_3d.tscn" id="4_lquwl"]
-[ext_resource type="PackedScene" uid="uid://pbdg4frl5eya" path="res://layout/Row.tscn" id="6_7mycd"]
+[ext_resource type="PackedScene" uid="uid://vn4mn4kba585" path="res://layout/encounter_grid.tscn" id="6_7mycd"]
 [ext_resource type="PackedScene" uid="uid://wt5lmffkrw7o" path="res://card_holder_rack.tscn" id="7_272bh"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_7dm0k"]
@@ -38,6 +38,7 @@ transform = Transform3D(1, 0, 0, 0, 0.654305, 0.756231, 0, -0.756231, 0.654305, 
 shadow_enabled = true
 
 [node name="CameraPivot" type="Marker3D" parent="."]
+unique_name_in_owner = true
 transform = Transform3D(1, 0, 0, 0, 0.141471, 0.989942, 0, -0.989942, 0.141471, 0.236632, -0.481532, 0.966516)
 
 [node name="Camera3D" type="Camera3D" parent="CameraPivot"]
@@ -92,14 +93,14 @@ text = "Hash
 
 [node name="Card3DTestButton" type="Button" parent="."]
 unique_name_in_owner = true
+visible = false
 offset_left = 31.0
 offset_top = 90.0
 offset_right = 133.0
 offset_bottom = 131.0
 text = "Card3D Test"
 
-[node name="Row" parent="." instance=ExtResource("6_7mycd")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.38024, 0, 2.04716)
+[node name="EncounterGrid" parent="." instance=ExtResource("6_7mycd")]
 
 [connection signal="pressed" from="Button" to="Button" method="_on_pressed"]
 [connection signal="pressed" from="HashButton" to="." method="_on_hash_test_button_pressed"]

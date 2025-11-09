@@ -10,6 +10,7 @@ var install_location = "C:/Program Files (x86)/Steam/steamapps/common/SlayTheSpi
 var card_text_helper:CardTextHelper
 var card_library:CardLibrary
 
+var camera_pivot:Marker3D
 
 func _ready():
 	jar_manager=JarManager.new()

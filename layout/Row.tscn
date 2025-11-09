@@ -50,24 +50,24 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 19, 0, 0)
 
 [node name="Character3D_1" parent="Temp_Characters" instance=ExtResource("3_ho6ov")]
 unique_name_in_owner = true
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 1.55, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 0, 0)
 
 [node name="Character3D_2" parent="Temp_Characters" instance=ExtResource("3_ho6ov")]
 unique_name_in_owner = true
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 1.55, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 0, 0.503)
 
 [node name="Character3D_3" parent="Temp_Characters" instance=ExtResource("3_ho6ov")]
 unique_name_in_owner = true
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7, 1.55, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7, 0, 0.503)
 
 [node name="Character3D_4" parent="Temp_Characters" instance=ExtResource("3_ho6ov")]
 unique_name_in_owner = true
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11, 1.55, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11, 0, 0.503)
 
 [node name="Character3D_5" parent="Temp_Characters" instance=ExtResource("3_ho6ov")]
 unique_name_in_owner = true
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15, 1.55, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15, 0, 0.503)
 
 [node name="Character3D_6" parent="Temp_Characters" instance=ExtResource("3_ho6ov")]
 unique_name_in_owner = true
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 19, 1.55, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 19, 0, 0.503)

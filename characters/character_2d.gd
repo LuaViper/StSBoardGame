@@ -34,19 +34,22 @@ func load_character(atlas_filepath:String,skeleton_filepath:String,y_offset:floa
 	animation_state_data = AnimationStateData.new(skeleton_data)
 	animation_state = AnimationState.new(animation_state_data)
 	@warning_ignore("integer_division")
-	skeleton.SetPosition(512/2,512-y_offset)
+	skeleton.SetPosition(512/2,512-(100+y_offset))
 	#skeleton.SetPosition(512/2,512-90)
 	#TODO: color should probably go somewhere else
 	skeleton.SetGodotFlip(false,false)
 	skeleton.SetColor(Color.WHITE)
 
 
-func load_animation(anim:String,timescale:float,random_time:bool=false):
-	var e = animation_state.SetAnimation(0, anim, true)
+func load_animation(anim:String,random_time:bool=true,timescale:float=1.0,loop:bool=true):
+	var e = animation_state.SetAnimation(0, anim, loop)
 	e.TimeScale = timescale
 	if(random_time):
 		e.Time = e.EndTime * randf()
 
+func set_mix(anim1:String,anim2:String,duration:float):
+	self.animation_state_data.SetMix(anim1,anim2,duration)
+	
 
 func _process(delta):
 	if(!animation_state_data || !skeleton): 
@@ -60,3 +63,9 @@ func _draw():
 	if(!animation_state_data || !skeleton):
 		return
 	renderer.DrawSkeletonToCanvas(skeleton,render_target)
+
+func debug_draw_callback(array_mesh,primary_texture,colors):
+	#breakpoint here so we can check vars
+	var x
+	x=0
+	#draw_mesh(array_mesh,primary_texture);

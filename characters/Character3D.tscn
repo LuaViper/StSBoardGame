@@ -6,10 +6,17 @@
 [sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_sqwo0"]
 size = Vector2(512, 512)
 
-[node name="Character3D" type="Sprite3D"]
-alpha_cut = 2
-texture = SubResource("PlaceholderTexture2D_sqwo0")
+[node name="Character3D" type="Node3D"]
 script = ExtResource("1_qwfv1")
 
-[node name="SpineRenderingViewport" parent="." instance=ExtResource("2_yub4u")]
+[node name="FloorPivot" type="Node3D" parent="."]
+unique_name_in_owner = true
+
+[node name="Sprite3D" type="Sprite3D" parent="FloorPivot"]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 0.9999999, 0, 0, 0, 0.9999999, 0, 1.56, 0)
+alpha_cut = 2
+texture = SubResource("PlaceholderTexture2D_sqwo0")
+
+[node name="SpineRenderingViewport" parent="FloorPivot/Sprite3D" instance=ExtResource("2_yub4u")]
 unique_name_in_owner = true

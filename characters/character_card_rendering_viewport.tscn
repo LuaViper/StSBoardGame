@@ -1,0 +1,10 @@
+[gd_scene load_steps=2 format=3 uid="uid://ce7ov72c2yhkf"]
+
+[ext_resource type="PackedScene" uid="uid://cbhggo4347htg" path="res://characters/character_card_2d.tscn" id="1_fj78u"]
+
+[node name="CharacterCardRenderingViewport" type="SubViewport"]
+transparent_bg = true
+size = Vector2i(395, 525)
+
+[node name="CharacterCard2D" parent="." instance=ExtResource("1_fj78u")]
+unique_name_in_owner = true

@@ -1,0 +1,19 @@
+[gd_scene load_steps=5 format=3 uid="uid://cr1ithx47ogjt"]
+
+[ext_resource type="PackedScene" uid="uid://idgnwwx64q64" path="res://card.glb" id="1_jnmni"]
+[ext_resource type="Script" uid="uid://4h7i2v54r61j" path="res://characters/character_card_3d.gd" id="1_y7u0h"]
+[ext_resource type="PackedScene" uid="uid://ce7ov72c2yhkf" path="res://characters/character_card_rendering_viewport.tscn" id="3_c51nm"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_y7u0h"]
+
+[node name="CharacterCard3D" type="StaticBody3D"]
+script = ExtResource("1_y7u0h")
+
+[node name="Card3DModel" parent="." instance=ExtResource("1_jnmni")]
+unique_name_in_owner = true
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("BoxShape3D_y7u0h")
+
+[node name="CharacterCardRenderingViewport" parent="." instance=ExtResource("3_c51nm")]
+unique_name_in_owner = true

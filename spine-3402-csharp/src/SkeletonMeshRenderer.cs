@@ -280,6 +280,7 @@ namespace Spine
 
                 arrayMesh.AddSurfaceFromArrays(Mesh.PrimitiveType.Triangles, surfaceArray);
                 canvasItem.DrawMesh(arrayMesh, (Godot.Texture2D)primaryTexture);
+                //canvasItem.Call("debug_draw_callback", arrayMesh, (Godot.Texture2D)primaryTexture, colors.ToArray());
             }
             else
             {

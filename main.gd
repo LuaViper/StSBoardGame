@@ -48,8 +48,11 @@ func _on_hash_test_button_pressed() -> void:
 	#thread.wait_to_finish()
 
 @onready var main: Node3D = $"."
-var card = preload("res://card_3d.tscn")
+var Card3D = preload("res://card_3d.tscn")
 var viewport = preload("res://cards/card_2d_rendering_viewport.tscn")
+
+func _ready():
+	Globals.camera_pivot = %CameraPivot
 
 func _on_card_3d_test_button_pressed() -> void:
 	var library=Globals.card_library
@@ -74,7 +77,7 @@ func _on_card_3d_test_button_pressed() -> void:
 		main.add_child(c2rvp)
 		
 		
-		var c3:Card3D=card.instantiate()
+		var c3=Card3D.instantiate()
 		c3.position=Vector3((i-10)*3,2+(j*4),1)
 		c3.rotation=Vector3(PI/2,0,0)
 		c3.scale=Vector3(0.75,0.75,0.75)
