@@ -134,7 +134,7 @@ namespace Spine
                 {
                     int firstNewVert = verts.Count;
                     Slot slot = drawOrderItems[i];
-                    if (slot.data.name.ToLower().EndsWith("shadow"))
+                    if (slot.data.name.ToLower().EndsWith("shadow") || slot.data.name.ToLower().EndsWith("shadowidle") || slot.data.name.ToLower().EndsWith("shadowdefensive"))
                     {
                         if(skeleton.IgnoreShadows) continue;
                     }

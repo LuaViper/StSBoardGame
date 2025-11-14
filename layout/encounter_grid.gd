@@ -6,7 +6,7 @@ var Character2D = preload("res://characters/Character2D.tscn")
 
 var Bone = load("res://spine-3402-csharp/src/Bone.cs")
 
-var TestEnemy = load("res://characters/enemies/act1/JawWorm.gd")
+var TestEnemy = load("res://characters/enemies/act1/SlimeBoss.gd")
 
 var eye_bone
 var eye
@@ -18,35 +18,35 @@ func _ready():
 	rows.append(%Row4)
 
 	var character
-	#character=%Row1.get_node("%Character3D_1").character2d
-	#character.load_character("images/characters/ironclad/idle/skeleton.atlas", "images/characters/ironclad/idle/skeleton.json", 10)
-	#character.load_animation("Idle",false,0.6)
-	#character.set_mix("Hit", "Idle", 0.1);
-	#character.skeleton.IgnoreShadows = true;
-#
-	#character=%Row2.get_node("%Character3D_1").character2d
-	#character.load_character("images/characters/theSilent/idle/skeleton.atlas", "images/characters/theSilent/idle/skeleton.json", 15)
-	#character.load_animation("Idle",false,0.9)
-	#character.set_mix("Hit", "Idle", 0.1);
-	#character.skeleton.IgnoreShadows = true;
-	#
-	#character=%Row3.get_node("%Character3D_1").character2d
-	#character.load_character("images/characters/defect/idle/skeleton.atlas", "images/characters/defect/idle/skeleton.json", 5)
-	#character.load_animation("Idle",false,0.9)
-	#character.set_mix("Hit", "Idle", 0.1);
-	#character.skeleton.IgnoreShadows = true;
-	#
-	#character=%Row4.get_node("%Character3D_1").character2d
-	#character.load_character("images/characters/watcher/idle/skeleton.atlas", "images/characters/watcher/idle/skeleton.json", 5)
-	#character.load_animation("Idle",false,0.7)
-	#character.set_mix("Hit", "Idle", 0.1);
-	#character.skeleton.IgnoreShadows = true;
-	#eye_bone = character.skeleton.FindBone("eye_anchor")
-	#eye = Character2D.instantiate()
-	#add_child(eye)
-	#eye.load_character("images/characters/watcher/eye_anim/skeleton.atlas","images/characters/watcher/eye_anim/skeleton.json", 0)
-	#eye.load_animation("None",false,1.0)
-	#eye.render_target = character
+	character=%Row1.get_node("%Character3D_1").character2d
+	character.load_character("images/characters/ironclad/idle/skeleton.atlas", "images/characters/ironclad/idle/skeleton.json", 10)
+	character.load_animation("Idle",false,0.6)
+	character.set_mix("Hit", "Idle", 0.1);
+	character.skeleton.IgnoreShadows = true;
+
+	character=%Row2.get_node("%Character3D_1").character2d
+	character.load_character("images/characters/theSilent/idle/skeleton.atlas", "images/characters/theSilent/idle/skeleton.json", 15)
+	character.load_animation("Idle",false,0.9)
+	character.set_mix("Hit", "Idle", 0.1);
+	character.skeleton.IgnoreShadows = true;
+	
+	character=%Row3.get_node("%Character3D_1").character2d
+	character.load_character("images/characters/defect/idle/skeleton.atlas", "images/characters/defect/idle/skeleton.json", 5)
+	character.load_animation("Idle",false,0.9)
+	character.set_mix("Hit", "Idle", 0.1);
+	character.skeleton.IgnoreShadows = true;
+	
+	character=%Row4.get_node("%Character3D_1").character2d
+	character.load_character("images/characters/watcher/idle/skeleton.atlas", "images/characters/watcher/idle/skeleton.json", 5)
+	character.load_animation("Idle",false,0.7)
+	character.set_mix("Hit", "Idle", 0.1);
+	character.skeleton.IgnoreShadows = true;
+	eye_bone = character.skeleton.FindBone("eye_anchor")
+	eye = Character2D.instantiate()
+	add_child(eye)
+	eye.load_character("images/characters/watcher/eye_anim/skeleton.atlas","images/characters/watcher/eye_anim/skeleton.json", 0)
+	eye.load_animation("None",false,1.0)
+	eye.render_target = character
 #
 	character=%Row1.get_node("%Character3D_2").character2d
 	var test_enemy = TestEnemy.new()
@@ -134,11 +134,11 @@ func _ready():
 	
 
 
-#func _process(_delta):
-	#var watcher = %Row4.get_node("%Character3D_1").character2d
-	#eye.skeleton.SetPosition(watcher.skeleton.X + eye_bone.WorldX, watcher.skeleton.Y + eye_bone.WorldY)
-	#eye.skeleton.SetColor(watcher.skeleton.GetColor())
-	#eye.skeleton.MatchFlip(watcher.skeleton)
+func _process(_delta):
+	var watcher = %Row4.get_node("%Character3D_1").character2d
+	eye.skeleton.SetPosition(watcher.skeleton.X + eye_bone.WorldX, watcher.skeleton.Y + eye_bone.WorldY)
+	eye.skeleton.SetColor(watcher.skeleton.GetColor())
+	eye.skeleton.MatchFlip(watcher.skeleton)
 
 func _notification(what):
 	if what == NOTIFICATION_PREDELETE:

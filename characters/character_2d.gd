@@ -21,13 +21,14 @@ func _ready():
 	# change render_target if you have two or more skeletons drawing to the same character (e.g. Watcher)
 	render_target = self
 
-func load_character(atlas_filepath:String,skeleton_filepath:String,y_offset:float):
+func load_character(atlas_filepath:String,skeleton_filepath:String,y_offset:float,inverse_scale:float=1.0):
 	ZipManager.SetZipPath(Globals.install_location)
 
 	atlas = [Atlas.new(atlas_filepath)]
 	
 	var json = SkeletonJson.new(atlas)
-	var skeleton_data = json.ReadSkeletonData(skeleton_filepath)
+	json.Scale=1/inverse_scale
+	var skeleton_data = json.ReadSkeletonData(skeleton_filepath)	
 	
 	skeleton = Skeleton.new(skeleton_data)	
 	skeleton.SetColor(Color.WHITE)
@@ -49,6 +50,7 @@ func load_animation(anim:String,random_time:bool=true,timescale:float=1.0,loop:b
 
 func set_mix(anim1:String,anim2:String,duration:float):
 	self.animation_state_data.SetMix(anim1,anim2,duration)
+	
 	
 
 func _process(delta):
