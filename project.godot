@@ -26,6 +26,11 @@ LocalizationHelper="*res://localization/LocalizationHelper.gd"
 
 project/assembly_name="StSBoardGame"
 
+[layer_names]
+
+3d_physics/layer_1="Physical world"
+3d_physics/layer_2="Card tray"
+
 [physics]
 
 common/physics_ticks_per_second=240

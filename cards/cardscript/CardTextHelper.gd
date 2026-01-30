@@ -11,15 +11,27 @@ var colors={"r"=RED_TEXT,"g"=GREEN_TEXT,"b"=BLUE_TEXT,"y"=GOLD,"p"=PURPLE}
 
 
 func _init():
+	print("CardTextHelper.init")
 	tags={}
+	#TODO: this stops working when the project is exported
 	const TAGS_PATH = "res://cards/cardscript/tags/"
+	var file_suffix
+	if(OS.has_feature("editor")):
+		#Running from editor
+		file_suffix = ".gd"
+	else:
+		#Running from exported
+		file_suffix = ".gdc"
+	print("File suffix: ",file_suffix)
 	var files=Globals.get_all_files_in_directory(TAGS_PATH)
 	for file_path in files:
-		if(file_path.begins_with(TAGS_PATH + "card_tag_") && file_path.ends_with(".gd")):
+		print("Reading file ",file_path)
+		if(file_path.begins_with(TAGS_PATH + "card_tag_") && file_path.ends_with(file_suffix)):
 			var PREFIX_LENGTH = (TAGS_PATH+"card_tag_").length()
-			var tag_name = file_path.substr(PREFIX_LENGTH,file_path.length()-PREFIX_LENGTH-3).to_lower()
+			var tag_name = file_path.substr(PREFIX_LENGTH,file_path.length()-PREFIX_LENGTH-file_suffix.length()).to_lower()
+			print("Loading tag: ",tag_name)
 			tags[tag_name]=load(file_path)
-	
+
 
 static func create_tag(key:String,card:AbstractCard,value,format)->CardTag:
 	assert(Globals.card_text_helper.tags.has(key.to_lower()),"Nonexistent card tag key: "+key)

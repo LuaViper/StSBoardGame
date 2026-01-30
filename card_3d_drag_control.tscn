@@ -1,0 +1,11 @@
+[gd_scene load_steps=3 format=3 uid="uid://20cx23xfr0n8"]
+
+[ext_resource type="Script" uid="uid://dyn27vcdlr6o3" path="res://card_3d_drag_control.gd" id="1_evyhu"]
+[ext_resource type="PackedScene" uid="uid://b0j00juowingy" path="res://cards/rendering/card_3d.tscn" id="1_f2psi"]
+
+[node name="Card3DDragControl" type="Node3D"]
+script = ExtResource("1_evyhu")
+
+[node name="Card3D" parent="." instance=ExtResource("1_f2psi")]
+unique_name_in_owner = true
+visible = false

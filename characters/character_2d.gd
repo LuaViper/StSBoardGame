@@ -16,6 +16,8 @@ var skeleton
 var animation_state_data
 var animation_state
 
+#TODO: looks like skeletons are casting shadows but not receiving them?
+
 func _ready():
 	renderer=SkeletonMeshRenderer.new()
 	# change render_target if you have two or more skeletons drawing to the same character (e.g. Watcher)

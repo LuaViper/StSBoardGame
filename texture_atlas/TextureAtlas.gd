@@ -87,7 +87,14 @@ func draw_to_image(key,dest_image,dest_offset,scale=1.0):
 		src.resize(src.get_width()*2,src.get_height()*2)	#wait why is this *2 instead of *scale?
 	dest_image.blend_rect(src,Rect2i(x,y,wid,hgt),dest_offset)
 
-func draw_to_canvas(key,dest_canvas:CanvasItem,dest_xy:Vector2):	
+func draw_to_image_centered(key,dest_image,dest_offset,scale=1.0):
+	#TO DO LATER: negative scale results in incorrect position
+	assert(data.has(key),"Tried to draw nonexistent key "+key+" from atlas "+str(self))
+	var wid=data.get(key).get(SIZE).x*scale
+	var hgt=data.get(key).get(SIZE).y*scale
+	draw_to_image(key,dest_image,Vector2(dest_offset.x-wid/2,dest_offset.y-hgt/2),scale)
+
+func draw_to_canvas(key,dest_canvas:CanvasItem,dest_xy:Vector2,scale=1.0,color=Color.WHITE):	
 	assert(data.has(key),"Tried to draw nonexistent key "+key+" from atlas "+str(self))
 	var x=data.get(key).get(XY).x
 	var y=data.get(key).get(XY).y
@@ -100,7 +107,15 @@ func draw_to_canvas(key,dest_canvas:CanvasItem,dest_xy:Vector2):
 		#print(filename," ",src)
 		#print(x," ",y," ",wid," ",hgt)
 		#print(dest_xy.x," ",dest_xy.y," ",wid," ",hgt)
-	dest_canvas.draw_texture_rect_region(src,Rect2(dest_xy.x,dest_xy.y,wid,hgt),Rect2(x,y,wid,hgt))
+	dest_canvas.draw_texture_rect_region(src,Rect2(dest_xy.x,dest_xy.y,wid*scale,hgt*scale),Rect2(x,y,wid,hgt),color)
+
+func draw_to_canvas_centered(key,dest_canvas:CanvasItem,dest_xy:Vector2,scale=1.0,color=Color.WHITE):
+	#TO DO LATER: negative scale results in incorrect position
+	assert(data.has(key),"Tried to draw nonexistent key "+key+" from atlas "+str(self))
+	var wid=data.get(key).get(SIZE).x*scale
+	var hgt=data.get(key).get(SIZE).y*scale
+	draw_to_canvas(key,dest_canvas,Vector2(dest_xy.x-wid/2,dest_xy.y-hgt/2),scale,color)
+
 
 #func draw_to_text(key,dest_textbox:RichTextLabel):
 	#assert(data.has(key),"Tried to draw nonexistent key "+key+" from atlas "+str(self))

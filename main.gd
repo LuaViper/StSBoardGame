@@ -1,3 +1,4 @@
+class_name Main
 extends Node3D
 
 func _on_hash_test_button_pressed() -> void:
@@ -48,11 +49,15 @@ func _on_hash_test_button_pressed() -> void:
 	#thread.wait_to_finish()
 
 @onready var main: Node3D = $"."
-var Card3D = preload("res://card_3d.tscn")
-var viewport = preload("res://cards/card_2d_rendering_viewport.tscn")
+var card3D_class = preload("res://cards/rendering/card_3d.tscn")
+var viewport = preload("res://cards/rendering/card_2d_rendering_viewport.tscn")
 
 func _ready():
+	Globals.main = main
 	Globals.camera_pivot = %CameraPivot
+	Globals.player_perspective_camera = %PlayerPerspectiveCamera3D
+	Globals.card_tray = %CardTray
+	Card3D.initialize_card_texture()
 
 func _on_card_3d_test_button_pressed() -> void:
 	var library=Globals.card_library
@@ -77,13 +82,13 @@ func _on_card_3d_test_button_pressed() -> void:
 		main.add_child(c2rvp)
 		
 		
-		var c3=Card3D.instantiate()
+		var c3=card3D_class.instantiate()
 		c3.position=Vector3((i-10)*3,2+(j*4),1)
 		c3.rotation=Vector3(PI/2,0,0)
 		c3.scale=Vector3(0.75,0.75,0.75)
 		#c3.transform.rotated()
 		main.add_child(c3)
-		c3.test(c2rvp)
+		c3.attach_2d_card_viewport(c2rvp)
 		i+=1
 		if(i>=25):
 			i=0
@@ -96,3 +101,23 @@ func _on_card_3d_test_button_pressed() -> void:
 	##AtlasHelper.CARDUI.draw_to_canvas("1024/bg_attack_red",%Card2D,Vector2i(0,0))
 	#%Card2D.queue_redraw()
 	
+
+
+func _on_draw_pile_test_button_pressed() -> void:
+	var draw_pile = Globals.test_player.draw_pile
+	if(!draw_pile.is_empty()):
+		draw_pile.back().set_location(Globals.test_player.hand)
+	else:
+		%CardPile.temp_setup()
+	
+	pass # Replace with function body.
+
+
+func _on_card_background_test_button_pressed() -> void:
+	Card3D.initialize_card_texture()
+
+
+
+func _on_glow_test_button_pressed() -> void:
+	#CardGlowParticlesCollection.set_particle_appearance(%CardGlowParticlesCollection)
+	pass
