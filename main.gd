@@ -121,3 +121,24 @@ func _on_card_background_test_button_pressed() -> void:
 func _on_glow_test_button_pressed() -> void:
 	#CardGlowParticlesCollection.set_particle_appearance(%CardGlowParticlesCollection)
 	pass
+
+# It is not necessary to store a single mouse cursor in a persistent image,
+# but we do so anyway because we'll be changing the cursor often.
+var mouse_cursor_image:Image
+func _on_cursor_test_button_pressed() -> void:
+	mouse_cursor_image=Image.new()
+	var install_location = "C:/Program Files (x86)/Steam/steamapps/common/SlayTheSpire/desktop-1.0.jar"
+	var reader = ZIPReader.new()
+	var err = reader.open(install_location)
+	if err != OK:
+		assert(false,"Failed to open desktop-1.0.jar")
+		return
+	mouse_cursor_image.load_png_from_buffer(reader.read_file("images/ui/cursors/gold2.png"))	
+	reader.close()
+	var window_size = DisplayServer.window_get_size()
+	var ratio = window_size.y/1080.0
+	print("Size: ",window_size," Ratio: ",ratio)
+	mouse_cursor_image.resize(64*ratio,64*ratio)
+	Input.set_custom_mouse_cursor(mouse_cursor_image,Input.CURSOR_ARROW,Vector2(0,0))
+	# TODO: hotspot isn't exactly right. also need to adjust hotspot when cursor rotates, probably
+	# TODO: must resize cursor if window size changes

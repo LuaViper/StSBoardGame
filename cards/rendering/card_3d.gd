@@ -99,25 +99,38 @@ func _on_input_event(_camera: Node, event: InputEvent, _event_position: Vector3,
 			if(event.pressed):
 				#print("Dragging ",self)
 				drag_control.dragged=true
-				#%CardGlowParticlesCollection.get_node("%CardGlowParticles").set_emitting(true)
+				#%CardGlowParticlesCollection.get_node("%CardGlowParticles").set_emitting(true)		
+				card_tray.card_pickup_y=get_viewport().get_mouse_position().y
 
 func _input(event):	
+	var mouse_y = get_viewport().get_mouse_position().y
 	#TODO: dragging should only apply to Card3DDragControl, not all Card3Ds!
 	#captures mouseup no matter where it happens
 	if(!drag_control): return
 	if(drag_control.dragged):
 		if(event is InputEventMouseButton and event.button_index==MOUSE_BUTTON_LEFT and !event.pressed):		
-			print("Stop dragging ",self)			
+			print("Stop dragging ",self," (release LMB)")			
 			drag_control.dragged=false
 			#%CardGlowParticlesCollection.get_node("%CardGlowParticles").set_emitting(false)
-		if(event is InputEventMouseMotion):						
+		if(event is InputEventMouseButton and event.button_index==MOUSE_BUTTON_RIGHT and event.pressed):
+			print("Stop dragging ",self," (press RMB)")
+			drag_control.dragged=false
+		#if(event is InputEventMouseMotion):
+			#if(card_tray.card_pickup_y!=null):
+				#if(mouse_y>card_tray.card_pickup_y+260 || mouse_y>1080-50):
+					#print("Stop dragging ",self," (cursor too low)")
+					#drag_control.dragged=false					
+	if(drag_control.dragged):
+		if(event is InputEventMouseMotion):
 			var tray_collision = get_mouse_intersect(event.position)
 			if(tray_collision):
 				var local_position = Globals.card_tray.to_local(tray_collision.position)
 				if(drag_control):				
 					drag_control.position=local_position
 					drag_control.position.y=card_tray.get_front_of_tray_for_dragged_card()
-					
+			if(card_tray.card_pickup_y!=null):
+				if(mouse_y>card_tray.card_pickup_y+140):
+					pass
 					
 func get_mouse_intersect(mouse_position):
 	var camera = get_viewport().get_camera_3d()
@@ -137,6 +150,13 @@ func _on_mouse_entered() -> void:
 func _on_mouse_exited() -> void:
 	#TODO: does this trigger as desired on cards that move out from under a stationary cursor?
 	#print("!")
+	var viewport = get_viewport()
+	var viewport_size = viewport.get_visible_rect().size
+	if(viewport_size.y==0):viewport_size.y=1
+	var viewport_ratio = viewport_size.x/viewport_size.y
+	#print("Viewport ratio is ",viewport_ratio)
+	#print("Mouse exit at pos ",get_viewport().get_mouse_position())
+	
 	if(drag_control):drag_control.hovered=false
 	pass
 

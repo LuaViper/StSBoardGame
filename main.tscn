@@ -36,7 +36,7 @@ visible = false
 mesh = SubResource("BoxMesh_ig7tw")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 0.6543049, 0.7562309, 0, -0.7562309, 0.6543049, 0, 9.427755, 7.1077485)
+transform = Transform3D(1, 0, 0, 0, 0.6543049, 0.7562309, 0, -0.7562309, 0.6543049, 0, 53.349335, 7.1077485)
 shadow_enabled = true
 
 [node name="CameraPivot" type="Marker3D" parent="."]
@@ -121,6 +121,15 @@ offset_bottom = 241.0
 text = "Draw
 "
 
+[node name="CursorTestButton" type="Button" parent="."]
+unique_name_in_owner = true
+offset_left = 32.0
+offset_top = 303.0
+offset_right = 134.0
+offset_bottom = 344.0
+text = "Cursor
+"
+
 [node name="GlowTestButton" type="Button" parent="."]
 unique_name_in_owner = true
 visible = false
@@ -147,4 +156,5 @@ visible = false
 [connection signal="pressed" from="Card3DTestButton" to="." method="_on_card_3d_test_button_pressed"]
 [connection signal="pressed" from="CardBackgroundTestButton" to="." method="_on_card_background_test_button_pressed"]
 [connection signal="pressed" from="DrawPileTestButton" to="." method="_on_draw_pile_test_button_pressed"]
+[connection signal="pressed" from="CursorTestButton" to="." method="_on_cursor_test_button_pressed"]
 [connection signal="pressed" from="GlowTestButton" to="." method="_on_glow_test_button_pressed"]

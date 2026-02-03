@@ -13,6 +13,10 @@ const IMG_WIDTH_S = 300.0 * 0.7
 const PIXEL_SCALE = 0.011	#TODO:
 
 var CARD_POSITIONS=[]
+var card_pickup_y = null
+#Determines if the player ever moved the card past the drop line. Persists if moved back.
+var passed_hesitation_line = false
+var in_single_target_mode = false
 
 func _init():
 	#0
@@ -121,5 +125,13 @@ func get_front_of_tray_for_dragged_card():
 
 	
 func get_bottom_of_screen_for_hovered_card():
-	#TO DO LATER: check screen dimensions
+	#TO DO LATER: check screen dimensions? (maybe not necessary with canvas stretch mode)
+	# this value is in local coordinates, not viewport coordinates!
 	return 3.05
+	
+func release_card():
+	#NYI: hide orb evoke values
+	passed_hesitation_line = false
+	in_single_target_mode = false
+	#NYI: unhide game cursor (NYI: also *hide* cursor when card goes into enemy targeting mode)
+	#NYI: if card is usable, begin glowing (not sure why this is here--card never stops glowing when picked up)

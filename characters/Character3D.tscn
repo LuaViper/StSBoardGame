@@ -15,6 +15,7 @@ unique_name_in_owner = true
 [node name="Sprite3D" type="Sprite3D" parent="FloorPivot"]
 unique_name_in_owner = true
 transform = Transform3D(1, 0, 0, 0, 0.9999999, 0, 0, 0, 0.9999999, 0, 1.56, 0)
+shaded = true
 alpha_cut = 2
 texture = SubResource("PlaceholderTexture2D_sqwo0")
 
