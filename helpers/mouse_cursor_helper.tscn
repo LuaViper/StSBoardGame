@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://38jw2h0s8dwn"]
+
+[ext_resource type="Script" uid="uid://du5lxomtnrr5b" path="res://helpers/mouse_cursor_helper.gd" id="1_lpfba"]
+
+[node name="MouseCursorHelper" type="Node" unique_id=1114685084]
+script = ExtResource("1_lpfba")

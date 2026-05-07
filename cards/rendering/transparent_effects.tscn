@@ -1,12 +1,16 @@
-[gd_scene load_steps=3 format=3 uid="uid://cmf73ux086nqv"]
+[gd_scene format=3 uid="uid://cmf73ux086nqv"]
 
 [ext_resource type="Script" uid="uid://dc3orvveinmm1" path="res://cards/rendering/transparent_effects.gd" id="1_2nofe"]
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_2nofe"]
+blend_mode = 4
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_2nofe"]
 size = Vector2(456, 629)
 
-[node name="TransparentEffects" type="Area2D"]
+[node name="TransparentEffects" type="Area2D" unique_id=151647214]
+material = SubResource("CanvasItemMaterial_2nofe")
 script = ExtResource("1_2nofe")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=322366445]
 shape = SubResource("RectangleShape2D_2nofe")

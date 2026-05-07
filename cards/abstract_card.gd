@@ -10,6 +10,7 @@ var is_glowing=false
 var glow_timer=0.0
 var glow_list=[]
 var glow_color=TransparentEffects.BLUE_BORDER_GLOW_COLOR
+var flash_list=[]
 
 func setup(data_:Dictionary):
 	self.data=data_
@@ -57,6 +58,10 @@ func get_text():
 	result = Globals.card_text_helper.resize(result,self)
 	return result
 
+func can_be_played():
+	# May return an error message if the card cannot be played.
+	#TODO:
+	return false
 
 func play():
 	for key in tags:

@@ -1,0 +1,69 @@
+[gd_scene format=3 uid="uid://12601l4yjinu"]
+
+[ext_resource type="PackedScene" uid="uid://cnyl82k48j46s" path="res://action_manager.tscn" id="1_kenku"]
+[ext_resource type="Script" uid="uid://bay4x1bpcvgc3" path="res://in_game_ui.gd" id="1_onc8m"]
+[ext_resource type="PackedScene" uid="uid://ck4oiscghvnmf" path="res://actions/action_2d_block.tscn" id="3_e6quo"]
+
+[sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_onc8m"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_e6quo"]
+texture = SubResource("PlaceholderTexture2D_onc8m")
+
+[node name="InGameUI" type="Panel" unique_id=124351378]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+script = ExtResource("1_onc8m")
+
+[node name="TopBarAnchor" type="Control" parent="." unique_id=1881443587]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+grow_horizontal = 2
+
+[node name="TopBarImage" type="Panel" parent="TopBarAnchor" unique_id=1741902210]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -960.0
+offset_right = 960.0
+offset_bottom = 128.0
+grow_horizontal = 2
+pivot_offset_ratio = Vector2(0.5, 0)
+theme_override_styles/panel = SubResource("StyleBoxTexture_e6quo")
+
+[node name="ActionManager" parent="." unique_id=1705693568 instance=ExtResource("1_kenku")]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -294.0
+offset_right = 0.0
+offset_bottom = 0.0
+grow_vertical = 0
+
+[node name="Action2D" parent="." unique_id=977504374 instance=ExtResource("3_e6quo")]
+layout_mode = 0
+offset_left = 320.0
+offset_top = 161.0
+offset_right = 620.0
+offset_bottom = 209.0
+
+[node name="UITestButton" type="Button" parent="." unique_id=1178267001]
+unique_name_in_owner = true
+visible = false
+layout_mode = 0
+offset_left = 355.0
+offset_top = 45.0
+offset_right = 457.0
+offset_bottom = 86.0
+text = "UI
+"
+
+[connection signal="pressed" from="UITestButton" to="." method="_on_ui_test_button_pressed"]

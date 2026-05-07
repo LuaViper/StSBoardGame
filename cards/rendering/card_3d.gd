@@ -10,17 +10,20 @@ static var base_card_texture:Texture2D = preload("res://card_cardtexture.png")
 static var card_albedo_texture:Texture2D = null
 static var shader:Shader = load("res://cards/rendering/ignore_transparent_shadows.gdshader")
 
+const SKY = Color("87CEEBFF")
 
 var drag_control:Card3DDragControl
 func set_drag_control(_dc):
 	drag_control=_dc
+	_dc.card3d = self
 
 var card_tray = null
 
 #TO DO LATER: CardGlowParticlesCollection.set_visible(false) when card is hidden
 #TO DO LATER: turn individual particles on/off according to card type and glow type
 #	(skill/attack/power are easy to turn off, but different colors require a 1.2-sec delay before hiding)
-#TO DO LATER: cards have an additional unique effect when End Turn is hovered
+#TODO: cards have an additional unique effect when End Turn is hovered
+	# (this might be 512/card_flash_vfx?)
 
 static func initialize_card_texture():
 	var src = base_card_texture
@@ -30,7 +33,7 @@ static func initialize_card_texture():
 		image.decompress()	#note that this is a one-way process
 	
 	#image.fill(Color.BLUE) 
-	AtlasHelper.CARDUI.draw_to_image("512/card_back",image,Vector2(0,0),2.0)
+	AtlasHelper.CARDUI.draw_to_image("512/card_back",image,Vector2(0,0),Vector2(2.0,2.0))
 		
 	card_albedo_texture = ImageTexture.create_from_image(image)
 	
@@ -95,52 +98,13 @@ func attach_transparent_effects_viewport(viewport:TransparentEffectsRenderingVie
 func _on_input_event(_camera: Node, event: InputEvent, _event_position: Vector3, _normal: Vector3, _shape_idx: int) -> void:
 	#only captures mousedown over a single mousepicked card
 	if(drag_control):
-		if(event is InputEventMouseButton and event.button_index==MOUSE_BUTTON_LEFT):
-			if(event.pressed):
-				#print("Dragging ",self)
-				drag_control.dragged=true
-				#%CardGlowParticlesCollection.get_node("%CardGlowParticles").set_emitting(true)		
-				card_tray.card_pickup_y=get_viewport().get_mouse_position().y
+		drag_control.process_card_input_event(event,card)
 
 func _input(event):	
-	var mouse_y = get_viewport().get_mouse_position().y
 	#TODO: dragging should only apply to Card3DDragControl, not all Card3Ds!
 	#captures mouseup no matter where it happens
 	if(!drag_control): return
-	if(drag_control.dragged):
-		if(event is InputEventMouseButton and event.button_index==MOUSE_BUTTON_LEFT and !event.pressed):		
-			print("Stop dragging ",self," (release LMB)")			
-			drag_control.dragged=false
-			#%CardGlowParticlesCollection.get_node("%CardGlowParticles").set_emitting(false)
-		if(event is InputEventMouseButton and event.button_index==MOUSE_BUTTON_RIGHT and event.pressed):
-			print("Stop dragging ",self," (press RMB)")
-			drag_control.dragged=false
-		#if(event is InputEventMouseMotion):
-			#if(card_tray.card_pickup_y!=null):
-				#if(mouse_y>card_tray.card_pickup_y+260 || mouse_y>1080-50):
-					#print("Stop dragging ",self," (cursor too low)")
-					#drag_control.dragged=false					
-	if(drag_control.dragged):
-		if(event is InputEventMouseMotion):
-			var tray_collision = get_mouse_intersect(event.position)
-			if(tray_collision):
-				var local_position = Globals.card_tray.to_local(tray_collision.position)
-				if(drag_control):				
-					drag_control.position=local_position
-					drag_control.position.y=card_tray.get_front_of_tray_for_dragged_card()
-			if(card_tray.card_pickup_y!=null):
-				if(mouse_y>card_tray.card_pickup_y+140):
-					pass
-					
-func get_mouse_intersect(mouse_position):
-	var camera = get_viewport().get_camera_3d()
-	var params = PhysicsRayQueryParameters3D.new()
-	params.collision_mask = 0b0010   #layer 2
-	params.from = camera.project_ray_origin(mouse_position)
-	params.to = camera.project_position(mouse_position,10.0)
-	var world_space = get_world_3d().direct_space_state
-	var result = world_space.intersect_ray(params)
-	return result	
+	drag_control.process_card_input(event,card)
 
 func _on_mouse_entered() -> void:
 	#print("?")	
@@ -167,7 +131,7 @@ func _process(delta):
 			self.card_tray=Globals.card_tray
 			set_drag_control(card_tray.create_drag_control())
 	if(transparent_viewport):
-		if(true or card.is_glowing):
+		if(true or card.is_glowing): #!!!
 			card.glow_timer-=delta
 			if(card.glow_timer<=0):
 				card.glow_list.append(CardGlowBorder.new(card.glow_color))
@@ -177,7 +141,21 @@ func _process(delta):
 			border.update(delta)
 			if(border.is_done):
 				card.glow_list.remove_at(i)
+		#TODO: is this redraw necessary?
 		transparent_viewport.get_node("%TransparentEffects").queue_redraw()	
+	
+		for i in range(card.flash_list.size()-1,-1,-1):
+			var flash=card.flash_list.get(i)
+			flash.update(delta)
+			if(flash.is_done):
+				card.flash_list.remove_at(i)
+		#TODO: is this redraw necessary?
+		transparent_viewport.get_node("%TransparentEffects").queue_redraw()	
+		
+		
+
+func flash_in_dropzone():
+	card.flash_list.append(CardFlashVfx.new(SKY))
 
 func _physics_process(_delta):
 	if(!card): return
@@ -188,6 +166,11 @@ func _physics_process(_delta):
 		if(drag_control):
 			var lerp_speed=0.03
 			if(drag_control.hovered): lerp_speed=0.1
-			if(drag_control.dragged): lerp_speed=1.0
+			# if dragged, start lerp_speed at 0.1 but quickly increase to 1.0
+			if(drag_control.dragged): lerp_speed=drag_control.lerp_speed
 			#TO DO LATER: immediately snap card to local y when picked up or let go
 			transform = transform.interpolate_with(drag_control.global_transform,lerp_speed)
+
+
+func can_be_played():
+	return card.can_be_played()

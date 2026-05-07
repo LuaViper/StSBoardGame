@@ -52,12 +52,17 @@ func _on_hash_test_button_pressed() -> void:
 var card3D_class = preload("res://cards/rendering/card_3d.tscn")
 var viewport = preload("res://cards/rendering/card_2d_rendering_viewport.tscn")
 
-func _ready():
+func _ready():	
+	get_window().size_changed.connect(_on_window_size_changed)
+	ScreenSizeHelper.on_resize(DisplayServer.window_get_size())
 	Globals.main = main
 	Globals.camera_pivot = %CameraPivot
 	Globals.player_perspective_camera = %PlayerPerspectiveCamera3D
 	Globals.card_tray = %CardTray
 	Card3D.initialize_card_texture()
+
+func _on_window_size_changed():
+	ScreenSizeHelper.on_resize(get_window().size)
 
 func _on_card_3d_test_button_pressed() -> void:
 	var library=Globals.card_library
@@ -122,23 +127,11 @@ func _on_glow_test_button_pressed() -> void:
 	#CardGlowParticlesCollection.set_particle_appearance(%CardGlowParticlesCollection)
 	pass
 
-# It is not necessary to store a single mouse cursor in a persistent image,
-# but we do so anyway because we'll be changing the cursor often.
-var mouse_cursor_image:Image
+
 func _on_cursor_test_button_pressed() -> void:
-	mouse_cursor_image=Image.new()
-	var install_location = "C:/Program Files (x86)/Steam/steamapps/common/SlayTheSpire/desktop-1.0.jar"
-	var reader = ZIPReader.new()
-	var err = reader.open(install_location)
-	if err != OK:
-		assert(false,"Failed to open desktop-1.0.jar")
-		return
-	mouse_cursor_image.load_png_from_buffer(reader.read_file("images/ui/cursors/gold2.png"))	
-	reader.close()
-	var window_size = DisplayServer.window_get_size()
-	var ratio = window_size.y/1080.0
-	print("Size: ",window_size," Ratio: ",ratio)
-	mouse_cursor_image.resize(64*ratio,64*ratio)
-	Input.set_custom_mouse_cursor(mouse_cursor_image,Input.CURSOR_ARROW,Vector2(0,0))
-	# TODO: hotspot isn't exactly right. also need to adjust hotspot when cursor rotates, probably
-	# TODO: must resize cursor if window size changes
+	await MouseCursorHelper.load_cursors()
+	MouseCursorHelper.resize_cursor()
+
+
+
+	

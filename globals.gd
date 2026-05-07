@@ -3,6 +3,8 @@ extends Node
 
 #static func MAIN():
 	#return FontHelper.get_tree().root.get_node("Main")
+	
+const STYLEBOX_THEME_DEFAULT_NAME = "panel"
 
 var jar_manager:JarManager
 var install_location = "C:/Program Files (x86)/Steam/steamapps/common/SlayTheSpire/desktop-1.0.jar"
@@ -23,6 +25,7 @@ func _ready():
 	card_text_helper=CardTextHelper.new()
 	card_library=CardLibrary.new()	
 	test_player=AbstractPlayer.new()
+
 	
 func _notification(what):
 	if what == NOTIFICATION_WM_CLOSE_REQUEST:

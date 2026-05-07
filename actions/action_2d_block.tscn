@@ -1,0 +1,93 @@
+[gd_scene format=3 uid="uid://ck4oiscghvnmf"]
+
+[ext_resource type="Texture2D" uid="uid://0tx5fn764uf7" path="res://UI art/action2d_nineslice.png" id="1_0gycq"]
+[ext_resource type="Script" uid="uid://hmtql7wgx6nc" path="res://actions/action_2d_block.gd" id="2_aj5cj"]
+[ext_resource type="Texture2D" uid="uid://br1l6qfpku5pp" path="res://UI art/accordion_arrow.png" id="3_lp6nd"]
+[ext_resource type="Texture2D" uid="uid://d0comp5vugp06" path="res://UI art/empty_32x32.png" id="3_upqip"]
+[ext_resource type="PackedScene" uid="uid://dyw1unv2xitbw" path="res://actions/action_2d.tscn" id="5_ro85j"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_upqip"]
+font_color = Color(0, 0, 0, 1)
+
+[node name="Action2DContainer" type="NinePatchRect" unique_id=977504374]
+offset_right = 300.0
+offset_bottom = 48.0
+mouse_filter = 0
+texture = ExtResource("1_0gycq")
+patch_margin_left = 7
+patch_margin_top = 7
+patch_margin_right = 7
+patch_margin_bottom = 7
+script = ExtResource("2_aj5cj")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=1531337319]
+layout_mode = 0
+offset_right = 300.0
+offset_bottom = 48.0
+
+[node name="MarginContainer for Header" type="MarginContainer" parent="VBoxContainer" unique_id=1040253624]
+layout_mode = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
+
+[node name="HBoxContainer2 for Accordion" type="HBoxContainer" parent="VBoxContainer/MarginContainer for Header" unique_id=1987107448]
+layout_mode = 2
+alignment = 2
+
+[node name="AccordionTextureRectHolder" type="TextureRect" parent="VBoxContainer/MarginContainer for Header/HBoxContainer2 for Accordion" unique_id=1693791933]
+layout_mode = 2
+texture = ExtResource("3_upqip")
+
+[node name="AccordionTextureRect" type="TextureRect" parent="VBoxContainer/MarginContainer for Header/HBoxContainer2 for Accordion/AccordionTextureRectHolder" unique_id=1604249217]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -16.0
+offset_top = -16.0
+offset_right = 16.0
+offset_bottom = 16.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset_ratio = Vector2(0.5, 0.5)
+texture = ExtResource("3_lp6nd")
+stretch_mode = 2
+
+[node name="Action2D" parent="VBoxContainer/MarginContainer for Header" unique_id=1013643553 instance=ExtResource("5_ro85j")]
+layout_mode = 2
+
+[node name="MarginContainer for Indent" type="MarginContainer" parent="VBoxContainer" unique_id=2072411943]
+layout_mode = 2
+theme_override_constants/margin_left = 16
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/MarginContainer for Indent" unique_id=1881550045]
+layout_mode = 2
+
+[node name="Action2D" parent="VBoxContainer/MarginContainer for Indent/VBoxContainer" unique_id=369418214 instance=ExtResource("5_ro85j")]
+layout_mode = 2
+
+[node name="MarginContainer for Single Action" type="MarginContainer" parent="VBoxContainer/MarginContainer for Indent/VBoxContainer" unique_id=382227207]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/margin_left = 4
+theme_override_constants/margin_right = 32
+
+[node name="ScrollContainer" type="ScrollContainer" parent="VBoxContainer/MarginContainer for Indent/VBoxContainer/MarginContainer for Single Action" unique_id=254824454]
+layout_mode = 2
+vertical_scroll_mode = 0
+
+[node name="HeaderTextLabel" type="Label" parent="VBoxContainer/MarginContainer for Indent/VBoxContainer/MarginContainer for Single Action/ScrollContainer" unique_id=311350729]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 6
+text = "Card Name Placeholder"
+label_settings = SubResource("LabelSettings_upqip")
+
+[connection signal="gui_input" from="." to="." method="_on_gui_input"]
+[connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]

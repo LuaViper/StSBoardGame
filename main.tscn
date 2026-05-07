@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://d3twgtt2jyacu"]
+[gd_scene format=3 uid="uid://d3twgtt2jyacu"]
 
 [ext_resource type="Script" uid="uid://bf8l6lubtgrvw" path="res://main.gd" id="1_1bvp3"]
 [ext_resource type="Script" uid="uid://cdeis5qtli4a0" path="res://button.gd" id="2_0xm2m"]
@@ -8,12 +8,18 @@
 [ext_resource type="PackedScene" uid="uid://y8phfx3osmb0" path="res://card_pile.tscn" id="7_5vw27"]
 [ext_resource type="PackedScene" uid="uid://wt5lmffkrw7o" path="res://card_tray.tscn" id="7_272bh"]
 [ext_resource type="PackedScene" uid="uid://cu5wllqoogum6" path="res://cards/rendering/unused/UNUSED_card_glow_particles_collection.tscn" id="8_5vw27"]
+[ext_resource type="PackedScene" uid="uid://38jw2h0s8dwn" path="res://helpers/mouse_cursor_helper.tscn" id="9_kek77"]
+[ext_resource type="PackedScene" uid="uid://12601l4yjinu" path="res://in_game_ui.tscn" id="10_4c57u"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_7dm0k"]
 size = Vector3(60, 2, 60)
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_kek77"]
+albedo_color = Color(0, 0, 0, 1)
+
 [sub_resource type="BoxMesh" id="BoxMesh_ig7tw"]
-size = Vector3(10, 2, 10)
+material = SubResource("StandardMaterial3D_kek77")
+size = Vector3(60, 2, 60)
 
 [sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_1bvp3"]
 size = Vector2(100, 100)
@@ -21,37 +27,38 @@ size = Vector2(100, 100)
 [sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_lquwl"]
 size = Vector2(100, 100)
 
-[node name="Main" type="Node3D"]
+[node name="Main" type="Node3D" unique_id=193767058]
 script = ExtResource("1_1bvp3")
 
-[node name="Ground" type="StaticBody3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 0)
+[node name="InGameUI" parent="." unique_id=2130898606 instance=ExtResource("10_4c57u")]
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Ground"]
+[node name="Ground" type="StaticBody3D" parent="." unique_id=2081366123]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.1, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Ground" unique_id=1662169193]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0343394, -0.00216866, 0)
 shape = SubResource("BoxShape3D_7dm0k")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Ground"]
-visible = false
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Ground" unique_id=825552122]
 mesh = SubResource("BoxMesh_ig7tw")
 
-[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=1080038689]
 transform = Transform3D(1, 0, 0, 0, 0.6543049, 0.7562309, 0, -0.7562309, 0.6543049, 0, 53.349335, 7.1077485)
 shadow_enabled = true
 
-[node name="CameraPivot" type="Marker3D" parent="."]
+[node name="CameraPivot" type="Marker3D" parent="." unique_id=238256799]
 unique_name_in_owner = true
-transform = Transform3D(1, 0, 0, 0, 0.141471, 0.989942, 0, -0.989942, 0.141471, 0.236632, -0.481532, 0.966516)
+transform = Transform3D(0.9821824, -0.15248445, -0.10984582, -0.034115247, -0.71946174, 0.6936934, -0.18480748, -0.6775861, -0.71184474, -0.408, -5, 8.01)
 
-[node name="PlayerPerspectiveCamera3D" type="Camera3D" parent="CameraPivot"]
+[node name="PlayerPerspectiveCamera3D" type="Camera3D" parent="CameraPivot" unique_id=877835208]
 unique_name_in_owner = true
-transform = Transform3D(0.99963313, 0.0060772263, -0.026394682, -0.026812874, 0.35989833, -0.93260664, 0.0038317395, 0.93297225, 0.35992926, 0.19121216, -20.153294, 9.216918)
+transform = Transform3D(1, 0, 0, 0, -4.3711392e-08, -1.0000001, 0, 1.0000001, -4.3711392e-08, 0, -19, 0)
 
-[node name="CardTray" parent="CameraPivot/PlayerPerspectiveCamera3D" instance=ExtResource("7_272bh")]
+[node name="CardTray" parent="CameraPivot/PlayerPerspectiveCamera3D" unique_id=234465041 instance=ExtResource("7_272bh")]
 unique_name_in_owner = true
 transform = Transform3D(0.25, 0, 0, 0, -1.0927847e-08, -0.25, 0, 0.25, -1.0927847e-08, 0, 0, -1.75)
 
-[node name="Button" type="Button" parent="."]
+[node name="Button" type="Button" parent="." unique_id=1813616850]
 unique_name_in_owner = true
 offset_left = -226.0
 offset_top = 54.0
@@ -60,15 +67,15 @@ offset_bottom = 126.0
 text = "Load"
 script = ExtResource("2_0xm2m")
 
-[node name="SkeletonReaderTest" parent="." instance=ExtResource("3_lquwl")]
+[node name="SkeletonReaderTest" parent="." unique_id=202612876 instance=ExtResource("3_lquwl")]
 visible = false
 position = Vector2(20, 23)
 
-[node name="Card3D" parent="." instance=ExtResource("4_lquwl")]
+[node name="Card3D" parent="." unique_id=21242073 instance=ExtResource("4_lquwl")]
 transform = Transform3D(0.48189, 0.122909, 0.0517268, 2.22045e-16, 0.193951, -0.46085, -0.13335, 0.444158, 0.186926, 1.41877, 2.21042, 2.4799829)
 visible = false
 
-[node name="SPR3D" type="Sprite3D" parent="."]
+[node name="SPR3D" type="Sprite3D" parent="." unique_id=1565325422]
 unique_name_in_owner = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.37528, 2.14439, 3.29793)
 visible = false
@@ -76,7 +83,7 @@ shaded = true
 alpha_cut = 2
 texture = SubResource("PlaceholderTexture2D_1bvp3")
 
-[node name="SPR3D2" type="Sprite3D" parent="."]
+[node name="SPR3D2" type="Sprite3D" parent="." unique_id=1847020599]
 unique_name_in_owner = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.49098, 2.18409, 3.29793)
 visible = false
@@ -85,7 +92,7 @@ alpha_cut = 2
 texture = SubResource("PlaceholderTexture2D_lquwl")
 region_rect = Rect2(-75.5, -63, 162, 138)
 
-[node name="HashButton" type="Button" parent="."]
+[node name="HashButton" type="Button" parent="." unique_id=1541510778]
 visible = false
 offset_left = 29.0
 offset_top = 23.0
@@ -94,7 +101,7 @@ offset_bottom = 64.0
 text = "Hash
 "
 
-[node name="Card3DTestButton" type="Button" parent="."]
+[node name="Card3DTestButton" type="Button" parent="." unique_id=2144710967]
 unique_name_in_owner = true
 visible = false
 offset_left = 31.0
@@ -103,7 +110,7 @@ offset_right = 133.0
 offset_bottom = 115.0
 text = "Card3D Test"
 
-[node name="CardBackgroundTestButton" type="Button" parent="."]
+[node name="CardBackgroundTestButton" type="Button" parent="." unique_id=533132406]
 unique_name_in_owner = true
 visible = false
 offset_left = 34.0
@@ -112,7 +119,7 @@ offset_right = 136.0
 offset_bottom = 188.0
 text = "Card Back"
 
-[node name="DrawPileTestButton" type="Button" parent="."]
+[node name="DrawPileTestButton" type="Button" parent="." unique_id=2131357428]
 unique_name_in_owner = true
 offset_left = 34.0
 offset_top = 200.0
@@ -121,7 +128,7 @@ offset_bottom = 241.0
 text = "Draw
 "
 
-[node name="CursorTestButton" type="Button" parent="."]
+[node name="CursorTestButton" type="Button" parent="." unique_id=870403595]
 unique_name_in_owner = true
 offset_left = 32.0
 offset_top = 303.0
@@ -130,7 +137,7 @@ offset_bottom = 344.0
 text = "Cursor
 "
 
-[node name="GlowTestButton" type="Button" parent="."]
+[node name="GlowTestButton" type="Button" parent="." unique_id=1599412222]
 unique_name_in_owner = true
 visible = false
 offset_left = 36.0
@@ -140,16 +147,27 @@ offset_bottom = 296.0
 text = "Load (Particle Glow)
 "
 
-[node name="EncounterGrid" parent="." instance=ExtResource("6_7mycd")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.6115785, 2.5331998, 18.023796)
+[node name="EncounterGrid" parent="." unique_id=1132406942 instance=ExtResource("6_7mycd")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.076, 0, 16.101)
 
-[node name="CardPile" parent="." instance=ExtResource("7_5vw27")]
+[node name="CardPile" parent="." unique_id=125038251 instance=ExtResource("7_5vw27")]
 unique_name_in_owner = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.364373, 0, 9.835833)
 
-[node name="CardGlowParticlesCollection" parent="." instance=ExtResource("8_5vw27")]
+[node name="CardGlowParticlesCollection" parent="." unique_id=993993901 instance=ExtResource("8_5vw27")]
 unique_name_in_owner = true
 visible = false
+
+[node name="MouseCursorHelper" parent="." unique_id=1628600782 instance=ExtResource("9_kek77")]
+
+[node name="ImageRotatorContainer" type="SubViewportContainer" parent="." unique_id=404788785]
+unique_name_in_owner = true
+editor_description = "SubViewports will be added at runtime to rotate the mouse cursor."
+visible = false
+offset_left = 24.0
+offset_top = 22.0
+offset_right = 187.0
+offset_bottom = 185.0
 
 [connection signal="pressed" from="Button" to="Button" method="_on_pressed"]
 [connection signal="pressed" from="HashButton" to="." method="_on_hash_test_button_pressed"]

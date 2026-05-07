@@ -48,89 +48,78 @@ func _ready():
 	eye.load_animation("None",false,1.0)
 	eye.render_target = character
 #
+	#character=%Row1.get_node("%Character3D_2").character2d
+	#var test_enemy = TestEnemy.new()
+	#test_enemy.load_character(character)
+	#character.skeleton.IgnoreShadows = true;
+	#%Row1.temp_spawncardatposition(0)
+	#
+	#return #!!!
+
+	#for i in range(3,7):
+		#character=%Row1.get_node("%Character3D_"+str(i)).character2d
+		#character.load_character("images/monsters/theBottom/slimeM/skeleton.atlas", "images/monsters/theBottom/slimeM/skeleton.json", -10)
+		#character.load_animation("idle")
+		##TODO: slimes play sound effects at animation events
+		#character.skeleton.IgnoreShadows = true;
+		#%Row1.temp_spawncardatposition(i-2)	
+
+	
 	character=%Row1.get_node("%Character3D_2").character2d
-	var test_enemy = TestEnemy.new()
-	test_enemy.load_character(character)
+	character.load_character("images/monsters/theBottom/angryGremlin/skeleton.atlas", "images/monsters/theBottom/angryGremlin/skeleton.json",-10)
+	character.load_animation("idle")
 	character.skeleton.IgnoreShadows = true;
 	%Row1.temp_spawncardatposition(0)
 	
-	return #!!!
-
-	for i in range(3,7):
-		character=%Row1.get_node("%Character3D_"+str(i)).character2d
-		character.load_character("images/monsters/theBottom/slimeM/skeleton.atlas", "images/monsters/theBottom/slimeM/skeleton.json", -10)
-		character.load_animation("idle")
-		#TODO: slimes play sound effects at animation events
-		character.skeleton.IgnoreShadows = true;
-		%Row1.temp_spawncardatposition(i-2)	
-
+	character=%Row1.get_node("%Character3D_3").character2d
+	character.load_character("images/monsters/theBottom/fatGremlin/skeleton.atlas", "images/monsters/theBottom/fatGremlin/skeleton.json", -5)
+	character.load_animation("animation")
+	character.skeleton.IgnoreShadows = true;
+	%Row1.temp_spawncardatposition(1)	
 	
+	character=%Row1.get_node("%Character3D_4").character2d
+	character.load_character("images/monsters/theBottom/thiefGremlin/skeleton.atlas", "images/monsters/theBottom/thiefGremlin/skeleton.json", -19)
+	character.load_animation("animation")
+	character.skeleton.IgnoreShadows = true;
+	%Row1.temp_spawncardatposition(2)
+
+	character=%Row1.get_node("%Character3D_5").character2d
+	character.load_character("images/monsters/theBottom/wizardGremlin/skeleton.atlas", "images/monsters/theBottom/wizardGremlin/skeleton.json", -14)
+	character.load_animation("animation")
+	character.skeleton.IgnoreShadows = true;
+	%Row1.temp_spawncardatposition(3)
+
+
 	character=%Row2.get_node("%Character3D_2").character2d
-	character.load_character("images/monsters/theBottom/angryGremlin/skeleton.atlas", "images/monsters/theBottom/angryGremlin/skeleton.json",-10)
+	character.load_character("images/monsters/theBottom/jawWorm/skeleton.atlas", "images/monsters/theBottom/jawWorm/skeleton.json", 22)
 	character.load_animation("idle")
 	character.skeleton.IgnoreShadows = true;
 	%Row2.temp_spawncardatposition(0)
 	
-	character=%Row2.get_node("%Character3D_3").character2d
-	character.load_character("images/monsters/theBottom/fatGremlin/skeleton.atlas", "images/monsters/theBottom/fatGremlin/skeleton.json", -5)
-	character.load_animation("animation")
-	character.skeleton.IgnoreShadows = true;
-	%Row2.temp_spawncardatposition(1)	
-	
-	character=%Row2.get_node("%Character3D_4").character2d
-	character.load_character("images/monsters/theBottom/thiefGremlin/skeleton.atlas", "images/monsters/theBottom/thiefGremlin/skeleton.json", -19)
-	character.load_animation("animation")
-	character.skeleton.IgnoreShadows = true;
-	%Row2.temp_spawncardatposition(2)
-
-	character=%Row2.get_node("%Character3D_5").character2d
-	character.load_character("images/monsters/theBottom/wizardGremlin/skeleton.atlas", "images/monsters/theBottom/wizardGremlin/skeleton.json", -14)
-	character.load_animation("animation")
-	character.skeleton.IgnoreShadows = true;
-	%Row2.temp_spawncardatposition(3)
-
 
 	character=%Row3.get_node("%Character3D_2").character2d
-	character.load_character("images/monsters/theBottom/thiefGremlin/skeleton.atlas", "images/monsters/theBottom/thiefGremlin/skeleton.json", -19)	
-	character.load_animation("animation")
+	character.load_character("images/monsters/theBottom/cultist/skeleton.atlas", "images/monsters/theBottom/cultist/skeleton.json", -10)
+	character.load_animation("waving")
 	character.skeleton.IgnoreShadows = true;
 	%Row3.temp_spawncardatposition(0)
 	
 	character=%Row3.get_node("%Character3D_3").character2d
-	character.load_character("images/monsters/theBottom/angryGremlin/skeleton.atlas", "images/monsters/theBottom/angryGremlin/skeleton.json", -10)		
-	character.load_animation("idle")
-	character.skeleton.IgnoreShadows = true;
-	%Row3.temp_spawncardatposition(1)	
-	
-	character=%Row3.get_node("%Character3D_4").character2d
-	character.load_character("images/monsters/theBottom/wizardGremlin/skeleton.atlas", "images/monsters/theBottom/wizardGremlin/skeleton.json", -14)	
-	character.load_animation("animation")
-	character.skeleton.IgnoreShadows = true;
-	%Row3.temp_spawncardatposition(2)
-
-	character=%Row3.get_node("%Character3D_5").character2d
-	character.load_character("images/monsters/theBottom/fatGremlin/skeleton.atlas", "images/monsters/theBottom/fatGremlin/skeleton.json", -5)	
-	character.load_animation("animation")
-	character.skeleton.IgnoreShadows = true;
-	%Row3.temp_spawncardatposition(3)
-
-	character=%Row4.get_node("%Character3D_2").character2d
-	character.load_character("images/monsters/theBottom/louseRed/skeleton.atlas", "images/monsters/theBottom/louseRed/skeleton.json", -3)
-	character.load_animation("idle")
-	character.skeleton.IgnoreShadows = true;
-	%Row4.temp_spawncardatposition(0)
-	
-	character=%Row4.get_node("%Character3D_3").character2d
 	character.load_character("images/monsters/theBottom/louseGreen/skeleton.atlas", "images/monsters/theBottom/louseGreen/skeleton.json", -3)
 	character.load_animation("idle")
 	character.skeleton.IgnoreShadows = true;
-	%Row4.temp_spawncardatposition(1)
+	%Row3.temp_spawncardatposition(1)
 
-	character=%Row4.get_node("%Character3D_4").character2d
-	character.load_character("images/monsters/theBottom/louseRed/skeleton.atlas", "images/monsters/theBottom/louseRed/skeleton.json", -3)
+	character=%Row4.get_node("%Character3D_2").character2d
+	character.load_character("images/monsters/theBottom/redSlaver/skeleton.atlas", "images/monsters/theBottom/redSlaver/skeleton.json", 0)
 	character.load_animation("idle")
 	character.skeleton.IgnoreShadows = true;
-	%Row4.temp_spawncardatposition(2)
+	%Row4.temp_spawncardatposition(0)
+
+	#character=%Row4.get_node("%Character3D_4").character2d
+	#character.load_character("images/monsters/theBottom/louseRed/skeleton.atlas", "images/monsters/theBottom/louseRed/skeleton.json", -3)
+	#character.load_animation("idle")
+	#character.skeleton.IgnoreShadows = true;
+	#%Row4.temp_spawncardatposition(2)
 	
 
 

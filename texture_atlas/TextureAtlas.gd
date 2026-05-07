@@ -18,7 +18,7 @@ func load_file(path):
 	var active_file=""
 	var active_key=""
 	for line in lines:
-		if(line.contains(".png")):			
+		if(line.contains(".png")):
 			active_key=""
 			active_file=base_dir+"/"+line
 			#print("Recording file ",active_file)
@@ -68,7 +68,7 @@ func get_rotate(key)->bool:
 	assert(data.has(key),"Tried to get rotate of nonexistent key "+key+" from atlas "+str(self))
 	return (data.get(key).get(ROTATE)=="true")
 		
-func draw_to_image(key,dest_image,dest_offset,scale=1.0):
+func draw_to_image(key,dest_image,dest_offset,scale=Vector2(1.0,1.0)):
 	assert(data.has(key),"Tried to draw nonexistent key "+key+" from atlas "+str(self))
 	var x=data.get(key).get(XY).x
 	var y=data.get(key).get(XY).y
@@ -77,24 +77,24 @@ func draw_to_image(key,dest_image,dest_offset,scale=1.0):
 	var filename=data.get(key).get(FILE)
 	var src=files.get(filename)
 	#TODO: also check ROTATE
-	if(scale!=1.0):
-		x*=scale;
-		y*=scale;
-		wid*=scale;
-		hgt*=scale;
+	if(scale.x!=1.0 || scale.y!=1.0):
+		x*=scale.x;
+		y*=scale.y;
+		wid*=scale.x;
+		hgt*=scale.y;
 		#copy src, don't modify the original
 		src=src.get_region(Rect2i(0,0,src.get_width(),src.get_height()))
 		src.resize(src.get_width()*2,src.get_height()*2)	#wait why is this *2 instead of *scale?
 	dest_image.blend_rect(src,Rect2i(x,y,wid,hgt),dest_offset)
 
-func draw_to_image_centered(key,dest_image,dest_offset,scale=1.0):
+func draw_to_image_centered(key,dest_image,dest_offset,scale=Vector2(1.0,1.0)):
 	#TO DO LATER: negative scale results in incorrect position
 	assert(data.has(key),"Tried to draw nonexistent key "+key+" from atlas "+str(self))
-	var wid=data.get(key).get(SIZE).x*scale
-	var hgt=data.get(key).get(SIZE).y*scale
+	var wid=data.get(key).get(SIZE).x*scale.x
+	var hgt=data.get(key).get(SIZE).y*scale.y
 	draw_to_image(key,dest_image,Vector2(dest_offset.x-wid/2,dest_offset.y-hgt/2),scale)
 
-func draw_to_canvas(key,dest_canvas:CanvasItem,dest_xy:Vector2,scale=1.0,color=Color.WHITE):	
+func draw_to_canvas(key,dest_canvas:CanvasItem,dest_xy:Vector2,scale=Vector2(1.0,1.0),color=Color.WHITE):	
 	assert(data.has(key),"Tried to draw nonexistent key "+key+" from atlas "+str(self))
 	var x=data.get(key).get(XY).x
 	var y=data.get(key).get(XY).y
@@ -107,13 +107,13 @@ func draw_to_canvas(key,dest_canvas:CanvasItem,dest_xy:Vector2,scale=1.0,color=C
 		#print(filename," ",src)
 		#print(x," ",y," ",wid," ",hgt)
 		#print(dest_xy.x," ",dest_xy.y," ",wid," ",hgt)
-	dest_canvas.draw_texture_rect_region(src,Rect2(dest_xy.x,dest_xy.y,wid*scale,hgt*scale),Rect2(x,y,wid,hgt),color)
+	dest_canvas.draw_texture_rect_region(src,Rect2(dest_xy.x,dest_xy.y,wid*scale.x,hgt*scale.y),Rect2(x,y,wid,hgt),color)
 
-func draw_to_canvas_centered(key,dest_canvas:CanvasItem,dest_xy:Vector2,scale=1.0,color=Color.WHITE):
+func draw_to_canvas_centered(key,dest_canvas:CanvasItem,dest_xy:Vector2,scale=Vector2(1.0,1.0),color=Color.WHITE):
 	#TO DO LATER: negative scale results in incorrect position
 	assert(data.has(key),"Tried to draw nonexistent key "+key+" from atlas "+str(self))
-	var wid=data.get(key).get(SIZE).x*scale
-	var hgt=data.get(key).get(SIZE).y*scale
+	var wid=data.get(key).get(SIZE).x*scale.x
+	var hgt=data.get(key).get(SIZE).y*scale.y
 	draw_to_canvas(key,dest_canvas,Vector2(dest_xy.x-wid/2,dest_xy.y-hgt/2),scale,color)
 
 

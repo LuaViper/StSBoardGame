@@ -45,7 +45,7 @@ func _on_pressed() -> void:
 	#var back = Image.create_empty(808,808,false,Image.FORMAT_RGBA8)	
 	var back = Image.load_from_file("res://card_cardtexture.png")
 	back.convert(Image.FORMAT_RGBA8)	
-	AtlasHelper.CARDUI.draw_to_image("512/card_back",back,Vector2i(0,0),2)	
+	AtlasHelper.CARDUI.draw_to_image("512/card_back",back,Vector2i(0,0),Vector2(2,2))
 			
 	#const DESCRIPTION="Wow! Rendering text to a card texture is obnoxiously difficult in Godot. I need a break. Time to unwind with some nice, easy Defect A20H Busted Crown swaps."
 	#const DESCRIPTION="Deal 8 damage to ALL enemies."
