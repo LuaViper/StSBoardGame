@@ -10,6 +10,9 @@ func _ready():
 	%TopBarImage.scale=Vector2(1,1)
 	#%TopBarImage.scale=Vector2(0.5,0.5)
 
+	
+	
+
 func load_top_bar():
 	top_bar_image=Image.new()
 

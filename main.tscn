@@ -121,19 +121,19 @@ text = "Card Back"
 
 [node name="DrawPileTestButton" type="Button" parent="." unique_id=2131357428]
 unique_name_in_owner = true
-offset_left = 34.0
-offset_top = 200.0
-offset_right = 136.0
-offset_bottom = 241.0
+offset_left = 492.0
+offset_top = 216.0
+offset_right = 594.0
+offset_bottom = 257.0
 text = "Draw
 "
 
 [node name="CursorTestButton" type="Button" parent="." unique_id=870403595]
 unique_name_in_owner = true
-offset_left = 32.0
-offset_top = 303.0
-offset_right = 134.0
-offset_bottom = 344.0
+offset_left = 490.0
+offset_top = 293.0
+offset_right = 592.0
+offset_bottom = 334.0
 text = "Cursor
 "
 

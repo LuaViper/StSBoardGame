@@ -1,0 +1,86 @@
+[gd_scene format=3 uid="uid://c2k54htm5ythb"]
+
+[ext_resource type="Texture2D" uid="uid://0tx5fn764uf7" path="res://UI art/action2d_nineslice.png" id="1_l4fc1"]
+[ext_resource type="Script" uid="uid://cpxqu5wterksk" path="res://actions/ui/action_2d_block.gd" id="2_aj5cj"]
+[ext_resource type="Texture2D" uid="uid://br1l6qfpku5pp" path="res://UI art/accordion_arrow.png" id="3_stc3t"]
+
+[node name="Action2dBlock" type="ColorRect" unique_id=257529284]
+custom_minimum_size = Vector2(0, 32)
+anchors_preset = 10
+anchor_right = 1.0
+grow_horizontal = 2
+mouse_filter = 2
+color = Color(0, 0, 0, 0)
+script = ExtResource("2_aj5cj")
+
+[node name="ClipControl" type="Control" parent="." unique_id=1591585908]
+unique_name_in_owner = true
+clip_contents = true
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+grow_horizontal = 2
+
+[node name="NinePatchRect" type="NinePatchRect" parent="ClipControl" unique_id=2121318854]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("1_l4fc1")
+patch_margin_left = 7
+patch_margin_top = 7
+patch_margin_right = 7
+patch_margin_bottom = 7
+
+[node name="MarginContainer" type="MarginContainer" parent="ClipControl" unique_id=1676273515]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 9.0
+grow_horizontal = 2
+theme_override_constants/margin_top = 4
+theme_override_constants/margin_bottom = 4
+
+[node name="VBoxContainer" type="VBoxContainer" parent="ClipControl/MarginContainer" unique_id=77154699]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/separation = 1
+
+[node name="HeaderPlaceholder" type="Control" parent="ClipControl/MarginContainer/VBoxContainer" unique_id=794569857]
+unique_name_in_owner = true
+layout_mode = 2
+mouse_filter = 2
+
+[node name="ChildrenMarginContainer" type="MarginContainer" parent="ClipControl/MarginContainer/VBoxContainer" unique_id=195863386]
+layout_mode = 2
+theme_override_constants/margin_left = 4
+
+[node name="ChildrenContainer" type="VBoxContainer" parent="ClipControl/MarginContainer/VBoxContainer/ChildrenMarginContainer" unique_id=1889668693]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="AccordionArrow" type="TextureRect" parent="." unique_id=1932684699]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -36.0
+offset_top = 4.0
+offset_right = -4.0
+offset_bottom = 36.0
+grow_horizontal = 0
+rotation = 3.1415927
+pivot_offset_ratio = Vector2(0.5, 0.5)
+mouse_filter = 2
+texture = ExtResource("3_stc3t")
+
+[connection signal="gui_input" from="ClipControl" to="." method="_on_clip_control_gui_input"]
+[connection signal="mouse_entered" from="ClipControl" to="." method="_on_clip_control_mouse_entered"]
+[connection signal="mouse_exited" from="ClipControl" to="." method="_on_clip_control_mouse_exited"]
+[connection signal="resized" from="ClipControl" to="." method="_on_clip_control_resized"]

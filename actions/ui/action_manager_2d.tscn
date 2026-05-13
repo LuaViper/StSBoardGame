@@ -1,0 +1,25 @@
+[gd_scene format=3 uid="uid://cnyl82k48j46s"]
+
+[ext_resource type="Script" uid="uid://dykqgguntuy8" path="res://actions/ui/action_manager_2d.gd" id="1_8uwvx"]
+
+[node name="ActionManager2D" type="Panel" unique_id=850850888]
+offset_right = 320.0
+offset_bottom = 400.0
+script = ExtResource("1_8uwvx")
+
+[node name="ScrollContainer" type="ScrollContainer" parent="." unique_id=2056065792]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+horizontal_scroll_mode = 0
+vertical_scroll_mode = 4
+
+[node name="VBoxContainer" type="VBoxContainer" parent="ScrollContainer" unique_id=2036191380]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/separation = 1

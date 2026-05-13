@@ -1,0 +1,27 @@
+[gd_scene format=3 uid="uid://bkclib8lm6oy2"]
+
+[ext_resource type="Script" uid="uid://rggyvb17w8er" path="res://actions/ui/abstract_game_action_2d.gd" id="1_w312t"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_ajhp6"]
+
+[node name="AbstractGameAction2D" type="ColorRect" unique_id=361589542]
+custom_minimum_size = Vector2(32, 32)
+offset_right = 48.0
+offset_bottom = 48.0
+mouse_filter = 2
+color = Color(0, 0, 0, 0)
+script = ExtResource("1_w312t")
+
+[node name="PanelContainer" type="PanelContainer" parent="." unique_id=1460578776]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxEmpty_ajhp6")
+
+[connection signal="resized" from="PanelContainer" to="." method="_on_panel_container_resized"]
