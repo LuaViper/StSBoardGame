@@ -5,6 +5,7 @@ var tags={}
 
 static var next_guid = 0
 
+#
 
 var guid
 # Internal_name is used for multiplayer comms.
