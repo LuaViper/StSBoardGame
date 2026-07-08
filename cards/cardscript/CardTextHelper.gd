@@ -25,7 +25,7 @@ func _init():
 	print("File suffix: ",file_suffix)
 	var files=Globals.get_all_files_in_directory(TAGS_PATH)
 	for file_path in files:
-		print("Reading file ",file_path)
+		#print("Reading file ",file_path)
 		if(file_path.begins_with(TAGS_PATH + "card_tag_") && file_path.ends_with(file_suffix)):
 			var PREFIX_LENGTH = (TAGS_PATH+"card_tag_").length()
 			var tag_name = file_path.substr(PREFIX_LENGTH,file_path.length()-PREFIX_LENGTH-file_suffix.length()).to_lower()

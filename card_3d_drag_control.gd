@@ -14,9 +14,6 @@ var selected=false
 # Frozen in place on screen while it waits to be played.
 var queued = false
 
-# Very short timer which counts down when a card is about to be played. Ideally hits 0 as the card reaches the center of the screen
-var play_timer=null
-
 var is_hovering_drop_zone=false
 var prev_is_hovering_drop_zone=false
 const INITIAL_LERP_SPEED=0.1
@@ -28,6 +25,7 @@ func _init():
 	card_tray = Globals.card_tray
 
 func _ready():
+	#TODO: is this actually being used? %Card3D starts hidden and is never shown
 	get_node("%Card3D").set_drag_control(self)
 
 func _process(delta):
@@ -52,8 +50,11 @@ func _process(delta):
 	# if a card is suddenly unplayable e.g. Normality, card goes directly from freeze position back to hand
 
 func process_card_input_event(event,card):	
+	if(self.queued):
+		return
+		
 	if(event is InputEventMouseButton and event.button_index==MOUSE_BUTTON_LEFT):
-		if(event.pressed):
+		if(event.pressed):			
 			if(self.selected):
 				release_card(self.is_hovering_drop_zone)				
 			else:

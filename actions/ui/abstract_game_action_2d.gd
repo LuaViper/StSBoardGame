@@ -20,17 +20,16 @@ static func create_node(action):
 
 
 func fold():
-	if(!action.show_while_folded):
-		hide()
+	pass
 func unfold():
-	show()
+	pass
 func on_parent_fold():
 	if(!action.show_while_folded):
 		hide()
 func on_parent_unfold():
 	show()
 
-func toggle_folded_status() -> bool:
+func toggle_folded_status():	
 	folded = !folded
 	if(folded):	fold()
 	else: unfold()

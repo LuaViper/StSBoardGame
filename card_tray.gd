@@ -1,4 +1,4 @@
-extends StaticBody3D
+class_name CardTray extends StaticBody3D
 
 #TO DO LATER: Card3D.MousePickingCollision's shape size is only approximate -- find exact size if possible
 #TO DO LATER: consider searching "godot position a flat plane so the edges align with the viewport"
@@ -7,39 +7,140 @@ extends StaticBody3D
 #	Cards move on X and Z coordinates.
 #	Rack is rotated 90 degrees on camera attachment (in addition to scaling down to 0.25x).
 
+
+#TODO: in a one-player-controls-multiple-characters game, or maybe even in couch co-op,
+# we may want to have a single tray control all characters
+var player:AbstractPlayer
 var card_control = preload("res://card_3d_drag_control.tscn")
 
 const IMG_WIDTH_S = 300.0 * 0.7
+const CARD_POSITION_Y_SCALE = 0.7
+const HAND_CURVE_MULTIPLIER = 300
 const PIXEL_SCALE = 0.011	#TODO:
+const HAND_SPREAD_Y_OFFSET = 4.8
+const CARD_PUSH_MULTIPLIER = 1.5
+const CARD_PUSH_FALLOFF_MULTIPLIER = 2
+
 
 var CARD_POSITIONS=[]
+var CARD_SCALES=[]
 var card_pickup_y = null
 #Determines if the player ever moved the card past the drop line. Persists if moved back.
 var passed_hesitation_line = false
 var in_single_target_mode = false
 
+# queued_cards list is for cards that have been dropped in the play zone
 var queued_cards = []
 
 
-func _init():
+func _init(player = Globals.sandbox_player):
+	
+	#TODO LATER: the coordinates used by vanilla CardGroup are completely wrong
+	#				in the Y direction, probably due to different rotation pivots.
+	#	see if we can recalculate those later, but for now, we're using custom coordinates
+
+	#TODO LATER: support for >10 cards
+	#NOTE: if CardTray is created during initial setup (as we're doing during early development),
+	#	sandbox_player will be null.  we'll check again during _ready
+	
+	var CARD_Xs = []
+	var CARD_Ys = []
 	#0
-	CARD_POSITIONS.append([])
+	CARD_Xs.append([])
+	CARD_Ys.append([])
+	CARD_SCALES.append(0.75)
 	#1
-	CARD_POSITIONS.append([Vector2(0,0)]) 
+	CARD_Xs.append([0])
+	CARD_Ys.append([0])
+	CARD_SCALES.append(0.75)
 	#2
-	CARD_POSITIONS.append([Vector2(-0.47,0),Vector2(0.53,0)])
+	CARD_Xs.append([-0.47,0.53])
+	CARD_Ys.append([0,0])
+	CARD_SCALES.append(0.75)
 	#3
-	CARD_POSITIONS.append([Vector2(-0.9,20),Vector2(0,0),Vector2(0.9,20)])
+	CARD_Xs.append([-0.9,0,0.9])
+	CARD_Ys.append([20,0,20])
+	CARD_SCALES.append(0.75)
 	#4
-	CARD_POSITIONS.append([Vector2(-1.36,0),Vector2(-0.46,-10),Vector2(0.46,-10),Vector2(1.36,0)])
+	CARD_Xs.append([-1.36,-0.46,0.46,1.36])
+	CARD_Ys.append([0,-10,-10,0])
+	CARD_SCALES.append(0.75)
 	#5
-	CARD_POSITIONS.append([Vector2(-1.7,25),Vector2(-0.9,0),Vector2(0,-10),Vector2(0.9,0),Vector2(1.7,25)])
+	CARD_Xs.append([-1.7,-0.9,0,0.9,1.7])
+	CARD_Ys.append([25,0,-10,0,25])
+	CARD_SCALES.append(0.75)
+	#6
+	CARD_Xs.append([-2.1,-1.3,-0.43,0.43,1.3,2.1])
+	CARD_Ys.append([10,0,0,0,0,10])
+	CARD_SCALES.append(0.75)
+	#7
+	CARD_Xs.append([-2.4,-1.7,-0.9,0,0.9,1.8,2.4])
+	CARD_Ys.append([25,18,0,-6,0,18,25])
+	CARD_SCALES.append(0.75)
+	#8
+	CARD_Xs.append([-2.5,-1.82,-1.1,-0.38,0.38,1.1,1.82,2.5])
+	CARD_Ys.append([0,10,0,0,0,0,10,0])
+	CARD_SCALES.append(0.7125)
+	#9
+	CARD_Xs.append([-2.8,-2.2,-1.53,-0.8,0,0.8,1.53,2.2,2.8])
+	CARD_Ys.append([0,22,18,12,0,12,18,22,0])
+	CARD_SCALES.append(0.675)
+	#10
+	CARD_Xs.append([-2.9,-2.4,-1.8,-1.1,-0.4,0.4,1.1,1.8,2.4,2.9])
+	CARD_Ys.append([0,20,17,12,5,5,12,17,20,0])
+	CARD_SCALES.append(0.6375)
+	
+	
+	
+	self.player=player
+	#0
+
+	for j in range(CARD_Xs.size()):
+		var list = CARD_Xs[j]
+		var positions=[]		
+		for i in range(list.size()):
+			var y = 0
+			var angle = acos(CARD_Xs[j][i]/4.0)
+			y = (1-sin(angle))*HAND_CURVE_MULTIPLIER
+			#positions.append(Vector2(CARD_Xs[j][i],CARD_Ys[j][i] * CARD_POSITION_Y_SCALE))
+			positions.append(Vector2(CARD_Xs[j][i],y))
+		CARD_POSITIONS.append(positions)
+	
+	
+	##Vector2(,)
+	#
+	#for list in CARD_POSITIONS:
+		#
+		#var sinkStart = 80
+		#var sinkRange = 300
+		#var incrementSink = sinkRange / float(list.size()) / 2.0
+		#var middle = list.size() / 2
+		#
+		##print("NEW LINE")
+		#for i in range(list.size()):		
+			#var t = i-middle
+			#if(t>=0):
+				#if(list.size() % 2 == 0):
+					#t+=1
+				#t=-t
+			#if(list.size() % 2 == 0):
+				#t+=1
+			#t = (int)(t * 1.7)
+			##print("t: ",t)
+			#var totalSink = -1 * (sinkStart + incrementSink * t)
+			#list[i].y += totalSink
+			#
 	for list in CARD_POSITIONS:
 		#we can't use a foreach on list as vectors will be copied byval instead of byref
 		for i in range(list.size()):
+			#print(list)
+			#list[i] *= PIXEL_SCALE			
+			var placeholder = 0
 			list[i].x *= PIXEL_SCALE * IMG_WIDTH_S
 			list[i].y *= PIXEL_SCALE
 
+func _ready():
+	if(!player): player=Globals.sandbox_player
 
 func _process(delta):	
 	var placeholders = %CardPlaceholders.get_children()
@@ -65,6 +166,7 @@ func _process(delta):
 				0,
 				angle_range/2.0 - increment_angle*i - increment_angle/2.0,
 				0))
+			#card_control.set_rotation_degrees(Vector3(0,180,0))
 			card_control.scale=Vector3(0.7,0.7,0.7)
 	for i in range(hand_size):
 		card_control=placeholders.get(i)
@@ -85,43 +187,45 @@ func _process(delta):
 	
 	#TODO: move this to a PlayerActionManager. potions take priority over queued cards, for example.
 
-	if(queued_cards.has(0)):
+	
+	#TODO: this cannot_be_played check might not be necessary if CardPlay is also checking
+	card_control=null
+	if(!queued_cards.is_empty()):
 		card_control=queued_cards.get(0)
 	if(card_control):
-		#TODO: "is card still playable?" check goes here
-		if(card_control.play_timer==null):
-			var can_be_played = card_control.card3d.can_be_played()
-			if(can_be_played != true):
-				#TODO: display error message if applicable
-				card_control.queued=false
-				queued_cards.pop_front()
-			else:
-				card_control.play_timer=0.5
+		#this function takes a "player" argument
+		#	for now, probably create a debug_player with infinite energy and HP
+		var cannot_be_played = card_control.card3d.card.cannot_be_played(card_control.card3d.card.owner)
+		if(cannot_be_played != false):
+			#TODO: display error message if applicable
+			card_control.queued=false
+			queued_cards.pop_front()			
+
 		
-		if(card_control.play_timer!=null):
-			#TODO: card gets Officially Played here
-			# card leaves hand
-			# if the player is under a "next card copies" effect,
-			card_control.play_timer-=delta
-			card_control.rotation=Vector3(0,0,0)
-			card_control.scale=Vector3(0.7,0.7,0.7)
-			card_control.position=get_center_of_screen_for_played_card()
-			if(card_control.play_timer<0):
-				card_control.play_timer=null
-				#TODO: time to think about playing the card
-				#if the player is under a "next card copies" effect, we need to deal with that first
-				# in vanilla, copied cards wait to the left of the original card in the center of the screen
-				# copies spawn from the "queued" position and move directly to middle at the same time the original does
-				#  in board game, copies are played first, so original will wait on the left
-				# in vanilla, "is card playable?" check occurs... we don't know and don't card
-				#  because in board game, playable check needs to occur before copies are spawned
-				
-			
-				
-			
-			#TODO NEXT: attempt to play the card
-			#TODO: at some point in the near future we need card_controls to track which position they are in the player's hand,
-				# and update when cards to the left are removed/added
+		#if(card_control.play_timer!=null):
+			##TODO: card gets Officially Played here
+			## card leaves hand
+			## if the player is under a "next card copies" effect,
+			#card_control.play_timer-=delta
+			#card_control.rotation=Vector3(0,0,0)
+			#card_control.scale=Vector3(0.7,0.7,0.7)
+			#card_control.position=get_center_of_screen_for_played_card()
+			#if(card_control.play_timer<0):
+				#card_control.play_timer=null
+				##TODO: time to think about playing the card
+				##if the player is under a "next card copies" effect, we need to deal with that first
+				## in vanilla, copied cards wait to the left of the original card in the center of the screen
+				## copies spawn from the "queued" position and move directly to middle at the same time the original does
+				##  in board game, copies are played first, so original will wait on the left
+				## in vanilla, "is card playable?" check occurs... we don't know and don't card
+				##  because in board game, playable check needs to occur before copies are spawned
+				#
+			#
+				#
+			#
+			##TODO NEXT: attempt to play the card
+			##TODO: at some point in the near future we need card_controls to track which position they are in the player's hand,
+				## and update when cards to the left are removed/added
 	
 	
 func set_placeholder_position_by_index(drag_control,index=null):
@@ -133,7 +237,7 @@ func set_placeholder_position_by_index(drag_control,index=null):
 			#index*PIXEL_SCALE,
 			index*0.03,
 			#index*0.3,
-			CARD_POSITIONS[hand_size][index].y+4)
+			CARD_POSITIONS[hand_size][index].y+HAND_SPREAD_Y_OFFSET)
 	#print(index," out of ",hand_size,": ",CARD_POSITIONS[hand_size][index].x,"  ,   ",CARD_POSITIONS[hand_size][index].y)
 	#print(index," out of ",hand_size,": ",index*0.03)
 	
@@ -156,33 +260,41 @@ func hover_card_push(card_controller):
 	var push_amount = 0.4
 	if(hand_size==2): push_amount=0.2 
 	elif(hand_size==3 || hand_size==4): push_amount=0.27
+	push_amount *= CARD_PUSH_MULTIPLIER
 	for i in range(card_index+1,hand_size):
 		if(!hand_controls.get(i).queued):
 			hand_controls.get(i).position.x += PIXEL_SCALE * IMG_WIDTH_S * push_amount
-			push_amount*=0.25
+			push_amount*=0.25*CARD_PUSH_FALLOFF_MULTIPLIER
 	push_amount = 0.4
 	if(hand_size==2): push_amount=0.2 
 	elif(hand_size==3 || hand_size==4): push_amount=0.27
 	for i in range(card_index-1,-1,-1):
 		if(!hand_controls.get(i).queued):
 			hand_controls.get(i).position.x -= PIXEL_SCALE * IMG_WIDTH_S * push_amount
-			push_amount*=0.25
+			push_amount*=0.25*CARD_PUSH_FALLOFF_MULTIPLIER
 	card_controller.position.y=get_front_of_tray_for_dragged_card()
+
+func get_z_for_queued_card_index(index):
+	var z = 0.4+index*0.05	#we tried 0.01 earlier, it wasn't sufficient to prevent glow z issues
+	return z
 
 func get_front_of_tray_for_queued_card(card_control):
 	var index = queued_cards.find(card_control)
 	assert(index!=-1,"Tried to z-position queued card_control "+card_control.to_string()+", but it's not in the queued cards list")
-	return 0.4+index*0.01
+	var z = get_z_for_queued_card_index(index)
+	return z
 	
 func get_front_of_tray_for_dragged_card():
 	#TO DO LATER: check hand size
 	# This number should be sufficiently larger than the queued_card function that dragged cards will always appear in front.
-	return 0.5
+	var index=queued_cards.size()+1
+	var z = get_z_for_queued_card_index(index)
+	return z
 	
 func get_bottom_of_screen_for_hovered_card():
 	#TO DO LATER: check screen dimensions? (maybe not necessary with canvas stretch mode)
 	# this value is in local coordinates, not viewport coordinates!
-	return 3.05
+	return 2.65
 
 func get_center_of_screen_for_played_card():
 	# the 0.7 should be sufficiently larger than front of tray for dragged card.
@@ -198,3 +310,5 @@ func get_center_of_screen_for_played_card():
 func queue_card(card_control):	
 	card_control.queued=true
 	queued_cards.append(card_control)
+	var play = CardPlay.new(self.player,card_control.card3d.card)
+	play.send_to_host()

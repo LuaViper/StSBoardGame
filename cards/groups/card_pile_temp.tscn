@@ -1,0 +1,14 @@
+[gd_scene format=3 uid="uid://y8phfx3osmb0"]
+
+[ext_resource type="Script" uid="uid://c3sqsxpdxks6n" path="res://cards/groups/card_pile_temp.gd" id="1_6p6bm"]
+[ext_resource type="PackedScene" uid="uid://b0j00juowingy" path="res://cards/rendering/card_3d.tscn" id="2_6p6bm"]
+
+[node name="CardPile" type="Node3D" unique_id=904859239]
+script = ExtResource("1_6p6bm")
+
+[node name="Cards" type="Node3D" parent="." unique_id=1550853261]
+unique_name_in_owner = true
+
+[node name="PLACEHOLDER" parent="." unique_id=1640583331 instance=ExtResource("2_6p6bm")]
+unique_name_in_owner = true
+transform = Transform3D(-1, 8.742278e-08, 0, -8.742278e-08, -1, 0, 0, 0, 1, 0, 0, 0)

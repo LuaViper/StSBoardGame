@@ -1,4 +1,4 @@
-class_name Sentry extends Character
+class_name Sentry extends AbstractCharacter
 
 func load_character(node):
 	node.load_character("images/monsters/theBottom/sentry/skeleton.atlas", 

@@ -1,4 +1,4 @@
-[gd_scene load_steps=4 format=3 uid="uid://wt5lmffkrw7o"]
+[gd_scene format=3 uid="uid://wt5lmffkrw7o"]
 
 [ext_resource type="Script" uid="uid://dfkkn3vxsxqai" path="res://card_tray.gd" id="1_eoevj"]
 [ext_resource type="PackedScene" uid="uid://b0j00juowingy" path="res://cards/rendering/card_3d.tscn" id="1_rm3o0"]
@@ -6,20 +6,20 @@
 [sub_resource type="BoxShape3D" id="BoxShape3D_476pf"]
 size = Vector3(19.2, 0.1, 10.8)
 
-[node name="CardTray" type="StaticBody3D"]
+[node name="CardTray" type="StaticBody3D" unique_id=519670539]
 collision_layer = 2
 collision_mask = 0
 input_ray_pickable = false
 script = ExtResource("1_eoevj")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=71779308]
 shape = SubResource("BoxShape3D_476pf")
 
-[node name="CardPositionExamples" type="Node3D" parent="."]
+[node name="CardPositionExamples" type="Node3D" parent="." unique_id=1071398925]
 visible = false
 
-[node name="HoveredCard" parent="CardPositionExamples" instance=ExtResource("1_rm3o0")]
+[node name="HoveredCard" parent="CardPositionExamples" unique_id=1517982316 instance=ExtResource("1_rm3o0")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 3.424)
 
-[node name="CardPlaceholders" type="Node3D" parent="."]
+[node name="CardPlaceholders" type="Node3D" parent="." unique_id=1446774441]
 unique_name_in_owner = true

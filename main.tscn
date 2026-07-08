@@ -5,7 +5,7 @@
 [ext_resource type="PackedScene" uid="uid://bm6cx8xk854qj" path="res://SkeletonReaderTest.tscn" id="3_lquwl"]
 [ext_resource type="PackedScene" uid="uid://b0j00juowingy" path="res://cards/rendering/card_3d.tscn" id="4_lquwl"]
 [ext_resource type="PackedScene" uid="uid://vn4mn4kba585" path="res://layout/encounter_grid.tscn" id="6_7mycd"]
-[ext_resource type="PackedScene" uid="uid://y8phfx3osmb0" path="res://card_pile.tscn" id="7_5vw27"]
+[ext_resource type="PackedScene" uid="uid://y8phfx3osmb0" path="res://cards/groups/card_pile_temp.tscn" id="7_5vw27"]
 [ext_resource type="PackedScene" uid="uid://wt5lmffkrw7o" path="res://card_tray.tscn" id="7_272bh"]
 [ext_resource type="PackedScene" uid="uid://cu5wllqoogum6" path="res://cards/rendering/unused/UNUSED_card_glow_particles_collection.tscn" id="8_5vw27"]
 [ext_resource type="PackedScene" uid="uid://38jw2h0s8dwn" path="res://helpers/mouse_cursor_helper.tscn" id="9_kek77"]
@@ -31,6 +31,7 @@ size = Vector2(100, 100)
 script = ExtResource("1_1bvp3")
 
 [node name="InGameUI" parent="." unique_id=2130898606 instance=ExtResource("10_4c57u")]
+visible = false
 
 [node name="Ground" type="StaticBody3D" parent="." unique_id=2081366123]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.1, 0)
@@ -121,19 +122,19 @@ text = "Card Back"
 
 [node name="DrawPileTestButton" type="Button" parent="." unique_id=2131357428]
 unique_name_in_owner = true
-offset_left = 492.0
-offset_top = 216.0
-offset_right = 594.0
-offset_bottom = 257.0
+offset_left = 36.0
+offset_top = 193.0
+offset_right = 138.0
+offset_bottom = 234.0
 text = "Draw
 "
 
 [node name="CursorTestButton" type="Button" parent="." unique_id=870403595]
 unique_name_in_owner = true
-offset_left = 490.0
-offset_top = 293.0
-offset_right = 592.0
-offset_bottom = 334.0
+offset_left = 36.0
+offset_top = 264.0
+offset_right = 138.0
+offset_bottom = 305.0
 text = "Cursor
 "
 
@@ -153,6 +154,10 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.076, 0, 16.101)
 [node name="CardPile" parent="." unique_id=125038251 instance=ExtResource("7_5vw27")]
 unique_name_in_owner = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.364373, 0, 9.835833)
+
+[node name="DiscardPile" parent="." unique_id=904859239 instance=ExtResource("7_5vw27")]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11.217424, 0, 9.835833)
 
 [node name="CardGlowParticlesCollection" parent="." unique_id=993993901 instance=ExtResource("8_5vw27")]
 unique_name_in_owner = true

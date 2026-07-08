@@ -1,0 +1,1 @@
+class_name SandboxPlayer extends AbstractPlayer

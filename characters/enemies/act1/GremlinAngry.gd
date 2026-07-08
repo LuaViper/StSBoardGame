@@ -1,4 +1,4 @@
-class_name GremlinAngry extends Character
+class_name GremlinAngry extends AbstractCharacter
 
 func load_character(node):
 	node.load_character("images/monsters/theBottom/angryGremlin/skeleton.atlas", 

@@ -1,4 +1,4 @@
-class_name JawWorm extends Character
+class_name JawWorm extends AbstractCharacter
 
 func load_character(node):
 	node.load_character("images/monsters/theBottom/jawWorm/skeleton.atlas", 

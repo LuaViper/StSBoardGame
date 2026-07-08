@@ -3,6 +3,8 @@
 [ext_resource type="Script" uid="uid://bay4x1bpcvgc3" path="res://in_game_ui.gd" id="1_onc8m"]
 [ext_resource type="PackedScene" uid="uid://cnyl82k48j46s" path="res://actions/ui/action_manager_2d.tscn" id="2_onc8m"]
 
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_onc8m"]
+
 [sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_onc8m"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_e6quo"]
@@ -15,6 +17,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 1
+theme_override_styles/panel = SubResource("StyleBoxEmpty_onc8m")
 script = ExtResource("1_onc8m")
 
 [node name="TopBarAnchor" type="Control" parent="." unique_id=1881443587]
@@ -49,6 +52,7 @@ text = "UI
 "
 
 [node name="ActionManager2D" parent="." unique_id=850850888 instance=ExtResource("2_onc8m")]
+visible = false
 layout_mode = 1
 anchors_preset = 2
 anchor_top = 1.0

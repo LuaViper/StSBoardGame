@@ -1,4 +1,7 @@
-class_name Character
+class_name AbstractCharacter
+
+var hp = 9
+var max_hp = 9
 
 var atlas_filepath
 var skeleton_filepath

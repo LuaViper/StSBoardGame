@@ -3,13 +3,21 @@ class_name Action2DBlock extends AbstractGameAction2D
 const NORMAL_COLOR = Color(0.8,0.0,0.0)
 const HIGHLIGHT_COLOR = NORMAL_COLOR + Color(0.2,0.2,0.2)
 
+#
+#TODO: not close to done here
+#	abstractgameaction is no longer using "children"
+#	and now has separate sub_actions, triggered_actions, and cleanup_actions
+#	additionally, unclear whether we want to add triggered_actions to the UI in slowmode
+#		before the player chooses what order to run them in
+
+
 #TODO: automatically calculate margins from panelcontainer's margins during setup
 const MARGINS = 8
 
 #TODO: consider dynamic fold/unfold speed based on container size
 #TODO: consider acceleration for fold/unfold animation
-var UNFOLD_SPEED = 320
-var FOLD_SPEED = 320
+var UNFOLD_SPEED = 512
+var FOLD_SPEED = 512
 
 var controlled_scroll_size = 40
 
@@ -45,7 +53,7 @@ func _process(delta: float) -> void:
 		%ClipControl.size.y-=delta*FOLD_SPEED
 		if(%ClipControl.size.y<controlled_scroll_size):
 			%ClipControl.size.y=controlled_scroll_size
-
+	
 	if(!folded):
 		%AccordionArrow.rotation=min(PI,%AccordionArrow.rotation+delta*10)			
 	else:
@@ -58,7 +66,7 @@ func _process(delta: float) -> void:
 
 
 func fold():
-	#don't call super.fold() -- blocks always remain visible
+	super.fold()
 	for child in %ChildrenContainer.get_children():
 		child.on_parent_fold()
 	
@@ -68,19 +76,15 @@ func unfold():
 		child.on_parent_unfold()
 		
 func on_parent_fold():
-	# (action blocks don't hide when parent is folded)
-	pass
+	super.on_parent_fold()
 
 func on_parent_unfold():
-	# (override parent function)
-	pass	
-	
+	super.on_parent_unfold()
 			
 func _on_clip_control_resized() -> void:
 	if(saved_owner):
 		saved_owner.custom_minimum_size.y=%ClipControl.size.y
 		saved_owner.size.y=%ClipControl.size.y
-	pass
 
 
 func _on_clip_control_mouse_entered() -> void:
@@ -94,10 +98,3 @@ func _on_clip_control_mouse_exited() -> void:
 func _on_clip_control_gui_input(event: InputEvent) -> void:
 	if(event.is_action_pressed("left_mouse_button")):
 		toggle_folded_status()
-		#TODO: still not correct --
-		# panelcontainer needs to resize smoothly, not just clipcontrol
-		# we may very well have to start over and do it manually
-		if(folded):
-			%ChildrenContainer.hide()
-		else:
-			%ChildrenContainer.show()	

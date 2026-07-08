@@ -1,11 +1,15 @@
 extends Node3D
 
+var ingame_name = "(Unnamed card pile)"
 var card3D = preload("res://cards/rendering/card_3d.tscn")
 var viewport = preload("res://cards/rendering/card_2d_rendering_viewport.tscn")
 var transparents = preload("res://cards/rendering/transparent_effects_rendering_viewport.tscn")
 
 var EFFECTIVE_CARD_WIDTH = 0.03
 var face_down = false
+
+func _ready():
+	%PLACEHOLDER.queue_free()
 
 func temp_add_card(cardname):
 	#TODO: when we do this for real, face-down cards don't render their front side
@@ -14,8 +18,8 @@ func temp_add_card(cardname):
 	#await get_tree().root.ready
 	
 	var card = Globals.card_library.card_list[cardname].make_copy()
-	card.owner = Globals.test_player
-	card.set_location(card.owner.draw_pile)
+	card.owner = Globals.sandbox_player
+	card._set_location(card.owner.draw_pile)
 	
 	var c2rvp:Card2DRenderingViewport=viewport.instantiate()
 	c2rvp.set_card(card);
@@ -35,6 +39,8 @@ func temp_add_card(cardname):
 	Globals.main.add_child(terp)
 	c3.attach_transparent_effects_viewport(terp)
 	
+	return c3
+	
 	#print("!")
 	
 
@@ -51,6 +57,13 @@ func temp_setup():
 	temp_add_card("BGStrike_Red")
 	temp_add_card("BGInflame")
 	temp_add_card("BGDefend_Red")
-	
-	
 	pass
+
+func _to_string()->String:
+	return ingame_name
+	
+func _physics_process_position_card(_delta,card:AbstractCard):
+	var lerp_speed=0.03
+	var transform = Transform3D(self.global_transform)
+	
+	transform = transform.interpolate_with(transform,lerp_speed)

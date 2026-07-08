@@ -1,4 +1,4 @@
-class_name GremlinSneaky extends Character
+class_name GremlinSneaky extends AbstractCharacter
 
 func load_character(node):
 	node.load_character("images/monsters/theBottom/thiefGremlin/skeleton.atlas", 

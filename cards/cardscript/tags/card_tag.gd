@@ -45,5 +45,5 @@ func get_color_prefix()->String:
 	else:
 		return ""
 
-func do():
+func do(context:AbstractGameAction):
 	print("WARNING: called tag ",name,".do() but that tag's do() was never overridden")

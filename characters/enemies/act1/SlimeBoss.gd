@@ -1,4 +1,4 @@
-class_name SlimeBoss extends Character
+class_name SlimeBoss extends AbstractCharacter
 
 
 func load_character(node):

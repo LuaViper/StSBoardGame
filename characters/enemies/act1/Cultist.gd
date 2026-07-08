@@ -1,4 +1,4 @@
-class_name Cultist extends Character
+class_name Cultist extends AbstractCharacter
 
 func load_character(node):
 	node.load_character("images/monsters/theBottom/cultist/skeleton.atlas", 

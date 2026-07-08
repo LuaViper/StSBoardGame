@@ -3,8 +3,16 @@ class_name AbstractCard
 var data={}
 var tags={}
 
-var location=null		#refers to hand, draw pile, discard pile, powers, reward pile, etc
-var owner:AbstractPlayer=null
+static var next_guid = 0
+
+
+var guid
+# Internal_name is used for multiplayer comms.
+# 	It's redundant with guid but helps us check for desync.
+var internal_name
+
+var location:CardGroup=null		#refers to hand, draw pile, discard pile, powers, reward pile, etc
+var owner:AbstractPlayer = null
 
 var is_glowing=false
 var glow_timer=0.0
@@ -12,8 +20,13 @@ var glow_list=[]
 var glow_color=TransparentEffects.BLUE_BORDER_GLOW_COLOR
 var flash_list=[]
 
+var energy_cost
+
 func setup(data_:Dictionary):
 	self.data=data_
+	#TODO LATER: this breaks if next_guid rolls over max int
+	self.guid = next_guid; next_guid+=1
+	self.internal_name = self.data.id
 	#print("_init ",data.id)
 	if(data.has("quickimplementation")):
 		load_quick_implementation()
@@ -58,9 +71,17 @@ func get_text():
 	result = Globals.card_text_helper.resize(result,self)
 	return result
 
-func can_be_played():
-	# May return an error message if the card cannot be played.
+
+func get_energy_cost(player):
+	return energy_cost
+
+
+func cannot_be_played(player:AbstractPlayer):
+	# Return value may contain an error message for the player.
+	
 	#TODO:
+	# 
+
 	return false
 
 func play():
@@ -88,8 +109,25 @@ func magic_color_tags(text:String):
 	#TODO:
 	return text
 
+func get_title()->String:
+	#TODO: upgrade check
+	#TODO: vgname isn't card_title -- vgname should be a link to an entry in localization/eng/cards.json
+	if(data.vgname!="SPECIAL"):
+		return LocalizationHelper.CARDS.eng[data.vgname].NAME
+	else:
+		#TODO: we should probably do a more sophisticated check
+		return "Golden Ticket"
 
-func set_location(location):
+func _to_string()->String:
+	var name = get_title()	
+	#TODO: anything else that might affect the card's name
+	return name
+
+# Private function!
+# (we currently call this from a couple other places but for testing purposes only)
+# Use the specific functions to change a card's location --
+#	-- this function is not responsible for calling trigger effects
+func _set_location(location):
 	var prev_location=self.location
 	if(prev_location):
 		assert(prev_location.has(self),"Card was moved from one location to another, but the previous location had no record of this card")
@@ -100,3 +138,44 @@ func set_location(location):
 		location.append(self)
 	#TO DO LATER: use a CardGroup class for locations so we can give them a name property
 	#print("Card ",self," moved from ",prev_location," to ",location)
+
+func move_to_hand():
+	_set_location(owner.hand)
+
+func move_to_discard(sly=false):
+	if(sly):
+		if(location==owner.hand):
+			#TODO: trigger Sly effects
+			pass
+	_set_location(owner.discard_pile)
+	
+func on_sly():
+	#override
+	pass
+	
+func exhausting_triggers_exhaust_effects():
+	#TODO: check physical copy, ruleset, etc
+	#RAW: only physical cards can exhaust (matches VG)
+	#RAI: playing a copied card that says "exhaust" counts as an exhaust
+	return true
+	
+func move_to_exhaust():
+	if(exhausting_triggers_exhaust_effects()):
+		_trigger_exhaust_powers()
+		on_exhaust()
+	_set_location(owner.exhaust_pile)
+
+func _trigger_exhaust_powers():	
+	pass
+
+func move_to_top_of_draw_pile():
+	pass
+
+func on_exhaust():
+	#override
+	pass
+	
+func get_cleanup_actions():
+	#by default, move_to_discard
+	return [MoveToDiscardAction.new(self)]
+	pass

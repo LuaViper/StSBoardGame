@@ -71,12 +71,7 @@ func set_card(card_:AbstractCard):
 			
 	card_2d.banner_path = "512/banner_"+rarity_str
 	card_2d.orb_path = "512/card_"+orb_str+"_orb" if(card.data.cost!="NONE") else ""
-	#TODO: vgname isn't card_title -- vgname should be a link to an entry in localization/eng/cards.json
-	if(card.data.vgname!="SPECIAL"):
-		card_2d.card_title = LocalizationHelper.CARDS.eng[card.data.vgname].NAME
-	else:
-		#TODO: handle SPECIAL vgname (golden ticket)
-		pass
+	card_2d.card_title = card.get_title()
 	
 	card_2d.card_type_name = card.data.type.capitalize()
 	card_2d.card_cost_text = card.data.cost if(card.data.cost!="NONE") else ""

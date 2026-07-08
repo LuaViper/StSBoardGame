@@ -13,19 +13,30 @@ var main:Main
 var card_text_helper:CardTextHelper
 var card_library:CardLibrary
 
-var test_player:AbstractPlayer
+var multiplayer_manager:MultiplayerManager
+var play_manager:PlayManager
+
+var players = []
+var sandbox_player:AbstractPlayer
 
 var camera_pivot:Marker3D
 var player_perspective_camera:Camera3D
 var card_tray
+
+const CHANNEL_GAMEPLAY = 0
+const CHANNEL_CHAT = 1
 
 func _ready():
 	jar_manager=JarManager.new()
 	#must setup card_text_helper before card_library
 	card_text_helper=CardTextHelper.new()
 	card_library=CardLibrary.new()	
-	test_player=AbstractPlayer.new()
-
+	sandbox_player=SandboxPlayer.new()
+	players.append(sandbox_player)
+	play_manager=PlayManager.new()
+	multiplayer_manager=preload("res://actions/multiplayer_manager.tscn").instantiate()
+	# multiplayer_manager.multiplayer will be null until manager is added to the scene tree
+	add_child(multiplayer_manager)
 	
 func _notification(what):
 	if what == NOTIFICATION_WM_CLOSE_REQUEST:

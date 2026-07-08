@@ -1,4 +1,4 @@
-class_name TheGuardian extends Character
+class_name TheGuardian extends AbstractCharacter
 
 
 func load_character(node):

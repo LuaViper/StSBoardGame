@@ -1,4 +1,4 @@
-class_name Hexaghost extends Character
+class_name Hexaghost extends AbstractCharacter
 
 #TODO: hexaghost needs extra logic for body+orbs
 

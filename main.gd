@@ -109,11 +109,13 @@ func _on_card_3d_test_button_pressed() -> void:
 
 
 func _on_draw_pile_test_button_pressed() -> void:
-	var draw_pile = Globals.test_player.draw_pile
-	if(!draw_pile.is_empty()):
-		draw_pile.back().set_location(Globals.test_player.hand)
-	else:
+	var draw_pile = Globals.sandbox_player.draw_pile
+	if(draw_pile.is_empty()):
 		%CardPile.temp_setup()
+	else:
+		draw_pile.back()._set_location(Globals.sandbox_player.hand)
+	
+		
 	
 	pass # Replace with function body.
 

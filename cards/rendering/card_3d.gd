@@ -8,7 +8,7 @@ var card_location = null
 
 static var base_card_texture:Texture2D = preload("res://card_cardtexture.png")
 static var card_albedo_texture:Texture2D = null
-static var shader:Shader = load("res://cards/rendering/ignore_transparent_shadows.gdshader")
+#static var shader:Shader = load("res://cards/rendering/ignore_transparent_shadows.gdshader")
 
 const SKY = Color("87CEEBFF")
 
@@ -126,7 +126,7 @@ func _on_mouse_exited() -> void:
 
 func _process(delta):
 	if(!card): return
-	if(card.location == Globals.test_player.hand):
+	if(card.location == Globals.sandbox_player.hand):
 		if(!drag_control):
 			self.card_tray=Globals.card_tray
 			set_drag_control(card_tray.create_drag_control())
@@ -162,7 +162,10 @@ func _physics_process(_delta):
 	if(card_location != card.location):
 		card_location = card.location
 		reparent(Globals.main,true)
-	if(card.location == Globals.test_player.hand):
+	if(card.location.has_method("_physics_process_position_card")):
+		card.location._physics_process_position_card(_delta,card);
+		
+	if(card.location == Globals.sandbox_player.hand):
 		if(drag_control):
 			var lerp_speed=0.03
 			if(drag_control.hovered): lerp_speed=0.1
@@ -170,7 +173,3 @@ func _physics_process(_delta):
 			if(drag_control.dragged): lerp_speed=drag_control.lerp_speed
 			#TO DO LATER: immediately snap card to local y when picked up or let go
 			transform = transform.interpolate_with(drag_control.global_transform,lerp_speed)
-
-
-func can_be_played():
-	return card.can_be_played()

@@ -1,0 +1,3 @@
+class_name MiscellaneousDecision extends AbstractDecision
+
+var decision

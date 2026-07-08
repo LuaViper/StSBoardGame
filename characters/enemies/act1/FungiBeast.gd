@@ -1,4 +1,4 @@
-class_name FungiBeast extends Character
+class_name FungiBeast extends AbstractCharacter
 
 func load_character(node):
 	#TODO: review y-offset. fur is clipping, but "leg" roots would float otherwise

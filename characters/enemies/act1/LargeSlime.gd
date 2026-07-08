@@ -1,4 +1,4 @@
-class_name LargeSlime extends Character
+class_name LargeSlime extends AbstractCharacter
 
 func load_character(node):
 	node.load_character("images/monsters/theBottom/slimeL/skeleton.atlas", 
